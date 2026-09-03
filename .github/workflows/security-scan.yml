@@ -1,0 +1,68 @@
+name: NIKWAY P04 Security Scan
+
+on:
+  push:
+    branches:
+      - p04-ci-gate-5cc0207
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NIKWAY_BASELINE_SHA: 5cc02077e480856ed6563cb8d90b994ffa264976
+
+jobs:
+  dependency-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout verified baseline
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.NIKWAY_BASELINE_SHA }}
+
+      - name: Verify baseline provenance
+        shell: bash
+        run: |
+          actual_sha="$(git rev-parse HEAD)"
+          test "$actual_sha" = "$NIKWAY_BASELINE_SHA"
+          printf 'baseline_sha=%s\nworkflow_run_id=%s\n' \
+            "$actual_sha" "$GITHUB_RUN_ID" > "$RUNNER_TEMP/nikway-p04-security-provenance.txt"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate security contract
+        working-directory: projects/nikway/Nikway Academy Sep 26/continuous-mission
+        run: python scripts/lint_security_contract.py
+
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample
+          format: json
+          output: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/trivy-fs-report.json
+          exit-code: "1"
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+
+      - name: Upload Trivy report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nikway-trivy-filesystem-report
+          path: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/trivy-fs-report.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload security provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nikway-p04-security-provenance
+          path: ${{ runner.temp }}/nikway-p04-security-provenance.txt
+          if-no-files-found: error
+          retention-days: 30

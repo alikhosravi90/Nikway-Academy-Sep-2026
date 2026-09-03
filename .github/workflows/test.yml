@@ -1,0 +1,115 @@
+name: NIKWAY P04 CI
+
+on:
+  push:
+    branches:
+      - p04-ci-gate-5cc0207
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NIKWAY_BASELINE_SHA: 5cc02077e480856ed6563cb8d90b994ffa264976
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: nikway_v1
+          POSTGRES_USER: nikway_test
+          POSTGRES_PASSWORD: ci-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U nikway_test -d nikway_v1"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/app
+    steps:
+      - name: Checkout verified baseline
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.NIKWAY_BASELINE_SHA }}
+
+      - name: Verify baseline provenance
+        shell: bash
+        run: |
+          actual_sha="$(git rev-parse HEAD)"
+          test "$actual_sha" = "$NIKWAY_BASELINE_SHA"
+          printf 'baseline_sha=%s\nworkflow_run_id=%s\n' \
+            "$actual_sha" "$GITHUB_RUN_ID" > "$RUNNER_TEMP/nikway-p04-provenance.txt"
+        working-directory: .
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/app/requirements.txt
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements.txt pytest
+
+      - name: Apply database schema
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          PGPASSWORD=ci-only-password psql \
+            -h localhost -U nikway_test -d nikway_v1 \
+            -f ../db/v1_schema.sql
+          PGPASSWORD=ci-only-password psql \
+            -h localhost -U nikway_test -d nikway_v1 \
+            -f ../db/master_system_schema.sql
+          PGPASSWORD=ci-only-password psql \
+            -h localhost -U nikway_test -d nikway_v1 \
+            -f ../db/master_authorization_schema.sql
+
+      - name: Run tests with PostgreSQL
+        env:
+          DATABASE_URL: postgresql+psycopg://nikway_test:ci-only-password@localhost:5432/nikway_v1
+        run: python -m pytest tests -q
+
+      - name: Compile Python
+        run: python -m compileall -q app
+
+      - name: Generate implementation OpenAPI
+        run: python scripts/generate_openapi.py
+
+      - name: Contract diff
+        run: python scripts/contract_diff.py ../V1_API_CONTRACT.yaml
+
+      - name: Generate readiness view
+        run: python ../../scripts/generate_progress_snapshot.py
+
+      - name: Verify release state integrity
+        working-directory: projects/nikway/Nikway Academy Sep 26/continuous-mission
+        run: python scripts/verify_release_state.py
+
+      - name: Generate release review pack
+        working-directory: projects/nikway/Nikway Academy Sep 26/continuous-mission
+        run: python scripts/generate_release_pack.py
+
+      - name: Upload release review pack
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nikway-release-review-pack
+          path: projects/nikway/Nikway Academy Sep 26/continuous-mission/release-pack/NIKWAY-RELEASE-REVIEW-PACK-20260903.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload commit provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nikway-p04-commit-provenance
+          path: ${{ runner.temp }}/nikway-p04-provenance.txt
+          if-no-files-found: error
+          retention-days: 30
