@@ -1,0 +1,51 @@
+id: EVID-NIKWAY-PERSISTENCE-RUNTIME-ROLE-20260903-023
+type: persistence-runtime-role-cycle
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+created_at: "2026-09-03T18:05:00+03:30"
+timezone: Asia/Tehran
+scope:
+  - "Isolated local PostgreSQL runtime"
+  - "Bootstrap/runtime role separation"
+  - "Master and repository persistence"
+  - "No authorization redesign"
+execution:
+  database_image: postgres:16-alpine
+  database_version: "16.15"
+  migrations:
+    - db/v1_schema.sql
+    - db/master_system_schema.sql
+    - db/master_authorization_schema.sql
+    - db/create-runtime-role.sh
+  migration_result: PASS_LOCAL
+  runtime_role:
+    name: nikway_runtime
+    login: true
+    superuser: false
+    createdb: false
+    createrole: false
+  bootstrap_role:
+    name: nikway_bootstrap
+    owns_schema_tables: true
+  public_table_count: 14
+  runtime_connection: "nikway_runtime connected to nikway_v1"
+tests:
+  result: "7 passed"
+  persistence_properties:
+    master_creation_and_retrieval: PASS_LOCAL
+    version_creation_and_retrieval: PASS_LOCAL
+    immutable_duplicate_version: PASS_LOCAL
+    rollback_after_duplicate: PASS_LOCAL
+    repository_transactions: PASS_LOCAL
+  internal_fix:
+    file: publish-ready-sample/app/app/master_repository.py
+    change: "Explicitly cast nullable organization_id parameter to text in PostgreSQL retrieval query."
+integrity:
+  credentials_committed: false
+  external_results_fabricated: false
+  staging_claim: false
+  production_ready: false
+gate:
+  local_non_owner_persistence: PASS_LOCAL
+  staging_runtime_role: BLOCKED_EXTERNAL
+  final_gate: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+next_action: "Run complete regression after the PostgreSQL repository fix and regenerate the derived readiness view."

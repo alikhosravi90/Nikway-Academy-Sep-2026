@@ -1,0 +1,69 @@
+id: NIKWAY-EXTERNAL-ENVIRONMENT-CONTRACT-20260903
+purpose: "Exact non-secret inputs required to execute external readiness gates."
+security_rule: "Never commit values; provide through CI secret store or runtime secret manager."
+postgres:
+  required: true
+  inputs:
+    - name: DATABASE_URL
+      shape: "postgresql+psycopg://<runtime-role>:<secret>@<approved-host>:5432/<database>"
+      constraints:
+        - runtime role is not owner
+        - runtime role is not superuser
+        - approved staging host is reachable from application network
+  local_validation:
+    compose_file: publish-ready-sample/docker-compose.full-v1.yml
+    command: "docker compose -f docker-compose.full-v1.yml config --quiet"
+    result_semantics: "PASS_LOCAL proves non-owner bootstrap/runtime wiring only; it is not staging evidence."
+oidc:
+  required: true
+  inputs:
+    - name: OIDC_ISSUER_URL
+      constraints: "Approved HTTPS issuer; exact issuer claim must match."
+    - name: OIDC_AUDIENCE
+      constraints: "Approved API audience."
+    - name: OIDC_JWKS_URL
+      constraints: "Approved HTTPS JWKS endpoint."
+    - name: OIDC_TEST_CREDENTIALS
+      constraints: "Test-only users covering valid, invalid, expired, wrong-organization and role cases."
+s3:
+  required: true
+  inputs:
+    - name: S3_ENDPOINT_URL
+      constraints: "Approved HTTPS or approved internal staging endpoint."
+    - name: S3_BUCKET
+      constraints: "Dedicated NIKWAY evidence bucket."
+    - name: AWS_ACCESS_KEY_ID
+      constraints: "Scoped to the dedicated bucket."
+    - name: AWS_SECRET_ACCESS_KEY
+      constraints: "Stored only in secret manager/CI secrets."
+    - name: AWS_REGION
+      constraints: "Approved region; default us-east-1 only when explicitly accepted."
+ci_security:
+  required: true
+  workflow: publish-ready-sample/.github/workflows/security-scan.yml
+  threshold: "CRITICAL,HIGH"
+  fail_behavior: "exit-code=1"
+  report_requirement: "Preserve workflow log or exported Trivy report as evidence."
+  artifact_name: nikway-trivy-filesystem-report
+  retention_days: 30
+  local_equivalent:
+    command: "docker run --rm -v <sample>:/workspace -v nikway-trivy-cache:/root/.cache/trivy aquasec/trivy:0.66.0 fs --scanners vuln,secret --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 --format json --output /workspace/trivy-local-equivalent-YYYY-MM-DD.json /workspace"
+    result_semantics: "PASS_LOCAL only; it does not satisfy official GitHub Actions execution evidence."
+  image_scan: NOT_RUN
+  image_scan_reason: "No CI image build/tag/push target is defined in the current V1 workflow."
+e2e:
+  required: true
+  depends_on: [postgres, oidc, s3]
+  required_cases:
+    - valid_token
+    - invalid_token
+    - expired_token
+    - missing_token
+    - wrong_organization
+    - wrong_role
+    - upload_checksum
+    - rollback_cleanup
+    - duplicate_request
+  local_preflight:
+    command: "python -m pytest tests/test_e2e_preflight.py -q"
+    result_semantics: "PASS_LOCAL proves the suite contract is complete; missing external inputs remain BLOCKED_EXTERNAL."

@@ -1,0 +1,12 @@
+id: NIKWAY-RUNTIME-BACKUP-RESTORE-MIGRATION-001
+level: 1
+artifact:
+  name: Data Protection and Migration Model
+  status: proposed
+purpose: Protect and move databases, files, configuration, volumes, secrets metadata, and application state.
+backup_scope: [database, files, configuration, docker_volumes, secrets_metadata, application_state]
+restore_flow: [backup, verify, restore, integrity_check, application_test, ready]
+migration_flow: [source, snapshot, validate, migrate, verify, cutover, rollback_window]
+migration_states: [planned, tested, executed, verified]
+history_prefix: MIG-
+source_refs: [pasted-text.txt, projects/nikway/10-migration-rules.md]

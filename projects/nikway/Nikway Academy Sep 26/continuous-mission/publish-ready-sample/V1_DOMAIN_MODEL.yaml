@@ -1,0 +1,35 @@
+id: NIKWAY-V1-DOMAIN-MODEL-001
+version: 1.0.0
+status: design_ready
+database: PostgreSQL
+tenancy: row_level_security
+entities:
+  - Organization
+  - User
+  - Membership
+  - LearningJourney
+  - JourneyStep
+  - JourneyAssignment
+  - EvidenceRecord
+  - AssessmentCriterion
+  - AssessmentResult
+  - ProgressionEvent
+  - Event
+  - AuditEvent
+ownership:
+  identity: [User]
+  organization: [Organization, Membership]
+  journey: [LearningJourney, JourneyStep, JourneyAssignment]
+  content: [AssessmentCriterion]
+  evidence: [EvidenceRecord]
+  assessment: [AssessmentResult]
+  progression: [ProgressionEvent]
+  audit: [Event, AuditEvent]
+common_fields: [id, organization_id, created_at, updated_at]
+rls_tables: [User, Membership, LearningJourney, JourneyAssignment, EvidenceRecord, AssessmentResult, ProgressionEvent, Event, AuditEvent]
+rules:
+  - User belongs to exactly one Organization in V1.
+  - LearningJourney with organization_id null is a global template.
+  - EvidenceRecord belongs to one assignment and one journey step.
+  - Assessment evaluates evidence against criteria; it does not decide progression.
+  - Progression evaluates assessment and learner context.

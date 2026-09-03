@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L8-ECOSYSTEM
+level: 8
+path: system
+name: Partner and Platform Ecosystem
+purpose: Define how NIKWAY connects to partners, platforms, and external value chains.
+outputs: [ecosystem-map, partner-contracts, integration-portfolio]
+dependencies: [NIKWAY-SYSTEM-L7-GOVERNANCE]
+acceptance_criteria: [external-boundaries_are_defined, partner-dependencies_are_visible]

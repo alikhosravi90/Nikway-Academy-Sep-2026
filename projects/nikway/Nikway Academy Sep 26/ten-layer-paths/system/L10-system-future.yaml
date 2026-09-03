@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L10-FUTURE
+level: 10
+path: system
+name: Long-Term System Foresight
+purpose: Define future-state scenarios, principles, and evolution horizons.
+outputs: [future-scenarios, evolution-roadmap, strategic-options]
+dependencies: [NIKWAY-SYSTEM-L9-INDUSTRY-IMPACT]
+acceptance_criteria: [scenarios_are_plausible, roadmap_has_decision-gates]

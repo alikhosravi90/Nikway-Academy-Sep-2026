@@ -1,0 +1,18 @@
+id: NIKWAY-PDF-REPORT-SPEC-SEP26-001
+generated_at: 2026-09-02
+report_types:
+  - executive-summary
+  - architecture-baseline
+  - fact-and-evidence-report
+  - decision-report
+  - release-readiness
+  - handover-package
+layout:
+  sections: [title, executive_summary, status, facts, evidence, decisions, risks, next_actions, provenance]
+  formats: [pdf]
+  language: [fa, en]
+  citations: required
+source_views: [NIKWAY-MASTER.yaml, fact-search-index.json, dashboard-data.json]
+provenance:
+  editable: false
+  generated_by: report_pipeline

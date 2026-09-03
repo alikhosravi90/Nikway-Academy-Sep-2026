@@ -1,0 +1,158 @@
+id: NIKWAY-RELEASE-READINESS-GAP-20260903-001
+type: release-readiness-gap-execution
+evaluated_at: 2026-09-03
+source_prompt: attachments/2cb32edf-afdb-42a3-a4f7-055b72b3dfac/pasted-text.txt
+decision: BLOCKED
+metrics:
+  implementation_progress_percent: 82
+  release_readiness_percent: 62
+  security_readiness_percent: 52
+  operational_readiness_percent: 68
+  evidence_completeness_percent: 71
+  calculation:
+    method: weighted_average_of_14_workstreams
+    weights:
+      functionality: 0.10
+      transaction_integrity: 0.10
+      postgres_runtime_role: 0.10
+      rls_persistence: 0.10
+      oidc_jwks: 0.10
+      role_organization_mapping: 0.07
+      s3_minio: 0.08
+      upload_integrity: 0.08
+      openapi_diff: 0.06
+      ci_security_scan: 0.07
+      backup_restore: 0.06
+      full_e2e: 0.04
+      release_gate: 0.02
+      human_approval: 0.02
+workstreams:
+  - number: 1
+    name: readiness_release_evidence_sync
+    status: partial
+    progress_percent: 75
+    evidence: continuous-mission/publish-ready-sample/evidence/production-readiness-gate.yaml
+    blocker: Some legacy readiness fields still require synchronization.
+  - number: 2
+    name: transaction_service_layer
+    status: partial
+    progress_percent: 75
+    evidence: continuous-mission/publish-ready-sample/app/app/repositories.py
+    blocker: Atomic trace orchestration is implemented for key paths but not proven for every mutation in runtime.
+  - number: 3
+    name: postgres_runtime_role
+    status: blocked
+    progress_percent: 50
+    evidence: continuous-mission/publish-ready-sample/evidence/runtime-integration-2026-09-03.yaml
+    blocker: Runtime DATABASE_URL points to an unreachable Docker-only hostname from host tests.
+  - number: 4
+    name: rls_persistence
+    status: passed
+    progress_percent: 100
+    evidence: continuous-mission/publish-ready-sample/evidence/rls-full-verification-2026-09-02.yaml
+    blocker: null
+  - number: 5
+    name: oidc_jwks
+    status: blocked_for_human
+    progress_percent: 75
+    evidence: continuous-mission/publish-ready-sample/app/app/auth.py
+    blocker: Approved provider issuer, audience, JWKS endpoint and credentials are absent.
+  - number: 6
+    name: role_organization_mapping
+    status: partial
+    progress_percent: 75
+    evidence: continuous-mission/publish-ready-sample/app/app/auth.py
+    blocker: Provider-backed membership lookup and complete RBAC matrix are not runtime-verified.
+  - number: 7
+    name: s3_minio_staging
+    status: blocked_for_human
+    progress_percent: 75
+    evidence: continuous-mission/publish-ready-sample/app/app/storage.py
+    blocker: Approved S3/MinIO endpoint and credentials are absent.
+  - number: 8
+    name: upload_checksum_rollback_orphan_cleanup
+    status: partial
+    progress_percent: 75
+    evidence: continuous-mission/publish-ready-sample/app/tests/test_s3_client.py
+    blocker: Real object-storage failure and orphan lifecycle are not runtime-verified.
+  - number: 9
+    name: openapi_diff
+    status: passed
+    progress_percent: 100
+    evidence: generated-openapi.json; command output contract_paths_ok=10
+    blocker: Full schema/status/security semantic diff remains an enhancement.
+  - number: 10
+    name: ci_security_scan
+    status: in_progress
+    progress_percent: 50
+    evidence: continuous-mission/publish-ready-sample/.github/workflows/test.yml
+    blocker: CI run and actual Trivy result are not available in this environment.
+  - number: 11
+    name: backup_restore
+    status: passed
+    progress_percent: 100
+    evidence: continuous-mission/publish-ready-sample/evidence/backup-restore-2026-09-03.yaml
+    blocker: RTO/RPO measurement is not recorded yet.
+  - number: 12
+    name: full_e2e
+    status: blocked_for_human
+    progress_percent: 50
+    evidence: continuous-mission/publish-ready-sample/evidence/runtime-integration-2026-09-03.yaml
+    blocker: Real OIDC, S3 and staging database credentials are unavailable.
+  - number: 13
+    name: release_gate
+    status: blocked
+    progress_percent: 50
+    evidence: continuous-mission/publish-ready-sample/evidence/production-readiness-gate.yaml
+    blocker: Critical external integrations and CI scan remain unverified.
+  - number: 14
+    name: human_approval
+    status: blocked_for_human
+    progress_percent: 0
+    evidence: null
+    blocker: Human approval is required before external publish or production mutation.
+release_gate:
+  functionality: partial
+  security: blocked
+  persistence: partial
+  authorization: blocked_for_human
+  object_storage: blocked_for_human
+  api_contract: passed
+  ci: in_progress
+  vulnerabilities: in_progress
+  backup_restore: passed
+  e2e: blocked_for_human
+  evidence: partial
+  rollback: partial
+  human_approval: blocked_for_human
+critical_blockers:
+  - id: BLK-001
+    impact: Cannot prove production identity and tenant authorization.
+    evidence: OIDC provider credentials missing.
+    required_action: Configure approved staging OIDC issuer/audience/JWKS and execute valid/invalid/expired/wrong-org/role tests.
+    owner: Human commander / platform owner
+  - id: BLK-002
+    impact: Cannot prove real evidence upload and cleanup.
+    evidence: S3 runtime credentials missing.
+    required_action: Configure approved S3/MinIO staging and execute upload/checksum/rollback/orphan tests.
+    owner: Human commander / platform owner
+  - id: BLK-003
+    impact: Cannot prove complete production persistence path.
+    evidence: Host DATABASE_URL cannot resolve Docker-only hostname.
+    required_action: Run inside full compose network or provide reachable staging database URL and non-owner runtime role.
+    owner: Backend/platform owner
+  - id: BLK-004
+    impact: Security gate is incomplete.
+    evidence: CI scan result unavailable.
+    required_action: Execute CI unit/integration/E2E, Trivy dependency/container scan and secret scan; preserve reports.
+    owner: CI owner
+  - id: BLK-005
+    impact: Release decision cannot be READY.
+    evidence: Human approval absent.
+    required_action: Review evidence and approve release candidate explicitly.
+    owner: Human commander
+stop_rules:
+  max_retries_per_workstream: 2
+  external_publish_without_approval: prohibited
+  production_mutation_without_approval: prohibited
+  credential_substitution: prohibited

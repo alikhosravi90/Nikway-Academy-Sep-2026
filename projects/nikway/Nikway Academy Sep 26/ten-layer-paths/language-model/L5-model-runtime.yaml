@@ -1,0 +1,8 @@
+id: NIKWAY-LM-L5-RUNTIME
+level: 5
+path: language-model
+name: Model Runtime and Agent Implementation
+purpose: Implement inference, RAG, memory, agents, tools, and integration tests.
+outputs: [model-runtime, rag-pipeline, memory, agent, integration-tests]
+dependencies: [NIKWAY-LM-L4-INTERFACE]
+acceptance_criteria: [runtime_is_reproducible, critical-evals_pass]

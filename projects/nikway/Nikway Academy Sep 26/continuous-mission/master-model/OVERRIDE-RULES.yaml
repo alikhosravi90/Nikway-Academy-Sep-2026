@@ -1,0 +1,6 @@
+version: 1.0.0
+rules:
+  - "Only paths declared by the master version are overridable."
+  - "An override replaces one resolved value and is recorded in provenance."
+  - "Undeclared or structural overrides are rejected."
+  - "Overrides cannot change master_id, master_version, template_id or instance_id."

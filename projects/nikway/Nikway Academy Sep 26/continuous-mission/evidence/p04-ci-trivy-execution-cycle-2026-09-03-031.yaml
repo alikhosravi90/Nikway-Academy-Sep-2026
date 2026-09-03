@@ -1,0 +1,32 @@
+type: p04-ci-trivy-execution
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+timestamp: 2026-09-03T21:00:00+03:30
+mission: P04
+official_ci:
+  result: BLOCKED_EXTERNAL
+  repository_remote_configured: false
+  branch: main
+  local_commit_sha: f9cf88664cef9466f150979233b17aa851d7e43d
+  gh_cli_available: false
+  run_id: null
+  artifact: null
+  blocker: "No git remote, GitHub repository access, authenticated gh CLI, or official Actions runner is available."
+local_equivalent:
+  result: PASS_LOCAL
+  workflow_contract: PASS_LOCAL
+  backend_tests: "67 passed, 5 skipped"
+  mission_control_tests: "11 passed"
+  compile: PASS_LOCAL
+  openapi_contract: "PASS_LOCAL, 10 paths"
+  trivy:
+    result: PASS_LOCAL
+    image: aquasec/trivy:0.66.0
+    critical_high_findings: 0
+    secret_findings: 0
+    artifact: publish-ready-sample/trivy-p04-local-2026-09-03.json
+    official_ci_equivalent: false
+not_proven:
+  - official GitHub Actions run
+  - CI run ID and artifact provenance
+  - PASS_CI
+next_executable_action: "Attach this project to the approved GitHub repository and run the workflow on an authenticated official runner."

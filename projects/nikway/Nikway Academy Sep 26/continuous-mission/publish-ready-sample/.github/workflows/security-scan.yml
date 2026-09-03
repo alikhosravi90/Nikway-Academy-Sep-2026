@@ -1,0 +1,36 @@
+name: V1 Security Scan
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate security contract
+        working-directory: projects/nikway/Nikway Academy Sep 26/continuous-mission
+        run: python scripts/lint_security_contract.py
+      - uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample
+          format: json
+          output: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/trivy-fs-report.json
+          exit-code: '1'
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+      - name: Upload Trivy report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nikway-trivy-filesystem-report
+          path: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/trivy-fs-report.json
+          retention-days: 30

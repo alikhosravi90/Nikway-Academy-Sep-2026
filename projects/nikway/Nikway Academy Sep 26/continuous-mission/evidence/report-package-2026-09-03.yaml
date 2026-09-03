@@ -1,0 +1,43 @@
+id: EVID-NIKWAY-REPORT-PACKAGE-20260903-001
+type: public-facing-report-package
+created_at: "2026-09-03"
+timezone: Asia/Tehran
+source_of_truth:
+  - continuous-mission/release-readiness-gap-execution-2026-09-03.yaml
+  - continuous-mission/evidence/mission-run-2026-09-03-003.yaml
+  - continuous-mission/challenge-registry.yaml
+outputs:
+  mobile_infographic:
+    html: reports/2026-09-03/nikway-mobile-infographic.html
+    png: reports/2026-09-03/nikway-mobile-infographic.png
+    status: LOCAL_VERIFIED
+    language: fa-IR
+    direction: rtl
+    font: IRANYekanX-Regular/Bold
+    intended_use: mobile-sharing
+  full_report:
+    html: reports/2026-09-03/nikway-report.html
+    pdf: reports/2026-09-03/nikway-full-report.pdf
+    status: LOCAL_VERIFIED
+    language: fa-IR
+    direction: rtl
+    text_selectable: true
+    font: IRANYekanX-Regular/Bold
+    intended_use: non-technical-reader
+content_controls:
+  implementation_percent: 82
+  security_percent: 52
+  operations_percent: 68
+  evidence_percent: 71
+  release_readiness_percent: 62
+  decision: BLOCKED_FOR_HUMAN
+  fabricated_credentials: false
+  fabricated_verification: false
+visual_review:
+  rtl_layout: passed
+  mobile_readability: passed
+  calm_non_military_visual_identity: passed
+  consistent_numbers_and_message: passed
+remaining_limitation:
+  - "Font files are referenced from the local E: drive in HTML; PDF was rendered on this machine."
+  - "External OIDC, S3, PostgreSQL runtime, CI scan, and human approval remain unverified."

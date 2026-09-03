@@ -1,0 +1,40 @@
+id: NIKWAY-CONTINUOUS-MISSION-001
+name: NIKWAY V1 Continuous Publish Mission
+version: 1.0.0
+owner: human-commander
+objective: Produce a demonstrable, validated, and publish-ready NIKWAY V1 sample for one pilot organization.
+operating_loop: Knowledge -> Learning Journey -> Application -> Evidence -> Assessment -> Progression -> Capability
+mode: bounded-continuous
+run_policy:
+  max_iterations_per_stage: 2
+  max_total_stage_retries: 7
+  stop_on: [critical_security_issue, data_loss_risk, missing_human_decision, failed_acceptance_gate]
+  no_infinite_loop: true
+  fallback_required: true
+  external_publish_requires_human_confirmation: true
+stage_order:
+  - S1-discover
+  - S2-design
+  - S3-build
+  - S4-verify
+  - S5-harden
+  - S6-package
+  - S7-release-review
+skills:
+  primary:
+    - system-design
+    - code-review
+  stage_skills:
+    S1-discover: repository-audit
+    S2-design: system-design
+    S3-build: modular-monolith-build
+    S4-verify: test-and-validation
+    S5-harden: security-review
+    S6-package: release-engineering
+    S7-release-review: publish-readiness
+outputs:
+  - stage-reports
+  - challenge-registry
+  - toolbox
+  - publish-ready-sample
+  - final-readiness-report

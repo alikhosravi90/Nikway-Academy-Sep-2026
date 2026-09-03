@@ -1,0 +1,11 @@
+{
+  "id": "NIKWAY-FACT-SEARCH-INDEX-SEP26-001",
+  "generated_at": "2026-09-02",
+  "engine": "pgvector",
+  "embedding_model": "provider-configured",
+  "documents": [
+    {"fact_id": "FACT-NIKWAY-001", "text": "NIKWAY is a knowledge, learning, improvement, and digital operations system.", "domain": "identity", "source_refs": ["projects/nikway/INDEX.md"]},
+    {"fact_id": "FACT-NIKWAY-002", "text": "NIKWAY transforms knowledge into capability, capability into action, and action into learning and continuous improvement.", "domain": "philosophy", "source_refs": ["projects/nikway/INDEX.md"]}
+  ],
+  "provenance": {"source": "facts/fact-registry.yaml", "editable": false}
+}

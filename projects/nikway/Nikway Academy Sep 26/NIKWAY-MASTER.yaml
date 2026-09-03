@@ -1,0 +1,26 @@
+id: NIKWAY-MASTER-SEP26-001
+name: NIKWAY Academy Master Architecture Synthesis
+version: 1.0.0
+status: draft
+method: Extract -> Normalize -> Relate -> Resolve -> Synthesize
+source_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+ontology:
+  canonical_entities: [customer, organization, assessment, diagnosis, learning-journey, evidence, result, user, project]
+  canonical_capabilities: [assess, diagnose, plan, learn, execute, improve]
+business: {}
+product: {}
+architecture: {}
+runtime: {}
+governance: {}
+relationships: []
+dependencies: []
+decisions: []
+constraints: []
+traceability:
+  rule: Every synthesized concept must reference one or more source artifacts.
+  source_artifacts: 36
+  unresolved_items: []
+next_action:
+  - populate level_1 and level_2 content from validated source documents
+  - resolve duplicate concepts into canonical entities
+  - run schema and reference validation

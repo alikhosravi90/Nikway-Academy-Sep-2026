@@ -1,0 +1,48 @@
+id: NIKWAY-V1-VERTICAL-SLICE-001
+name: Learning Evidence Progression Slice
+version: 0.1.0
+status: implementation_ready
+purpose: Prove the smallest real V1 loop from assignment to measurable progression.
+flow:
+  - assign_journey
+  - view_steps
+  - submit_evidence
+  - review_evidence
+  - record_assessment
+  - decide_progression
+  - calculate_report
+module_ownership:
+  organization: [organization_context, membership]
+  journey: [journey, journey_step, assignment]
+  evidence: [evidence_record, object_storage_reference]
+  assessment: [criterion, assessment_result]
+  progression: [progression_event]
+  reporting: [progress_aggregation]
+  audit: [xapi_event, audit_event]
+request_flow:
+  assign_journey:
+    actor: org_admin
+    calls: [organization.resolve_membership, journey.assign]
+    emits: [journey_assigned]
+  submit_evidence:
+    actor: learner
+    calls: [organization.resolve_membership, journey.verify_assignment, evidence.store]
+    emits: [evidence_submitted]
+  assess_evidence:
+    actor: assessor
+    calls: [organization.resolve_membership, evidence.read, assessment.evaluate]
+    emits: [assessment_completed]
+  decide_progression:
+    actor: assessor
+    calls: [organization.resolve_membership, assessment.read, progression.decide]
+    emits: [progression_decided]
+  progress_report:
+    actor: org_admin
+    calls: [organization.resolve_membership, reporting.aggregate]
+    emits: []
+invariants:
+  - Every request has one resolved organization context.
+  - Evidence cannot reference an assignment from another organization.
+  - Assessment cannot directly mutate progression state.
+  - A single assessment result creates at most one progression event.
+  - Every meaningful mutation emits one idempotent event.

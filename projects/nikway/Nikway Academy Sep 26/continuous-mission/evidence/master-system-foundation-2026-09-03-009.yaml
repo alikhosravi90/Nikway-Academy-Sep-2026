@@ -1,0 +1,75 @@
+id: EVID-NIKWAY-MASTER-SYSTEM-FOUNDATION-20260903-009
+type: master-system-foundation
+created_at: "2026-09-03"
+timezone: Asia/Tehran
+status: PASS_LOCAL
+what_was_inspected:
+  - "Existing NIKWAY-MASTER.yaml architecture synthesis"
+  - "Existing ontology.yaml and canonical storage artifacts"
+  - "Existing FastAPI modular-monolith application, authorization and audit boundaries"
+  - "Three supplied architecture/orchestration directives"
+decisions:
+  - id: DEC-MASTER-001
+    decision: "Keep existing NIKWAY-MASTER.yaml as architecture synthesis; add Master System as a distinct domain layer."
+    rationale: "Avoid competing canonical definitions and preserve backward compatibility."
+  - id: DEC-MASTER-002
+    decision: "Implement a storage-neutral foundation before PostgreSQL/API migration."
+    rationale: "Prove deterministic semantics without duplicating persistence or security boundaries."
+  - id: DEC-MASTER-003
+    decision: "Do not introduce Temporal, microservices, frontend rewrite or DSL in this phase."
+    rationale: "These are future runtime/platform concerns outside the minimum vertical slice."
+implemented:
+  canonical_artifacts:
+    - continuous-mission/master-model/MASTER-SYSTEM-SPEC.md
+    - continuous-mission/master-model/MASTER-SCHEMA.yaml
+    - continuous-mission/master-model/MASTER-REGISTRY.yaml
+    - continuous-mission/master-model/INHERITANCE-RULES.yaml
+    - continuous-mission/master-model/OVERRIDE-RULES.yaml
+    - continuous-mission/master-model/EXTENSION-RULES.yaml
+    - continuous-mission/master-model/GUIDANCE-SCHEMA.yaml
+    - continuous-mission/master-model/VERSIONING-RULES.yaml
+  runtime:
+    - continuous-mission/publish-ready-sample/app/app/master_system.py
+  tests:
+    - continuous-mission/publish-ready-sample/app/tests/test_master_system.py
+  capabilities:
+    - "MasterDefinition and immutable MasterVersion"
+    - "Layout, defaults, template, starter, example, guidance definitions"
+    - "Instance provenance including master and template versions"
+    - "Deterministic resolution"
+    - "Controlled override and additive extension"
+    - "Explicit versioning without implicit migration"
+    - "Audit hook for material domain mutations"
+    - "Course, Form and Organization representative slices"
+tested:
+  - command: "python -m pytest tests/test_master_system.py -q"
+    result: "5 passed"
+  - command: "python -m pytest tests -q"
+    result: "56 passed, 3 skipped"
+  - command: "python -m compileall -q app"
+    result: PASS_LOCAL
+  - command: "python -c \"import yaml; parse master-model/*.yaml\""
+    result: "7 YAML files parsed successfully"
+  - command: "git diff --check"
+    result: PASS_LOCAL
+acceptance:
+  master_is_distinct_from_template: PASS_LOCAL
+  template_is_distinct_from_instance: PASS_LOCAL
+  layout_and_defaults_are_separate: PASS_LOCAL
+  guidance_is_first_class: PASS_LOCAL
+  inheritance_is_explicit: PASS_LOCAL
+  override_is_controlled: PASS_LOCAL
+  extension_is_controlled: PASS_LOCAL
+  versioning_and_provenance: PASS_LOCAL
+  deterministic_resolution: PASS_LOCAL
+  representative_vertical_slice: PASS_LOCAL
+  existing_architecture_preserved: PASS_LOCAL
+remaining:
+  - "PostgreSQL persistence/API endpoints for Master System are not implemented in this phase."
+  - "Existing authorization dependency must guard future mutating Master endpoints."
+  - "Temporal durable orchestration and worker pool remain future runtime work."
+  - "Production/staging verification remains governed by the existing external environment gates."
+release:
+  production_ready: false
+  status: "WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT"
+next_action: "Design the smallest authorized API/persistence adapter for the Master registry after domain review."

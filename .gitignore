@@ -1,0 +1,25 @@
+# Local secrets and environment configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+**/*credential*.json
+**/*credentials*.json
+**/*token*.json
+**/*secret*.json
+
+# Local databases and runtime state
+*.db
+*.sqlite
+*.sqlite3
+**/node_modules/
+**/__pycache__/
+**/.pytest_cache/
+
+# Build and test output
+**/dist/
+**/coverage/
+trivy-*.json

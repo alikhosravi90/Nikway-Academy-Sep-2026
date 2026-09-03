@@ -1,0 +1,52 @@
+id: NIKWAY-V1-REMEDIATION-PLAN-001
+created_at: 2026-09-02
+status: open
+source: D:/NIKWAY Academy 2026/NIKWAY_V1_BUILD_SPEC.md
+items:
+  - id: REM-001
+    priority: critical
+    title: Review and remove invalid secret-like file
+    evidence: config/API-Token.json
+    action: Verify it contains no credential, remove from tracked scope if unnecessary, add secret patterns to ignore and rotate any exposed credential.
+    owner: human-commander
+    gate: security
+  - id: REM-002
+    priority: high
+    title: Establish PostgreSQL-only V1 persistence
+    evidence: projects/nikway/backend/app/main.py
+    action: Implement V1 schema and migration path without SQLite fallback in release mode.
+    owner: builder
+    gate: build
+  - id: REM-003
+    priority: high
+    title: Implement OIDC identity and organization context
+    evidence: projects/nikway/backend/app/main.py
+    action: Replace demo identity with verified OIDC claims and role membership resolution.
+    owner: builder
+    gate: security
+  - id: REM-004
+    priority: high
+    title: Prove RLS tenant isolation
+    evidence: D:/NIKWAY Academy 2026/NIKWAY_V1_BUILD_SPEC.md
+    action: Add policies and automated A/B organization read-write isolation tests.
+    owner: tester
+    gate: verification
+  - id: REM-005
+    priority: high
+    title: Secure evidence upload
+    evidence: D:/NIKWAY Academy 2026/NIKWAY_V1_BUILD_SPEC.md
+    action: Validate type and size, store in S3-compatible storage, persist checksum and reference only.
+    owner: builder
+    gate: security
+  - id: REM-006
+    priority: medium
+    title: Generate API contract from implementation
+    action: Expose and validate OpenAPI from the application source.
+    owner: builder
+    gate: package
+  - id: REM-007
+    priority: high
+    title: Test database restore
+    action: Run a backup, restore into an isolated database, verify integrity and execute the application smoke test.
+    owner: deployer
+    gate: release

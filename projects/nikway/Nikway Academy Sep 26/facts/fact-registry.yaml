@@ -1,0 +1,160 @@
+id: NIKWAY-FACT-REGISTRY-SEP26-001
+name: NIKWAY Canonical Fact Registry
+version: 1.0.0
+created_at: 2026-09-02
+status: draft
+purpose: Register source-backed facts extracted from the NIKWAY repository.
+source_policy:
+  required: [source_refs, evidence, confidence, validation_status]
+  canonical_rule: Only confirmed facts may become canonical.
+facts:
+  - id: FACT-NIKWAY-001
+    statement: NIKWAY is a knowledge, learning, improvement, and digital operations system.
+    domain: identity
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/01-identity.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "NIKWAY Definition"
+    owner: nikway
+
+  - id: FACT-NIKWAY-002
+    statement: NIKWAY transforms knowledge into capability, capability into action, and action into learning and continuous improvement.
+    domain: philosophy
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/03-philosophy.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "NIKWAY Definition"
+    owner: nikway
+
+  - id: FACT-NIKWAY-003
+    statement: The NIKWAY core philosophy is Good Thoughts -> Good Words -> Good Deeds.
+    domain: philosophy
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/03-philosophy.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "Core Philosophy"
+    owner: nikway
+
+  - id: FACT-NIKWAY-004
+    statement: NIKWAY has five stated pillars: scientific, systems, critical, creative, and innovative thinking.
+    domain: philosophy
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/03-philosophy.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "Five Pillars"
+    owner: nikway
+
+  - id: FACT-NIKWAY-005
+    statement: The canonical capability baseline contains seven capabilities: knowledge management, competency development, improvement management, mindset, domain capabilities, mastery, and leadership.
+    domain: business-capability
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/09-current-status.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "Canonical Capabilities"
+    owner: nikway
+
+  - id: FACT-NIKWAY-006
+    statement: The NIKWAY knowledge loop is Knowledge -> Learning -> Capability -> Action -> Evidence -> Assessment -> Reflection -> Improvement -> New Knowledge.
+    domain: knowledge-model
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/04-knowledge-model.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "Meta-Loop"
+    owner: nikway
+
+  - id: FACT-NIKWAY-007
+    statement: New ideas must not silently overwrite the current architecture; contradictions must be detected, compared, explained, decided, and recorded.
+    domain: governance
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/07-governance.md, projects/nikway/08-decisions.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "Golden Rule"
+    owner: nikway
+
+  - id: FACT-NIKWAY-008
+    statement: The repository defines human control as a constraint: AI should amplify intelligence rather than replace understanding.
+    domain: ai-governance
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/06-ai-role.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "Important Warnings"
+    owner: nikway
+
+  - id: FACT-NIKWAY-009
+    statement: The current capability workstream is marked LOCKED, architecture refactoring is marked FINAL-EXECUTION-CONTRACT, and physical execution is marked PENDING.
+    domain: status
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/09-current-status.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "Current Status"
+    owner: nikway
+    as_of: 2026-08-25
+
+  - id: FACT-ARMY-001
+    statement: Agentic Army defines Commander, Architect, Builder, Reviewer, Researcher, and Tester roles.
+    domain: agentic-army
+    validation_status: confirmed
+    confidence: high
+    source_refs: [README.md, AGENTS.md]
+    evidence:
+      - type: repository-document
+        reference: README.md
+        locator: "Agent Roster"
+    owner: agentic-army
+
+  - id: FACT-RUNTIME-001
+    statement: The Docker Gordon runtime defines PostgreSQL, Redis, Keycloak, OpenSearch, agent services, and n8n as infrastructure or orchestration components.
+    domain: runtime
+    validation_status: confirmed
+    confidence: medium
+    source_refs: [projects/docker-gordon/SYSTEM-MAP.md, projects/docker-gordon/docker-compose.yml]
+    evidence:
+      - type: repository-document
+        reference: projects/docker-gordon/SYSTEM-MAP.md
+        locator: "Infrastructure"
+    owner: agentic-army
+
+  - id: FACT-ARCH-001
+    statement: The repository organizes NIKWAY architecture documentation into identity, evolution, philosophy, knowledge model, architecture, AI role, governance, decisions, current status, and migration rules.
+    domain: architecture-governance
+    validation_status: confirmed
+    confidence: high
+    source_refs: [projects/nikway/INDEX.md]
+    evidence:
+      - type: repository-document
+        reference: projects/nikway/INDEX.md
+        locator: "Document Index"
+    owner: nikway
+
+canonicalization:
+  confirmed_facts: 11
+  inferred_facts: 0
+  proposed_facts: 0
+  next_review: 2026-09-09

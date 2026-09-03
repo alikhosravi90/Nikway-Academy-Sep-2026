@@ -1,0 +1,34 @@
+id: NIKWAY-ARCH-TECHNOLOGY-STACK-001
+level: 1
+artifact:
+  name: NIKWAY Technology Stack
+  status: proposed
+purpose: Define the recommended technology choices and their architectural roles.
+core:
+  frontend: React 19 + TypeScript
+  styling: Tailwind CSS
+  data_fetching: TanStack Query
+  backend: Python 3.14 + FastAPI
+  architecture: Modular Monolith
+  database: PostgreSQL
+  cache_queue_session: Redis
+  identity: Keycloak
+  runtime: Docker + Docker Compose
+capabilities:
+  vector_memory: pgvector
+  graph_memory: Neo4j
+  workflow: n8n
+  lms: Moodle
+  knowledge_base: BookStack
+  community: Discourse
+  reverse_proxy: Nginx
+  ai_runtime: Ollama
+  ai_orchestration: Internal AI Runtime
+  monitoring: Prometheus + Grafana
+  logging: Loki + structured logs
+  object_storage: S3-compatible storage
+  source_control: Git + GitHub
+  cicd: GitHub Actions
+  payments: Stripe + Zarinpal
+principle: Start with the core and add external capabilities as integrations.
+source_refs: [projects/nikway/05-architecture.md, projects/docker-gordon/SYSTEM-MAP.md]

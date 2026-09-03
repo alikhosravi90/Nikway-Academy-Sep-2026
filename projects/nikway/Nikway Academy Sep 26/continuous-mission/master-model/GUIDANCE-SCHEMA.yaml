@@ -1,0 +1,11 @@
+schema: NIKWAY-GUIDANCE
+version: 1.0.0
+fields:
+  - definition
+  - purpose
+  - instructions
+  - example
+  - common_mistakes
+  - next_step
+  - related_tools
+  - ai_guidance

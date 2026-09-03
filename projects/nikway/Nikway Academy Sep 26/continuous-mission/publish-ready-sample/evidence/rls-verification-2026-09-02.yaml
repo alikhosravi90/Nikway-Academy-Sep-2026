@@ -1,0 +1,25 @@
+id: EVID-V1-RLS-20260902-001
+type: test-result
+status: accepted_for_review
+executed_at: 2026-09-02
+environment:
+  runtime: Docker Desktop
+  database_image: postgres:16-alpine
+  database: nikway_v1
+  role: nikway_test
+scenario:
+  organization_a: 00000000-0000-0000-0000-000000000001
+  organization_b: 00000000-0000-0000-0000-000000000002
+result:
+  visible_users_for_a: 1
+  visible_b_users_for_a: 0
+  force_rls_tables: 9
+  passed: true
+limitations:
+  - Only a baseline read-isolation check was executed.
+  - Full read/write checks for every protected table remain required.
+source_refs:
+  - db/v1_schema.sql
+  - db/rls-test-plan.md
+provenance:
+  command: docker exec publish-ready-sample-postgres-1 psql

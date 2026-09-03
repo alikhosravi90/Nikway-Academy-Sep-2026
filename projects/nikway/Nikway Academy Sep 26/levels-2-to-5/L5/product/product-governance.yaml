@@ -1,0 +1,32 @@
+id: NIKWAY-L5-PRODUCT-PRODUCT_GOVERNANCE
+level: 5
+artifact:
+  name: product-governance
+  domain: product
+  parent_level_1: NIKWAY-L1-PRODUCT-PRODUCT_GOVERNANCE
+  status: draft
+  meaning: Verification and operational evidence view
+purpose: Decompose the parent artifact into a L5 view that can be reviewed and synthesized.
+sections:
+    - tests
+    - scenarios
+    - metrics
+    - runbook
+    - evidence
+    - approval
+scope:
+  in_scope: []
+  out_of_scope: []
+inputs: []
+outputs: []
+dependencies:
+  upstream: [NIKWAY-L1-PRODUCT-PRODUCT_GOVERNANCE]
+  downstream: []
+rules: []
+acceptance_criteria: []
+source_refs:
+  - ../level-1/product/product-governance.yaml
+traceability:
+  parent_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  parent_artifact: NIKWAY-L1-PRODUCT-PRODUCT_GOVERNANCE
+  synthesis_target: ../NIKWAY-MASTER.yaml

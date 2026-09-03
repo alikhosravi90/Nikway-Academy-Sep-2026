@@ -1,0 +1,6 @@
+version: 1.0.0
+rules:
+  - "Extensions are additive and use paths declared by the master version."
+  - "Extensions cannot replace inherited values."
+  - "Extensions cannot change provenance or required structural fields."
+  - "An extension is retained as a separate recorded contribution."

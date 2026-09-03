@@ -1,0 +1,27 @@
+id: NIKWAY-BUSINESS-MODEL
+artifact:
+  name: Model
+  domain: business
+  status: draft
+  source: pasted-text.txt
+  synthesis_role: canonical-view
+level_1:
+  purpose: Define the major concepts, boundaries, actors, decisions, and outcomes for Model.
+  sections:
+    - scope
+    - concepts
+    - responsibilities
+    - dependencies
+    - acceptance_criteria
+level_2:
+  scope:
+    inclusions: []
+    exclusions: []
+  concepts: []
+  responsibilities: []
+  dependencies: []
+  acceptance_criteria: []
+traceability:
+  source_document: pasted-text.txt
+  parent: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  canonicalization: pending

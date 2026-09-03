@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L5-IMPLEMENTATION
+level: 5
+path: system
+name: Executable System Implementation
+purpose: Deliver working frontend, backend, data, integrations, and automated tests.
+outputs: [frontend, backend, database, integrations, test-suite]
+dependencies: [NIKWAY-SYSTEM-L4-CONTRACTS]
+acceptance_criteria: [build_succeeds, critical_tests_pass, slice_is_demoable]

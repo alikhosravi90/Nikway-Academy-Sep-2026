@@ -1,0 +1,95 @@
+id: NIKWAY-READINESS-MATRIX-20260903
+updated_at: 2026-09-03T20:35:00+03:30
+mission_status: ACTIVE_WITH_EXTERNAL_DEPENDENCIES
+release_status: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+items:
+  - name: Architecture
+    status: PASS_LOCAL
+    evidence: evidence/progress-integrity-cycle-2026-09-03-021.yaml
+    blocker: null
+    next_action: Preserve V1 scope.
+  - name: Security
+    status: PASS_LOCAL
+    evidence: evidence/readiness-90-target-audit-cycle-2026-09-03-029.yaml
+    blocker: "CI-hosted execution remains separately pending."
+    next_action: Run the same workflow in the CI runner.
+  - name: Database
+    status: PASS_LOCAL
+    evidence: evidence/persistence-runtime-role-cycle-2026-09-03-024.yaml
+    blocker: "EXTERNAL_DEPENDENCY: reachable staging PostgreSQL is using owner/superuser role nikway_staging; local non-owner runtime and persistence evidence is complete."
+    next_action: "Repeat the same migration, persistence, RLS and restart checks with the approved staging non-owner role."
+  - name: RLS
+    status: PASS_LOCAL
+    evidence: publish-ready-sample/evidence/rls-full-verification-2026-09-02.yaml
+    blocker: null
+    next_action: Repeat in target staging.
+  - name: Authorization
+    status: BLOCKED_EXTERNAL
+    evidence: evidence/authorization-integration-gate-2026-09-03-012.yaml
+    blocker: "EXTERNAL_DEPENDENCY: local policy, protected Master APIs, deny-by-default, IDOR and organization-scope checks pass; provider-backed identity remains unverified. Persistent Master audit is a separate next mission."
+    next_action: "Run approved OIDC/JWKS staging verification, then execute Real Audit Persistence for Master System."
+  - name: OIDC
+    status: BLOCKED_EXTERNAL
+    evidence: evidence/oidc-jwks-integration-2026-09-03-013.yaml
+    blocker: "EXTERNAL_DEPENDENCY: local Keycloak discovery/JWKS smoke passed, but approved staging issuer/audience and provider-issued test credentials/token are unavailable."
+    next_action: "Provide the approved OIDC contract and test credentials, then run valid/invalid/expired/wrong-organization/wrong-role verification."
+  - name: S3
+    status: BLOCKED_EXTERNAL
+    evidence: evidence/internal-blocker-elimination-cycle-2026-09-03-008.yaml
+    blocker: Approved endpoint, bucket and scoped credentials unavailable.
+    next_action: Execute real upload/checksum/rollback tests.
+  - name: Transactions
+    status: PASS_LOCAL
+    evidence: publish-ready-sample/app/tests/test_traceability.py
+    blocker: null
+    next_action: Extend only if a failing case is found.
+  - name: Idempotency
+    status: PASS_LOCAL
+    evidence: publish-ready-sample/app/tests/test_audit_event_persistence.py
+    blocker: null
+    next_action: Preserve current contract.
+  - name: Audit
+    status: PASS_LOCAL
+    evidence: publish-ready-sample/app/tests/test_audit_event_persistence.py
+    blocker: null
+    next_action: Preserve correlation IDs.
+  - name: Events
+    status: PASS_LOCAL
+    evidence: publish-ready-sample/app/tests/test_traceability.py
+    blocker: null
+    next_action: Preserve event/audit atomicity.
+  - name: API
+    status: PASS_LOCAL
+    evidence: publish-ready-sample/generated-openapi.json
+    blocker: null
+    next_action: Run contract diff in CI.
+  - name: E2E
+    status: BLOCKED_EXTERNAL
+    evidence: evidence/internal-blocker-elimination-cycle-2026-09-03-008.yaml
+    blocker: "EXTERNAL_DEPENDENCY: real staging PostgreSQL, OIDC/JWKS and S3 inputs are unavailable; local E2E preflight is complete."
+    next_action: Execute complete user journey in staging.
+  - name: CI Security
+    status: BLOCKED_EXTERNAL
+    evidence: evidence/p04-ci-trivy-execution-cycle-2026-09-03-031.yaml
+    blocker: "EXTERNAL_DEPENDENCY: this checkout has no git remote, GitHub Actions access, or authenticated official CI runner; local equivalent is PASS_LOCAL only."
+    next_action: Attach this project to the approved GitHub repository and run the workflow on an authenticated official runner.
+  - name: Rollback
+    status: PASS_LOCAL
+    evidence: evidence/progress-closure-cycle-2026-09-03-016.yaml
+    blocker: Real storage failure path remains external.
+    next_action: Verify against approved storage.
+  - name: Evidence
+    status: PASS_LOCAL
+    evidence: evidence/external-evidence-mission-plan-cycle-2026-09-03-030.yaml
+    blocker: External gates remain unverified.
+    next_action: Append each new execution cycle.
+  - name: Master System Persistence
+    status: PASS_LOCAL
+    evidence: evidence/master-persistence-gate-2026-09-03-011.yaml
+    blocker: null
+    next_action: "Proceed to Authorization Integration; staging database remains a separate release gate."
+  - name: Operations
+    status: PASS_LOCAL
+    evidence: evidence/local-ci-runtime-cycle-2026-09-03-028.yaml
+    blocker: "External staging runtime role, CI execution, approved provider selection and production approval remain pending; platform-keycloak is unhealthy."
+    next_action: "Repeat the operational checks against the approved staging stack after resolving the unhealthy provider."

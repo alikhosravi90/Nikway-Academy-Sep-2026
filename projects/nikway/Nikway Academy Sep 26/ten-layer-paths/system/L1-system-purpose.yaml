@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L1-PURPOSE
+level: 1
+path: system
+name: System Purpose and Identity
+purpose: Define why NIKWAY exists, whom it serves, and its primary boundaries.
+outputs: [mission, vision, scope, core-value]
+dependencies: [NIKWAY-ACADEMY-SEP26-MANIFEST-001]
+acceptance_criteria: [purpose_is_unambiguous, scope_is_explicit]

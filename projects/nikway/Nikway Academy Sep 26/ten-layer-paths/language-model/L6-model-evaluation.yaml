@@ -1,0 +1,8 @@
+id: NIKWAY-LM-L6-EVALUATION
+level: 6
+path: language-model
+name: Production Evaluation and Learning Loop
+purpose: Measure quality, safety, latency, cost, adoption, and feedback in operation.
+outputs: [eval-suite, quality-dashboard, feedback-loop, regression-set]
+dependencies: [NIKWAY-LM-L5-RUNTIME]
+acceptance_criteria: [quality_is_measured, regressions_are_detected]

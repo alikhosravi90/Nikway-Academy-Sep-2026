@@ -1,0 +1,190 @@
+openapi: 3.1.0
+info:
+  title: NIKWAY V1 Pilot API
+  version: 0.1.0
+  description: REST contract for the one-organization learning-to-capability pilot loop.
+servers:
+  - url: /api/v1
+security:
+  - oidc: []
+paths:
+  /organizations:
+    post:
+      operationId: createOrganization
+      tags: [organization]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/OrganizationInput'}
+      responses:
+        '201': {description: Organization created}
+        '401': {description: Authentication required}
+        '403': {description: Insufficient role}
+  /organizations/{organizationId}/invitations:
+    post:
+      operationId: inviteMember
+      tags: [organization]
+      parameters:
+        - {$ref: '#/components/parameters/OrganizationId'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/InvitationInput'}
+      responses:
+        '202': {description: Invitation queued}
+        '403': {description: Insufficient role}
+  /journeys:
+    get:
+      operationId: listJourneys
+      tags: [journey]
+      responses:
+        '200': {description: Journey list}
+    post:
+      operationId: createJourney
+      tags: [journey]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/JourneyInput'}
+      responses:
+        '201': {description: Journey created}
+  /journeys/{journeyId}/assignments:
+    post:
+      operationId: assignJourney
+      tags: [journey]
+      parameters:
+        - {$ref: '#/components/parameters/JourneyId'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/AssignmentInput'}
+      responses:
+        '201': {description: Assignment created}
+  /assignments/{assignmentId}:
+    get:
+      operationId: getAssignment
+      tags: [journey]
+      parameters:
+        - {$ref: '#/components/parameters/AssignmentId'}
+      responses:
+        '200': {description: Assignment and steps}
+        '404': {description: Assignment not found}
+  /assignments/{assignmentId}/evidence:
+    post:
+      operationId: submitEvidence
+      tags: [evidence]
+      parameters:
+        - {$ref: '#/components/parameters/AssignmentId'}
+        - {$ref: '#/components/parameters/IdempotencyKey'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/EvidenceInput'}
+      responses:
+        '201': {description: Evidence submitted}
+  /assignments/{assignmentId}/evidence/upload:
+    post:
+      operationId: uploadEvidence
+      tags: [evidence]
+      parameters:
+        - {$ref: '#/components/parameters/AssignmentId'}
+        - name: step_id
+          in: query
+          required: true
+          schema: {type: string}
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file: {type: string, format: binary}
+      responses:
+        '201': {description: Evidence object uploaded}
+        '422': {description: Invalid evidence}
+  /evidence/{evidenceId}/assessment:
+    post:
+      operationId: assessEvidence
+      tags: [assessment]
+      parameters:
+        - {$ref: '#/components/parameters/EvidenceId'}
+        - {$ref: '#/components/parameters/IdempotencyKey'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/AssessmentInput'}
+      responses:
+        '201': {description: Assessment result recorded}
+  /assessment-results/{assessmentId}/progression:
+    post:
+      operationId: decideProgression
+      tags: [progression]
+      parameters:
+        - {$ref: '#/components/parameters/AssessmentId'}
+        - {$ref: '#/components/parameters/IdempotencyKey'}
+      responses:
+        '201': {description: Progression event recorded}
+  /reports/progress:
+    get:
+      operationId: getProgressReport
+      tags: [reporting]
+      responses:
+        '200': {description: Per-learner progress report}
+components:
+  securitySchemes:
+    oidc:
+      type: openIdConnect
+      openIdConnectUrl: https://issuer.example/.well-known/openid-configuration
+  parameters:
+    OrganizationId: {name: organizationId, in: path, required: true, schema: {type: string, format: uuid}}
+    JourneyId: {name: journeyId, in: path, required: true, schema: {type: string, format: uuid}}
+    AssignmentId: {name: assignmentId, in: path, required: true, schema: {type: string, format: uuid}}
+    EvidenceId: {name: evidenceId, in: path, required: true, schema: {type: string, format: uuid}}
+    AssessmentId: {name: assessmentId, in: path, required: true, schema: {type: string, format: uuid}}
+    IdempotencyKey: {name: Idempotency-Key, in: header, required: true, schema: {type: string, minLength: 8}}
+  schemas:
+    OrganizationInput:
+      type: object
+      required: [name]
+      properties: {name: {type: string, minLength: 2, maxLength: 200}}
+    InvitationInput:
+      type: object
+      required: [email, role]
+      properties:
+        email: {type: string, format: email}
+        role: {type: string, enum: [learner, assessor, org_admin]}
+    JourneyInput:
+      type: object
+      required: [title, steps]
+      properties:
+        title: {type: string, minLength: 2}
+        description: {type: string}
+        steps: {type: array, minItems: 1, items: {type: object}}
+    AssignmentInput:
+      type: object
+      required: [learner_id]
+      properties: {learner_id: {type: string, format: uuid}}
+    EvidenceInput:
+      type: object
+      required: [step_id, evidence_type]
+      properties:
+        step_id: {type: string, format: uuid}
+        evidence_type: {type: string, enum: [text, file, link]}
+        content: {type: string}
+        object_storage_ref: {type: string}
+        checksum: {type: string, pattern: '^[a-fA-F0-9]{64}$'}
+    AssessmentInput:
+      type: object
+      required: [criterion_results, verdict]
+      properties:
+        criterion_results: {type: array, items: {type: object}}
+        verdict: {type: string, enum: [accepted, needs_revision, rejected]}
+        comments: {type: string}

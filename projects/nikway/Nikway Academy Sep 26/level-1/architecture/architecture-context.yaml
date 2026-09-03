@@ -1,0 +1,25 @@
+id: NIKWAY-L1-ARCHITECTURE-ARCHITECTURE_CONTEXT
+level: 1
+artifact:
+  name: Architecture Context
+  domain: architecture
+  status: draft
+  purpose: Define the high-level view, boundary, and intended outcome of Architecture Context.
+scope:
+  in_scope: []
+  out_of_scope: []
+key_concepts: []
+actors_and_owners: []
+capabilities_or_responsibilities: []
+inputs: []
+outputs: []
+dependencies: []
+decisions: []
+constraints: []
+acceptance_criteria: []
+source_refs:
+  - projects/nikway/INDEX.md
+  - projects/nikway/Nikway Academy Sep 26/manifest.yaml
+traceability:
+  parent_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  next_level: level-2/architecture/architecture-context/

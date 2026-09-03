@@ -1,0 +1,125 @@
+id: NIKWAY-DECISION-REGISTRY-SEP26-001
+name: NIKWAY Canonical Decision Registry
+version: 1.0.0
+created_at: 2026-09-02
+status: draft
+purpose: Record, govern, and trace architectural, product, knowledge, and AI decisions.
+decision_policy:
+  required_fields: [id, title, context, decision, rationale, consequences, status, source_refs]
+  statuses: [proposed, accepted, rejected, superseded, deprecated]
+  authority: Human Commander with domain review
+  rule: Decisions must not silently overwrite prior decisions.
+decisions:
+  - id: ADR-NIKWAY-001
+    title: Preserve the NIKWAY knowledge baseline
+    domain: knowledge-governance
+    status: accepted
+    date: 2026-08-25
+    context: NIKWAY requires continuity during migration and architecture evolution.
+    decision: Treat the repository knowledge baseline as living and evolving, while preserving prior decisions and warnings.
+    rationale: Prevents loss of context and protects architectural continuity.
+    options_considered: [flatten_into_summary, preserve_as_traceable_package]
+    consequences:
+      positive: [continuity, traceability, safer_migration]
+      negative: [more_artifacts_to_maintain]
+    fact_refs: [FACT-NIKWAY-001, FACT-NIKWAY-007]
+    evidence_refs: [EVID-001]
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/10-migration-rules.md]
+    review_trigger: Any change to the canonical knowledge baseline.
+
+  - id: ADR-NIKWAY-002
+    title: Use the knowledge-to-improvement meta-loop
+    domain: operating-model
+    status: accepted
+    date: 2026-08-25
+    context: NIKWAY needs a repeatable model connecting knowledge to measurable improvement.
+    decision: Use Knowledge -> Learning -> Capability -> Action -> Evidence -> Assessment -> Reflection -> Improvement -> New Knowledge.
+    rationale: Creates a closed learning and improvement cycle.
+    options_considered: [linear_training_model, closed_learning_loop]
+    consequences:
+      positive: [feedback, evidence_driven_improvement, institutional_learning]
+      negative: [requires_assessment_and_evidence_discipline]
+    fact_refs: [FACT-NIKWAY-002, FACT-NIKWAY-006]
+    evidence_refs: [EVID-001]
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/04-knowledge-model.md]
+    review_trigger: Change to the NIKWAY operating or knowledge model.
+
+  - id: ADR-NIKWAY-003
+    title: Maintain human control over AI
+    domain: ai-governance
+    status: accepted
+    date: 2026-08-25
+    context: AI capabilities may influence knowledge, decisions, and operations.
+    decision: AI amplifies intelligence and does not replace human understanding, authority, or final accountability.
+    rationale: Preserves human agency and reduces uncontrolled automation risk.
+    options_considered: [fully_autonomous_decision_making, human_governed_ai]
+    consequences:
+      positive: [accountability, safer_decisions, explainability]
+      negative: [human_review_cost]
+    fact_refs: [FACT-NIKWAY-008]
+    evidence_refs: [EVID-001]
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/06-ai-role.md]
+    review_trigger: Introduction of a high-impact autonomous AI capability.
+
+  - id: ADR-NIKWAY-004
+    title: Record contradictions before resolution
+    domain: architecture-governance
+    status: accepted
+    date: 2026-08-25
+    context: New proposals can conflict with the current architecture or knowledge baseline.
+    decision: Detect, compare, explain, decide, and record contradictions; never overwrite them silently.
+    rationale: Maintains auditability and makes change reasoning inspectable.
+    options_considered: [silent_overwrite, explicit_change_control]
+    consequences:
+      positive: [auditability, reversible_reasoning, safer_evolution]
+      negative: [slower_change_cycle]
+    fact_refs: [FACT-NIKWAY-007]
+    evidence_refs: [EVID-001, EVID-003, EVID-009]
+    source_refs: [projects/nikway/INDEX.md, projects/nikway/07-governance.md, projects/nikway/08-decisions.md]
+    review_trigger: Any contradiction between a new proposal and a canonical artifact.
+
+  - id: ADR-ARMY-001
+    title: Use role-based Agentic Army coordination
+    domain: agentic-army
+    status: accepted
+    date: 2026-08-25
+    context: The repository defines multiple specialized agents for software and architecture work.
+    decision: Coordinate work through Commander, Architect, Builder, Reviewer, Researcher, and Tester roles.
+    rationale: Separates orchestration, design, implementation, audit, research, and validation responsibilities.
+    options_considered: [single_general_agent, specialized_role_based_agents]
+    consequences:
+      positive: [separation_of_duties, specialization, reviewability]
+      negative: [coordination_overhead]
+    fact_refs: [FACT-ARMY-001]
+    evidence_refs: [EVID-004]
+    source_refs: [README.md, AGENTS.md]
+    review_trigger: Addition, removal, or merger of an agent role.
+
+  - id: ADR-RUNTIME-001
+    title: Use containerized orchestration for Agentic Army runtime
+    domain: runtime
+    status: accepted
+    date: 2026-08-25
+    context: The Docker Gordon project provides a runtime topology for agents and infrastructure.
+    decision: Use Docker Compose to coordinate agent services, infrastructure services, and n8n workflows.
+    rationale: Provides repeatable local deployment and explicit service boundaries.
+    options_considered: [manual_processes, containerized_compose_runtime]
+    consequences:
+      positive: [repeatability, isolation, service_discovery]
+      negative: [container_operations_and_secrets_management]
+    fact_refs: [FACT-RUNTIME-001]
+    evidence_refs: [EVID-005]
+    source_refs: [projects/docker-gordon/SYSTEM-MAP.md, projects/docker-gordon/docker-compose.yml]
+    review_trigger: Migration to a different deployment platform or runtime topology.
+
+decision_lifecycle:
+  proposed: Context and options are recorded.
+  accepted: Authority approves decision for use.
+  superseded: A newer decision replaces it; history remains preserved.
+  deprecated: Decision is no longer recommended but remains historically valid.
+  rejected: Decision was reviewed and not approved.
+quality_checks:
+  - unique_ids: true
+  - source_traceability: true
+  - consequences_recorded: true
+  - supersession_preserves_history: true

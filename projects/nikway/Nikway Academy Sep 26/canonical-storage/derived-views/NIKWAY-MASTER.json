@@ -1,0 +1,15 @@
+{
+  "id": "NIKWAY-MASTER-DERIVED-SEP26-001",
+  "generated_at": "2026-09-02",
+  "status": "generated-draft",
+  "source_versions": {
+    "package": "NIKWAY-CANONICAL-STORAGE-MANIFEST-SEP26-001@1.0.0",
+    "facts": "NIKWAY-FACT-REGISTRY-SEP26-001@1.0.0",
+    "ontology": "NIKWAY-ONTOLOGY-SEP26-001@1.0.0",
+    "decisions": "NIKWAY-DECISION-REGISTRY-SEP26-001@1.0.0"
+  },
+  "canonical_entities": ["NIKWAY", "AGENTIC-ARMY", "KNOWLEDGE-MANAGEMENT", "COMPETENCY-DEVELOPMENT", "IMPROVEMENT-MANAGEMENT", "MINDSET", "DOMAIN-CAPABILITIES", "MASTERY", "LEADERSHIP", "KNOWLEDGE-LOOP"],
+  "facts": ["FACT-NIKWAY-001", "FACT-NIKWAY-002", "FACT-NIKWAY-003", "FACT-NIKWAY-004", "FACT-NIKWAY-005", "FACT-NIKWAY-006", "FACT-NIKWAY-007", "FACT-NIKWAY-008", "FACT-NIKWAY-009", "FACT-ARMY-001", "FACT-RUNTIME-001", "FACT-ARCH-001"],
+  "decisions": ["ADR-NIKWAY-001", "ADR-NIKWAY-002", "ADR-NIKWAY-003", "ADR-NIKWAY-004", "ADR-ARMY-001", "ADR-RUNTIME-001"],
+  "provenance": {"derived_from": ["source-of-truth", "operational-store"], "editable": false}
+}

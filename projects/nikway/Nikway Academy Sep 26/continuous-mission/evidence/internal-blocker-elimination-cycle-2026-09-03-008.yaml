@@ -1,0 +1,72 @@
+id: EVID-NIKWAY-INTERNAL-BLOCKER-ELIMINATION-20260903-008
+type: internal-blocker-elimination
+created_at: "2026-09-03T11:01:09+03:30"
+timezone: Asia/Tehran
+status: ACTIVE_WITH_EXTERNAL_DEPENDENCIES
+scope:
+  repository: E:/AGENTIC-ARMY
+  package: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample
+  historical_evidence_preserved: true
+executed:
+  - action: "Inspected git state, readiness matrix, external contract, procedures, runbooks, application settings, auth, storage, migrations, workflows and rollback artifacts."
+    result: PASS_LOCAL
+    classification: NOT_APPLICABLE
+  - action: "Separated PostgreSQL bootstrap and runtime roles in the isolated compose definition."
+    result: PASS_LOCAL
+    classification: INTERNAL_BLOCKER
+    evidence:
+      - publish-ready-sample/docker-compose.full-v1.yml
+      - publish-ready-sample/db/create-runtime-role.sh
+  - action: "Made runtime-role creation idempotent and added least-privilege grants."
+    result: PASS_LOCAL
+    classification: INTERNAL_BLOCKER
+    evidence:
+      - publish-ready-sample/db/create-runtime-role.sh
+  - action: "Made OIDC_JWKS_URL required in the application compose contract."
+    result: PASS_LOCAL
+    classification: INTERNAL_BLOCKER
+    evidence:
+      - publish-ready-sample/docker-compose.full-v1.yml
+  - action: "Corrected and executed the E2E contract preflight."
+    result: PASS_LOCAL
+    command: "python -m pytest tests/test_e2e_preflight.py tests/test_auth.py -q"
+    observed: "8 passed, 1 skipped"
+    classification: INTERNAL_BLOCKER
+  - action: "Executed the complete backend test suite."
+    result: PASS_LOCAL
+    command: "python -m pytest tests -q"
+    observed: "51 passed, 3 skipped"
+    classification: NOT_APPLICABLE
+  - action: "Regenerated OpenAPI and ran the contract diff."
+    result: PASS_LOCAL
+    command: "python scripts/generate_openapi.py; python scripts/contract_diff.py ../V1_API_CONTRACT.yaml"
+    observed: "contract_paths_ok=10"
+    classification: NOT_APPLICABLE
+  - action: "Validated Python compilation."
+    result: PASS_LOCAL
+    command: "python -m compileall -q app"
+    classification: NOT_APPLICABLE
+  - action: "Built the isolated API image."
+    result: PASS_LOCAL
+    classification: NOT_APPLICABLE
+  - action: "Attempted isolated compose startup with non-production placeholder values."
+    result: BLOCKED_EXTERNAL
+    classification: EXTERNAL_DEPENDENCY
+    observed: "Docker host rejected creation of the project network: all predefined address pools have been fully subnetted."
+    limitation: "No database runtime-role result was claimed from the failed startup."
+remaining_classification:
+  internal_blockers: []
+  external_dependencies:
+    - "PostgreSQL staging/runtime-role verification"
+    - "OIDC provider/JWKS and credential verification"
+    - "S3 endpoint/bucket/scoped credential verification"
+    - "GitHub Actions CI execution and artifact result"
+    - "Real staging E2E"
+  human_approval:
+    - "Production publication/go-no-go"
+  not_applicable:
+    - "No image scan result until a CI image build/tag/push target exists"
+release:
+  readiness: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+  production_ready: false
+next_executable_action: "Provide or select an approved staging/CI environment, then run the deterministic external verification procedures."

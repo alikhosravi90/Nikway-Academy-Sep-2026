@@ -1,0 +1,8 @@
+id: NIKWAY-LM-L1-IDENTITY
+level: 1
+path: language-model
+name: Language Model Identity and Mission
+purpose: Define the model's role, users, domains, limits, and intended value.
+outputs: [model-mission, user-groups, domain-boundary, limitations]
+dependencies: [NIKWAY-SYSTEM-L1-PURPOSE]
+acceptance_criteria: [role_is_explicit, limitations_are_documented]

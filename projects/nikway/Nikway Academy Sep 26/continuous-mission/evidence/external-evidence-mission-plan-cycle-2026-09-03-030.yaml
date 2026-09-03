@@ -1,0 +1,19 @@
+type: external-evidence-mission-plan
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+timestamp: 2026-09-03T20:35:00+03:30
+source: "User-provided external evidence mission proposal attachment."
+action_taken:
+  - "Converted P02-P09 into a bounded, machine-readable mission plan."
+  - "Marked local, staging, external-wait and human-gate semantics explicitly."
+  - "Prioritized P04 because it has no application credential dependency and directly closes the CI evidence gap."
+  - "Preserved P05-P07 as external dependencies and did not fabricate provider, storage or staging evidence."
+plan_artifact: external-evidence-missions.yaml
+current_status:
+  implementation: 100
+  release_readiness: 75
+  security: 40
+  operations: 75
+  evidence: 100
+  release: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+  production_ready: false
+next_executable_action: "Run the corrected CI security workflow on an official GitHub Actions runner and preserve its Trivy artifact."

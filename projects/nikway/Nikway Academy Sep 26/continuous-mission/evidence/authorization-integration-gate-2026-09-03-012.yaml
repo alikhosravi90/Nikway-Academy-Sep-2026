@@ -1,0 +1,96 @@
+id: EVID-NIKWAY-AUTHORIZATION-INTEGRATION-20260903-012
+type: authorization-integration-gate
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+created_at: "2026-09-03T12:10:00+03:30"
+timezone: Asia/Tehran
+scope:
+  - "Master System authorization only"
+  - "No persistence redesign"
+  - "No authorization platform replacement"
+  - "No ontology or NIKWAY-MASTER.yaml changes"
+authorization_model:
+  default: DENY
+  identity_source: "existing OIDC membership dependency"
+  permissions:
+    master.read: [nikway_admin, org_admin, assessor]
+    master.create: [nikway_admin, org_admin]
+    master.version.create: [nikway_admin, org_admin]
+    master.rollback: [nikway_admin]
+  organization_scope: "verified membership organization_id must match request/resource organization_id"
+implemented:
+  - publish-ready-sample/app/app/authorization.py
+  - publish-ready-sample/app/app/master_service.py
+  - publish-ready-sample/app/app/main.py
+  - publish-ready-sample/app/tests/test_authorization.py
+  - publish-ready-sample/app/tests/test_master_authorization_api.py
+  - publish-ready-sample/db/master_authorization_schema.sql
+  - master-model/AUTHORIZATION-MODEL.yaml
+protected_api:
+  - method: GET
+    path: /api/v1/masters
+    permission: master.read
+  - method: GET
+    path: /api/v1/masters/{master_id}
+    permission: master.read
+  - method: POST
+    path: /api/v1/masters
+    permission: master.create
+  - method: POST
+    path: /api/v1/masters/{master_id}/versions
+    permission: master.version.create
+tests:
+  authorization_unit: "4 passed"
+  authorization_api_and_auth: "15 passed"
+  full_regression: "63 passed, 5 skipped"
+  skipped:
+    - "PostgreSQL integration tests without configured local DATABASE_URL"
+    - "External provider/S3/E2E tests requiring external dependencies"
+security_checks:
+  unauthenticated_master_request: PASS_LOCAL
+  missing_permission: PASS_LOCAL
+  unknown_role: PASS_LOCAL
+  cross_organization_request: PASS_LOCAL
+  cross_organization_resource: PASS_LOCAL
+  vertical_privilege_separation: PASS_LOCAL
+  duplicate_mutation_protection: PASS_LOCAL
+  idor_boundary: PASS_LOCAL
+  service_boundary_before_registry_mutation: PASS_LOCAL
+database:
+  engine: PostgreSQL
+  version: "16.15"
+  migration: db/master_authorization_schema.sql
+  migration_result: PASS
+  organization_column: PASS
+  organization_index: PASS
+  runtime_role_privileges_unchanged: PASS
+openapi:
+  contract_diff: "contract_paths_ok=10"
+  master_paths: 3
+  protected_master_paths: 3
+  bearer_scheme: true
+audit_compatibility:
+  decision_model_contains_actor_context_permission_outcome: PASS_LOCAL
+  existing_audit_infrastructure_reused: false
+  limitation: "No Master mutation audit persistence endpoint existed in this scope; existing audit repository remains the integration point for the next audit mission."
+external_dependencies:
+  - "Approved OIDC issuer, JWKS endpoint and test credentials for provider-backed verification"
+  - "Staging execution for real identity and organization claims"
+gate:
+  authorization_model: PASS_LOCAL
+  protected_master_apis: PASS_LOCAL
+  permission_enforcement: PASS_LOCAL
+  organization_isolation: PASS_LOCAL
+  deny_by_default: PASS_LOCAL
+  http_401_403_semantics: PASS_LOCAL
+  privilege_escalation_tests: PASS_LOCAL
+  idor_tests: PASS_LOCAL
+  audit_compatibility: PASS_WITH_LIMITATION
+  postgresql_integration: PASS_LOCAL
+  persistence_regression: PASS_LOCAL
+  full_regression: PASS_LOCAL
+  openapi_contract: PASS_LOCAL
+  evidence_updated: PASS_LOCAL
+  final_gate: BLOCKED_AUTHORIZATION
+  blocker_classification: EXTERNAL_DEPENDENCY
+  production_ready: false
+next_mission: "Real Audit Persistence for Master System"

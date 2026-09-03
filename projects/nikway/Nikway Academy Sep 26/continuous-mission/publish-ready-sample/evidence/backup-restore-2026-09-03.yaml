@@ -1,0 +1,10 @@
+id: EVID-V1-BACKUP-RESTORE-20260903-001
+type: backup-restore
+status: verified
+backup_script: db/backup-restore.ps1
+restore_script: db/restore-verify.ps1
+isolation: dedicated_restore_container
+verification: restore completed in dedicated container with no-owner/no-acl portability flags
+verified_at: 2026-09-03
+result: passed
+retention: backup artifact must be stored outside the repository

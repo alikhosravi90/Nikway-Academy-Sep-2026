@@ -1,0 +1,21 @@
+id: NIKWAY-OBJECT-STORAGE-CONTRACT-001
+provider: S3-compatible
+bucket_layout:
+  evidence: evidence/{domain}/{entity_id}/{evidence_id}/
+  files: files/{domain}/{entity_id}/{file_id}/
+  logs: logs/{service}/{date}/
+  reports: reports/{report_type}/{date}/
+  snapshots: snapshots/{source}/{date}/
+metadata_required: [object_id, content_type, checksum, source_ref, owner, created_at, retention]
+immutability:
+  evidence: write_once_reviewed
+  audit_logs: append_only
+security:
+  encryption_at_rest: required
+  encryption_in_transit: required
+  access: role_based
+  secrets: reference_only
+retention:
+  evidence: governed
+  logs: policy_defined
+  reports: versioned

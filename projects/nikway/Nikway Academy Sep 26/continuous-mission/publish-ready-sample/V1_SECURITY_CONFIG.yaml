@@ -1,0 +1,30 @@
+id: NIKWAY-V1-SECURITY-CONFIG-001
+status: design_ready
+authentication:
+  protocol: OIDC
+  issuer_env: OIDC_ISSUER_URL
+  audience_env: OIDC_AUDIENCE
+  jwks_env: OIDC_JWKS_URL
+  password_storage: forbidden
+authorization:
+  default: deny
+  roles: [nikway_admin, org_admin, assessor, learner]
+  organization_context: membership_claim_or_database_lookup
+cors:
+  production_origins_env: CORS_ALLOWED_ORIGINS
+  wildcard_allowed: false
+uploads:
+  storage: S3-compatible
+  max_size_mb: 25
+  accepted_types: [text/plain, application/pdf, image/png, image/jpeg]
+  server_filesystem_storage: forbidden
+  checksum: sha256
+secrets:
+  source: environment_or_external_secret_manager
+  repository_storage: forbidden
+  logs: redacted
+database:
+  application_role: nikway_runtime
+  superuser: forbidden
+tls:
+  required: true

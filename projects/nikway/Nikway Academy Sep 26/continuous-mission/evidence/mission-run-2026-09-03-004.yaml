@@ -1,0 +1,49 @@
+id: EVID-NIKWAY-MISSION-RUN-20260903-004
+type: mission-resume-and-state-synchronization
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+executed_at: "2026-09-03"
+timezone: Asia/Tehran
+status: ACTIVE_WITH_EXTERNAL_DEPENDENCIES
+directive: "attachments/continuous-mission-resume-directive"
+completed:
+  - task: mission_state_reclassification
+    status: LOCAL_VERIFIED
+    result: "Global status changed from BLOCKED_FOR_HUMAN to ACTIVE_WITH_EXTERNAL_DEPENDENCIES."
+  - task: task_specific_human_gates
+    status: LOCAL_VERIFIED
+    result: "External and approval blockers remain parked per task; Mission remains active."
+  - task: dashboard_synchronization
+    status: LOCAL_VERIFIED
+    result: "Control Room updated to show active status, current autonomous tasks, waiting dependencies and human decision."
+  - task: structured_cycle_report
+    status: LOCAL_VERIFIED
+    result: "15-section mission cycle report created."
+  - task: final_validation
+    status: LOCAL_VERIFIED
+    result: "Frontend build passed; backend 50 passed/2 skipped; OpenAPI contract_paths_ok=10; mission YAML state assertions passed."
+    note: "HTTP shell response does not contain client-rendered status; source and production build contain the synchronized Control Room state."
+readiness:
+  implementation_percent: 82
+  security_percent: 52
+  operations_percent: 68
+  evidence_percent: 71
+  release_readiness_percent: 62
+  recalculated: false
+  reason: "No new evidence sufficient to change the weighted readiness percentages."
+external_dependencies:
+  - task: oidc_jwks
+    status: WAITING_EXTERNAL_DEPENDENCY
+    required_input: "Approved provider configuration and test credentials."
+  - task: s3_minio
+    status: WAITING_EXTERNAL_DEPENDENCY
+    required_input: "Approved endpoint, bucket and scoped credentials."
+  - task: postgres_runtime_role
+    status: WAITING_EXTERNAL_DEPENDENCY
+    required_input: "Reachable staging database and non-owner runtime role."
+  - task: ci_scan
+    status: WAITING_EXTERNAL_DEPENDENCY
+    required_input: "CI runner or approved Trivy execution environment."
+  - task: production_publish
+    status: HUMAN_DECISION_REQUIRED
+    required_input: "Explicit human go/no-go approval."
+next_executable_action: "Evidence consolidation and readiness rescan"

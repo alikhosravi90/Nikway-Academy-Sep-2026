@@ -1,0 +1,33 @@
+id: NIKWAY-ONTOLOGY-ENTITY-INDEX-SEP26-001
+purpose: Machine-readable index of canonical entities.
+entities:
+  - id: NIKWAY
+    class: System
+    status: canonical
+  - id: AGENTIC-ARMY
+    class: System
+    status: canonical
+  - id: KNOWLEDGE-MANAGEMENT
+    class: Capability
+    status: canonical
+  - id: COMPETENCY-DEVELOPMENT
+    class: Capability
+    status: canonical
+  - id: IMPROVEMENT-MANAGEMENT
+    class: Capability
+    status: canonical
+  - id: MINDSET
+    class: Capability
+    status: canonical
+  - id: DOMAIN-CAPABILITIES
+    class: Capability
+    status: canonical
+  - id: MASTERY
+    class: Capability
+    status: canonical
+  - id: LEADERSHIP
+    class: Capability
+    status: canonical
+  - id: KNOWLEDGE-LOOP
+    class: Workflow
+    status: canonical

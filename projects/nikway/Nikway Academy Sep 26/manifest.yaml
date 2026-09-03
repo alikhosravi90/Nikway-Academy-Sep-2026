@@ -1,0 +1,31 @@
+id: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+package:
+  name: Nikway Academy Sep 26
+  version: 1.0.0
+  status: draft
+  purpose: Hierarchical artifact package for NIKWAY Academy architecture synthesis
+schema:
+  version: 1.0
+structure:
+  business: business/
+  product: product/
+  architecture: architecture/
+  runtime: runtime/
+  governance: governance/
+  artifacts: artifacts/
+hierarchy:
+  source_level: 0
+  child_levels: [1, 2]
+  synthesis: NIKWAY-MASTER.yaml
+artifacts:
+  content_count: 38
+  generated_structure: '<domain>/<artifact>.yaml with level_1 and level_2'
+  control_files:
+    - manifest.yaml
+    - black-manifest.yaml
+    - NIKWAY-MASTER.yaml
+validation:
+  required: [unique_ids, valid_references, level_1, level_2, source_traceability]
+source_of_truth:
+  type: package
+  canonical: true

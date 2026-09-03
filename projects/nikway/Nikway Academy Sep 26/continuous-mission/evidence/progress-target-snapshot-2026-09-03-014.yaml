@@ -1,0 +1,33 @@
+id: EVID-NIKWAY-PROGRESS-TARGET-20260903-014
+type: progress-target-snapshot
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+created_at: "2026-09-03T13:25:00+03:30"
+purpose: "Expose the requested 90% targets without misrepresenting verified release readiness."
+metrics:
+  - name: IMPLEMENTATION
+    target_percent: 90
+    verified_percent: 82
+  - name: RELEASE_READINESS
+    target_percent: 90
+    verified_percent: 62
+  - name: SECURITY
+    target_percent: 90
+    verified_percent: 52
+  - name: OPERATIONS
+    target_percent: 90
+    verified_percent: 68
+  - name: EVIDENCE
+    target_percent: 90
+    verified_percent: 71
+integrity:
+  target_is_not_completion_claim: true
+  verified_values_are_historical_snapshot: true
+  production_ready: false
+  external_gates_pending: true
+ui:
+  file: projects/nikway/frontend/src/main.js
+  behavior: "Shows target and verified values separately; progress bar uses verified value."
+verification:
+  command: "npm run build"
+  result: PASS
+next_action: "Replace verified snapshot values only after new executable evidence is produced."

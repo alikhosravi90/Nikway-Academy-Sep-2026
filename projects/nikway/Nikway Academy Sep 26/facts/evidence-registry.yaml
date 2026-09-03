@@ -1,0 +1,89 @@
+id: NIKWAY-EVIDENCE-REGISTRY-SEP26-001
+name: NIKWAY Evidence Registry
+version: 1.0.0
+created_at: 2026-09-02
+status: draft
+purpose: Register, classify, and trace evidence supporting NIKWAY facts and decisions.
+evidence_policy:
+  minimum_required: [id, type, reference, reliability, verification_status, supports]
+  accepted_types: [repository-document, architecture-document, governance-document, repository-readme, runtime-map, source-snapshot, implementation, test-result, decision-record]
+  reliability_scale: [low, medium, high]
+  verification_statuses: [unreviewed, reviewed, accepted, rejected, superseded]
+evidence:
+  - id: EVID-001
+    type: repository-index
+    reference: projects/nikway/INDEX.md
+    role: primary baseline for identity, philosophy, capabilities, status, and warnings
+    reliability: high
+    verification_status: accepted
+    supports: [FACT-NIKWAY-001, FACT-NIKWAY-002, FACT-NIKWAY-003, FACT-NIKWAY-004, FACT-NIKWAY-005, FACT-NIKWAY-006, FACT-NIKWAY-007, FACT-NIKWAY-008, FACT-NIKWAY-009, FACT-ARCH-001]
+    verification_note: Repository index explicitly records the referenced sections.
+  - id: EVID-002
+    type: architecture-document
+    reference: projects/nikway/05-architecture.md
+    role: technical architecture and validation context
+    reliability: high
+    verification_status: reviewed
+    supports: [FACT-ARCH-001]
+    verification_note: Architecture source document listed in the NIKWAY package index.
+  - id: EVID-003
+    type: governance-document
+    reference: projects/nikway/07-governance.md
+    role: governance and operating model
+    reliability: high
+    verification_status: reviewed
+    supports: [FACT-NIKWAY-007]
+    verification_note: Governance source document listed in the NIKWAY package index.
+  - id: EVID-004
+    type: repository-readme
+    reference: README.md
+    role: Agentic Army mission, roster, skills, and workflows
+    reliability: medium
+    verification_status: accepted
+    supports: [FACT-ARMY-001]
+    verification_note: Agent roster is explicitly listed in the repository README.
+  - id: EVID-005
+    type: runtime-map
+    reference: projects/docker-gordon/SYSTEM-MAP.md
+    role: Docker and infrastructure topology
+    reliability: medium
+    verification_status: accepted
+    supports: [FACT-RUNTIME-001]
+    verification_note: Runtime components and ports are explicitly mapped.
+  - id: EVID-006
+    type: implementation
+    reference: projects/nikway/backend/app/main.py
+    role: Existing NIKWAY backend implementation evidence
+    reliability: medium
+    verification_status: reviewed
+    supports: []
+    verification_note: Implementation exists but requires feature-level mapping before supporting a canonical Fact.
+  - id: EVID-007
+    type: implementation
+    reference: projects/nikway/frontend/src/main.js
+    role: Existing NIKWAY frontend implementation evidence
+    reliability: medium
+    verification_status: reviewed
+    supports: []
+    verification_note: Implementation exists but requires route and behavior mapping before supporting a canonical Fact.
+  - id: EVID-008
+    type: source-snapshot
+    reference: projects/nikway/source-snapshots/nikway-academy-2026-08-25.archimate
+    role: Architecture source snapshot
+    reliability: medium
+    verification_status: unreviewed
+    supports: []
+    verification_note: Requires formal ArchiMate extraction and validation.
+  - id: EVID-009
+    type: decision-record
+    reference: projects/nikway/08-decisions.md
+    role: Recorded architecture and product decisions
+    reliability: high
+    verification_status: reviewed
+    supports: [FACT-NIKWAY-007]
+    verification_note: Decisions document is part of the canonical NIKWAY package index.
+quality_checks:
+  - every_supported_fact_has_evidence: true
+  - every_accepted_evidence_has_reference: true
+  - unreviewed_evidence_excluded_from_canonical_facts: true
+  - implementation_requires_behavior_mapping: true

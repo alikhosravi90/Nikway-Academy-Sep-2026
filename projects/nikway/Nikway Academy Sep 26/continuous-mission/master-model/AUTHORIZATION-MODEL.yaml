@@ -1,0 +1,26 @@
+id: NIKWAY-MASTER-AUTHORIZATION-001
+version: 1.0.0
+default: DENY
+identity_source: existing OIDC membership dependency
+resource_scope:
+  - organization_id
+permissions:
+  master.read:
+    roles: [nikway_admin, org_admin, assessor]
+  master.create:
+    roles: [nikway_admin, org_admin]
+  master.version.create:
+    roles: [nikway_admin, org_admin]
+  master.rollback:
+    roles: [nikway_admin]
+  invitation.create:
+    roles: [nikway_admin, org_admin]
+rules:
+  - "Authentication and authorization are separate decisions."
+  - "Unknown roles have no permissions."
+  - "Organization context must match the verified membership."
+  - "Resource organization must match the verified membership when present."
+  - "Authorization executes before service or repository mutation."
+  - "Delete is denied because no delete permission is defined."
+limitations:
+  - "Provider-backed OIDC verification remains an external gate."

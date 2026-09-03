@@ -1,0 +1,39 @@
+id: NIKWAY-STANDARDS-RESEARCH-20260902-001
+type: standards-research
+status: accepted_for_review
+researched_at: 2026-09-02
+scope: V1 interoperability, identity, tenant isolation, events, and evidence storage
+findings:
+  - id: STD-001
+    standard: OpenID Connect Core 1.0
+    finding: OIDC provides an identity layer over OAuth 2.0 and communicates End-User claims through ID Tokens.
+    impact: V1 should validate issuer, audience, signature, expiry, and claims before resolving organization membership.
+    source: https://openid.net/specs/openid-connect-core-1_0-18.html
+  - id: STD-002
+    standard: OpenAPI 3.1
+    finding: OpenAPI is a language-agnostic HTTP API interface description; path parameters must correspond to path templates and security may be declared globally or per operation.
+    impact: Generate the final contract from the implementation and validate path/security consistency in CI.
+    source: https://spec.openapis.org/oas/v3.1.0
+  - id: STD-003
+    standard: xAPI 2.0
+    finding: An xAPI Statement requires actor, verb, and object; verbs are identified by IRIs and context/timestamp add meaning and temporal traceability.
+    impact: Store V1 events with a stable event id, actor, IRI verb, object, timestamp, context, organization_id, and correlation_id.
+    source: https://github.com/adlnet/xAPI-Spec
+  - id: STD-004
+    standard: PostgreSQL Row Security
+    finding: PostgreSQL row security policies can restrict rows returned and rows modified; enabled tables require applicable policies for normal access.
+    impact: Keep RLS as the database backstop and run tests using a non-owner, non-superuser application role.
+    source: https://www.postgresql.org/docs/17/ddl-rowsecurity.html
+  - id: STD-005
+    standard: S3 object integrity
+    finding: S3 objects are addressed by bucket and key, and checksum values can verify upload/download integrity.
+    impact: Evidence records must persist bucket/key version references and SHA-256 or equivalent checksum metadata.
+    source: https://docs.aws.amazon.com/AmazonS3/latest/userguide/checking-object-integrity.html
+recommendations:
+  - Use OIDC Authorization Code with PKCE for browser authentication.
+  - Use OpenAPI 3.1 generated from code as the API release artifact.
+  - Use xAPI-shaped events internally without claiming to operate an LRS.
+  - Use selective RLS plus a least-privilege runtime role.
+  - Use organization-scoped object-key prefixes and checksums for evidence.
+source_refs:
+  - D:/NIKWAY Academy 2026/NIKWAY_V1_BUILD_SPEC.md

@@ -1,0 +1,27 @@
+id: NIKWAY-CANONICAL-STORAGE-MANIFEST-SEP26-001
+name: NIKWAY Canonical Storage Package
+version: 1.0.0
+created_at: 2026-09-02
+status: draft
+levels:
+  source_of_truth:
+    path: source-of-truth/
+    canonical: true
+  operational_store:
+    path: operational-store/
+    canonical: false
+  derived_views:
+    path: derived-views/
+    canonical: false
+sync_flow:
+  - validate_source
+  - ingest_operational_store
+  - generate_derived_views
+  - publish_reviewed_outputs
+source_refs:
+  - ../manifest.yaml
+  - ../facts/fact-registry.yaml
+  - ../ontology/ontology.yaml
+  - ../governance/decision-registry.yaml
+validation:
+  required: [stable_ids, source_refs, schema_compliance, provenance, generated_at]

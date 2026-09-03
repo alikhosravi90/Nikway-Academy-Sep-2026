@@ -1,0 +1,7 @@
+version: 1.0.0
+rules:
+  - "Master versions are immutable once published."
+  - "Instances retain the version used at creation."
+  - "Breaking changes require a new major version."
+  - "No automatic instance migration is performed."
+  - "Compatibility and migration policy must be declared before adoption."

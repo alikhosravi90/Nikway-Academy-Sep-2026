@@ -1,0 +1,13 @@
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'nikway_runtime') THEN
+    RAISE EXCEPTION 'runtime role was not created';
+  END IF;
+END
+$$;
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+GRANT USAGE ON SCHEMA public TO nikway_runtime;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO nikway_runtime;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO nikway_runtime;
+ALTER ROLE nikway_runtime NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;

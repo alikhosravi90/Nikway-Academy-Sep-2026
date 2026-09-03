@@ -1,0 +1,32 @@
+id: NIKWAY-L5-MIGRATION-MIGRATION_RULES
+level: 5
+artifact:
+  name: migration-rules
+  domain: migration
+  parent_level_1: NIKWAY-L1-MIGRATION-MIGRATION_RULES
+  status: draft
+  meaning: Verification and operational evidence view
+purpose: Decompose the parent artifact into a L5 view that can be reviewed and synthesized.
+sections:
+    - tests
+    - scenarios
+    - metrics
+    - runbook
+    - evidence
+    - approval
+scope:
+  in_scope: []
+  out_of_scope: []
+inputs: []
+outputs: []
+dependencies:
+  upstream: [NIKWAY-L1-MIGRATION-MIGRATION_RULES]
+  downstream: []
+rules: []
+acceptance_criteria: []
+source_refs:
+  - ../level-1/migration/migration-rules.yaml
+traceability:
+  parent_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  parent_artifact: NIKWAY-L1-MIGRATION-MIGRATION_RULES
+  synthesis_target: ../NIKWAY-MASTER.yaml

@@ -1,0 +1,24 @@
+id: NIKWAY-SOURCE-INDEX-SEP26-001
+level: source_of_truth
+format_families:
+  yaml:
+    includes: [manifest, facts, evidence, ontology, decisions, architecture, product, governance]
+  markdown:
+    includes: [readme, adr, sop, reports, handover, runbooks]
+  json:
+    includes: [snapshots, exports, configuration, integration-payloads]
+  json_schema:
+    includes: [fact, evidence, decision, artifact, entity, task, release]
+  openapi:
+    includes: [control-center-api, registry-api, launch-api]
+canonical_packages:
+  - ../manifest.yaml
+  - ../facts/fact-registry.yaml
+  - ../facts/evidence-registry.yaml
+  - ../ontology/ontology.yaml
+  - ../governance/decision-registry.yaml
+  - ../level-1/INDEX.md
+change_control:
+  versioning: git
+  review_required: true
+  derived_views_must_not_be_edited: true

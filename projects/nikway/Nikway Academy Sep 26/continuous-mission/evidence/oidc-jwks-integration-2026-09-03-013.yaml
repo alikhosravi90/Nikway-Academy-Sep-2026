@@ -1,0 +1,62 @@
+id: EVID-NIKWAY-OIDC-JWKS-20260903-013
+type: oidc-jwks-integration
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+created_at: "2026-09-03T13:05:00+03:30"
+timezone: Asia/Tehran
+scope:
+  - "Existing OIDC/JWKS verification boundary"
+  - "No authorization model redesign"
+  - "No credentials, tokens, private keys, or external publication"
+implementation:
+  inspected:
+    - publish-ready-sample/app/app/auth.py
+    - publish-ready-sample/app/app/settings.py
+    - publish-ready-sample/app/V1_SECURITY_CONFIG.yaml
+    - publish-ready-sample/app/tests/test_auth.py
+    - publish-ready-sample/app/tests/test_protected_endpoints.py
+    - publish-ready-sample/app/tests/test_e2e_preflight.py
+  change:
+    - "JWKS/provider exceptions are contained at the authentication boundary and fail closed as HTTP 401 instead of escaping as HTTP 500."
+  files_changed:
+    - publish-ready-sample/app/app/auth.py
+    - publish-ready-sample/app/tests/test_oidc_jwks.py
+provider_preflight:
+  provider: "Local Keycloak container; not approved staging"
+  discovery_http_status: 200
+  discovered_issuer: "http://127.0.0.1:8081/realms/master"
+  jwks_http_status: 200
+  jwks_key_count: 2
+  jwks_algorithms: [RS256, RSA-OAEP]
+  classification: PASS_LOCAL_PROVIDER_SMOKE
+  limitation: "No approved staging contract or provider-issued test credentials/token was available."
+tests:
+  focused_command: "python -m pytest tests/test_oidc_jwks.py tests/test_auth.py tests/test_protected_endpoints.py -q"
+  focused_result: "12 passed"
+  regression_command: "python -m pytest tests -q"
+  regression_result: "67 passed, 5 skipped"
+  compile_command: "python -m compileall -q app tests"
+  compile_result: PASS
+  skipped:
+    - "External provider credential/token cases"
+    - "External PostgreSQL/S3/E2E integration cases"
+security:
+  fail_closed_boundary: PASS_LOCAL
+  issuer_audience_exp_iat_sub_required: PASS_LOCAL
+  default_algorithm_for_jwks: RS256
+gate:
+  implementation: PASS_LOCAL
+  deterministic_jwks_verification: PASS_LOCAL
+  local_provider_discovery: PASS_LOCAL_PROVIDER_SMOKE
+  approved_provider_token_validation: BLOCKED_EXTERNAL
+  final_gate: BLOCKED_EXTERNAL
+  production_ready: false
+blockers:
+  - classification: EXTERNAL_DEPENDENCY
+    item: "Approved OIDC issuer/audience/JWKS and provider-issued test credentials"
+    required_inputs:
+      - OIDC_ISSUER_URL
+      - OIDC_AUDIENCE
+      - OIDC_JWKS_URL
+      - OIDC_TEST_CREDENTIALS
+    reason: "A local Keycloak endpoint is reachable, but it is not established as the approved staging provider and no test token is available."
+next_mission: "Real Audit Persistence for Master System"

@@ -1,0 +1,22 @@
+id: EVID-NIKWAY-REPORT-PACKAGE-20260903-002
+type: report-enhancement-cycle
+created_at: "2026-09-03"
+source_prompt: attachments/39723fc5-18f4-4fc5-90f4-6ca07c9bb969/pasted-text.txt
+changes:
+  - "Added a standalone human-readable section explaining problems encountered and current status."
+  - "Translated technical blockers into plain Persian."
+  - "Added a readable blocker summary table."
+  - "Added the next-step PDCA path after the problems section."
+  - "Added an independent continuation prompt for the execution agent."
+outputs:
+  pdf: reports/2026-09-03/nikway-full-report.pdf
+  html: reports/2026-09-03/nikway-report.html
+  continuation_prompt: reports/2026-09-03/NIKWAY-CONTINUE-MISSION-PROMPT.fa.txt
+verification:
+  pdf_render: LOCAL_VERIFIED
+  pdf_size_bytes: 1234306
+  rtl_html_content: LOCAL_VERIFIED
+  data_consistency: LOCAL_VERIFIED
+  fabricated_claims: false
+limitations:
+  - "External OIDC, S3, PostgreSQL runtime, CI scan and human approval remain unverified."

@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L7-GOVERNANCE
+level: 7
+path: system
+name: Enterprise Governance and Scale
+purpose: Govern security, quality, architecture, teams, and organizational scale.
+outputs: [policies, decision-rights, maturity-model, scale-plan]
+dependencies: [NIKWAY-SYSTEM-L6-OPERATIONS]
+acceptance_criteria: [changes_are_auditable, ownership_is_explicit]

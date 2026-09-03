@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: nikway_v1
+      POSTGRES_USER: nikway_bootstrap
+      POSTGRES_PASSWORD: ${NIKWAY_POSTGRES_PASSWORD:?NIKWAY_POSTGRES_PASSWORD is required}
+      NIKWAY_RUNTIME_PASSWORD: ${NIKWAY_RUNTIME_PASSWORD:?NIKWAY_RUNTIME_PASSWORD is required}
+    volumes:
+      - nikway-v1-postgres:/var/lib/postgresql/data
+      - ./db/v1_schema.sql:/docker-entrypoint-initdb.d/001-v1-schema.sql:ro
+      - ./db/master_system_schema.sql:/docker-entrypoint-initdb.d/002-master-system-schema.sql:ro
+      - ./db/master_authorization_schema.sql:/docker-entrypoint-initdb.d/003-master-authorization-schema.sql:ro
+      - ./db/create-runtime-role.sh:/docker-entrypoint-initdb.d/004-create-runtime-role.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nikway_runtime -d nikway_v1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  api:
+    build:
+      context: ./app
+    environment:
+      DATABASE_URL: postgresql+psycopg://nikway_runtime:${NIKWAY_RUNTIME_PASSWORD}@postgres:5432/nikway_v1
+      OIDC_ISSUER_URL: ${OIDC_ISSUER_URL:?OIDC_ISSUER_URL is required}
+      OIDC_AUDIENCE: ${OIDC_AUDIENCE:?OIDC_AUDIENCE is required}
+      OIDC_JWKS_URL: ${OIDC_JWKS_URL:?OIDC_JWKS_URL is required}
+      S3_ENDPOINT_URL: ${S3_ENDPOINT_URL:?S3_ENDPOINT_URL is required}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    network_mode: bridge
+
+volumes:
+  nikway-v1-postgres:

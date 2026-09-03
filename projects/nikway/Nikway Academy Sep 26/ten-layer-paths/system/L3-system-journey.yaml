@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L3-JOURNEY
+level: 3
+path: system
+name: User and Business Journey Model
+purpose: Describe end-to-end journeys that convert user needs into outcomes.
+outputs: [personas, journeys, states, outcomes]
+dependencies: [NIKWAY-SYSTEM-L2-DOMAIN]
+acceptance_criteria: [journeys_are_end_to_end, actors_and_outcomes_are_defined]

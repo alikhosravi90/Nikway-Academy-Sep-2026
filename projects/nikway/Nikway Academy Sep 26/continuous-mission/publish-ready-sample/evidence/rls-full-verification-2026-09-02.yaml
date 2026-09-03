@@ -1,0 +1,24 @@
+id: EVID-V1-RLS-FULL-20260902-001
+type: test-result
+status: accepted
+test_script: db/rls-verification.sql
+scope:
+  protected_tables: [users, memberships, learning_journeys, journey_assignments, evidence_records, assessment_results, progression_events, events, audit_events]
+  read_isolation: required
+  write_isolation: required
+environment:
+  database_image: postgres:16-alpine
+  role: nikway_test
+  organization_a: 00000000-0000-0000-0000-000000000001
+  organization_b: 00000000-0000-0000-0000-000000000002
+result:
+  passed: true
+  read_leaks: 0
+  write_leaks: 0
+  executed_at: 2026-09-02
+  output: Cross-tenant read checks passed for all protected tables; cross-tenant write was blocked.
+  valid_role: nikway_test
+  invalid_role_warning: nikway_app must not be used for RLS proof because it owns the tables.
+provenance:
+  source_refs: [db/v1_schema.sql, db/rls-test-plan.md]
+  command: docker exec publish-ready-sample-postgres-1 psql -U nikway_test -d nikway_v1 -f /tmp/rls-verification.sql

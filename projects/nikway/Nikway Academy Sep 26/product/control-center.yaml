@@ -1,0 +1,22 @@
+id: NIKWAY-PROD-CONTROL-CENTER-001
+level: 1
+artifact:
+  name: NIKWAY Project Execution Control Center
+  status: proposed
+purpose: Manage the construction, delivery, operation, governance, and launch of NIKWAY.
+modules:
+  - overview
+  - launch-management
+  - project-and-delivery
+  - team-and-delegation
+  - work-instructions
+  - infrastructure
+  - security-and-access
+  - data-protection
+  - quality-and-readiness
+  - release-and-deployment
+  - evidence-and-audit
+  - reports-and-insights
+foundation_slice: F0
+success_criterion: A new team member can become productive with minimal verbal explanation.
+source_refs: [pasted-text.txt]

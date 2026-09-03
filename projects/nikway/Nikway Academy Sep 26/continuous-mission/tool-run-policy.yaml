@@ -1,0 +1,22 @@
+id: NIKWAY-TOOL-RUN-POLICY-001
+purpose: Prevent tools from looping or publishing without evidence.
+policies:
+  - tool: repo-audit
+    max_runs_per_stage: 2
+    side_effects: writes_only_stage_report
+  - tool: scaffold-and-build
+    max_retries_per_failure: 2
+    forbidden: [new_deployable_service, deferred_v1_capability]
+  - tool: validation-runner
+    max_retries_per_test: 2
+    required: [failure_artifact, reproducible_command]
+  - tool: security-gate
+    stop_on: [critical, high_unresolved]
+  - tool: release-gate
+    external_publish: human_approval_required
+fallback_order:
+  - simplify
+  - defer
+  - isolate
+  - escalate_to_human
+terminal_states: [completed, ready_for_review, blocked_for_human, not_ready]

@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L6-OPERATIONS
+level: 6
+path: system
+name: Operational Value and Feedback
+purpose: Operate the system and measure user, technical, and business value.
+outputs: [production-release, dashboards, feedback, improvement-backlog]
+dependencies: [NIKWAY-SYSTEM-L5-IMPLEMENTATION]
+acceptance_criteria: [service_is_observable, value_metrics_are_collected]

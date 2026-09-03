@@ -1,0 +1,15 @@
+id: NIKWAY-MASTER-REGISTRY-001
+status: draft
+masters:
+  - id: MASTER-COURSE-001
+    name: Course
+    object_type: course
+    current_version: "1.0.0"
+  - id: MASTER-FORM-001
+    name: Form
+    object_type: form
+    current_version: "1.0.0"
+  - id: MASTER-ORGANIZATION-001
+    name: Organization
+    object_type: organization
+    current_version: "1.0.0"

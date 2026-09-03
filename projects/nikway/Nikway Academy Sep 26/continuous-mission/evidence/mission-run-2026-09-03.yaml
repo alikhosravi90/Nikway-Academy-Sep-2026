@@ -1,0 +1,33 @@
+id: EVID-NIKWAY-MISSION-RUN-20260903-001
+type: bounded-continuous-mission-run
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+executed_at: 2026-09-03
+scope:
+  - S1-discover
+  - S4-verify
+  - control-artifact-integrity
+actions:
+  - "Inspected repository inventory, mission policy, release-readiness snapshot, and Release Control Room."
+  - "Identified missing challenge registry and created the required bounded registry."
+  - "Preserved secret-like files as human-review blockers without reading or copying credential contents."
+  - "Executed backend and frontend validation."
+verification:
+  backend_tests:
+    command: python -m pytest -q
+    result: passed
+    summary: "50 passed, 2 skipped, 13 warnings"
+  frontend_build:
+    command: npm run build
+    result: passed
+  challenge_registry:
+    command: "yaml parse + policy assertions"
+    result: passed
+    summary: "5 entries; infinite_loop=prohibited"
+decision:
+  status: blocked_for_human
+  reason: "Approved runtime OIDC/JWKS, S3/MinIO, reachable PostgreSQL runtime role, CI scan result, and release approval are unavailable."
+next_executable_action: "Run CI/security scan and compose-network integration when the environment is available."
+human_action_required:
+  - "Review secret candidates and rotate/remove any exposed credential."
+  - "Provide approved staging endpoints/credentials for OIDC/JWKS, S3/MinIO, and PostgreSQL runtime role."
+  - "Approve or reject external publication after evidence review."

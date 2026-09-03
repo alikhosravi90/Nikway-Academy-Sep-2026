@@ -1,0 +1,23 @@
+id: EVID-NIKWAY-ENVIRONMENT-UNBLOCK-CYCLE-20260903-007
+type: environment-unblock-preparation
+created_at: "2026-09-03"
+timezone: Asia/Tehran
+status: ACTIVE_WITH_EXTERNAL_DEPENDENCIES
+executed:
+  - action: "Inspected CI workflows and confirmed filesystem Trivy scan with CRITICAL,HIGH exit threshold."
+    result: PASS
+  - action: "Added JSON report output and 30-day GitHub Actions artifact upload."
+    result: PASS
+  - action: "Created deterministic PostgreSQL, OIDC, S3 and E2E verification procedures."
+    result: PASS
+  - action: "Updated readiness semantics to distinguish PASS_LOCAL from staging/external verification."
+    result: PASS
+external_status:
+  ci_security_execution: NOT_RUN
+  ci_image_scan: NOT_RUN
+  postgres_staging: BLOCKED_EXTERNAL
+  oidc: BLOCKED_EXTERNAL
+  s3: BLOCKED_EXTERNAL
+  e2e: BLOCKED_EXTERNAL
+release: blocked_for_production
+next_executable_action: "Validate workflow YAML and run local regression tests without repeating already sufficient security scan."

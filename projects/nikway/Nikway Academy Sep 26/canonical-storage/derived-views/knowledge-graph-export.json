@@ -1,0 +1,17 @@
+{
+  "id": "NIKWAY-GRAPH-EXPORT-SEP26-001",
+  "generated_at": "2026-09-02",
+  "nodes": [
+    {"id": "NIKWAY", "type": "System"},
+    {"id": "AGENTIC-ARMY", "type": "System"},
+    {"id": "KNOWLEDGE-MANAGEMENT", "type": "Capability"},
+    {"id": "FACT-NIKWAY-001", "type": "Fact"},
+    {"id": "EVID-001", "type": "Evidence"}
+  ],
+  "edges": [
+    {"from": "NIKWAY", "type": "HAS_CAPABILITY", "to": "KNOWLEDGE-MANAGEMENT"},
+    {"from": "NIKWAY", "type": "DESCRIBED_BY", "to": "FACT-NIKWAY-001"},
+    {"from": "EVID-001", "type": "SUPPORTS", "to": "FACT-NIKWAY-001"}
+  ],
+  "provenance": {"source": "ontology/ontology.yaml", "editable": false}
+}

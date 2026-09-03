@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L4-CONTRACTS
+level: 4
+path: system
+name: System Interaction Contracts
+purpose: Specify UI, API, event, data, and authorization contracts.
+outputs: [route-catalog, api-contracts, event-contracts, data-contracts]
+dependencies: [NIKWAY-SYSTEM-L3-JOURNEY]
+acceptance_criteria: [contracts_are_versioned, error-behavior_is_defined]

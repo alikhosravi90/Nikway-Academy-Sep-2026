@@ -1,0 +1,8 @@
+id: NIKWAY-LM-L4-INTERFACE
+level: 4
+path: language-model
+name: Prompt Tool and Output Interface
+purpose: Specify prompts, tools, context windows, structured outputs, and API contracts.
+outputs: [prompt-templates, tool-contracts, context-policy, output-schema]
+dependencies: [NIKWAY-LM-L3-SKILLS]
+acceptance_criteria: [outputs_are_schema_valid, tool-use_is_bounded]

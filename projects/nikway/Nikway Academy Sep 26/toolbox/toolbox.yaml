@@ -1,0 +1,53 @@
+id: NIKWAY-MISSION-TOOLBOX-001
+purpose: Define one tool per stage with bounded behavior and fallback.
+tools:
+  - id: repo-audit
+    stage: S1-discover
+    type: read-only
+    command: rg --files and structured repository inspection
+    input: repository_path
+    output: inventory-and-risk-report
+    stop_condition: Stop on secret exposure or contradictory source of truth.
+    fallback: Manual source inventory with unresolved-items list.
+  - id: contract-designer
+    stage: S2-design
+    type: artifact-generator
+    input: V1 requirements
+    output: module/data/API/test contracts
+    stop_condition: Stop if requirement cannot map to acceptance test.
+    fallback: Defer requirement and record decision.
+  - id: scaffold-and-build
+    stage: S3-build
+    type: implementation
+    input: approved contracts
+    output: single-container application package
+    stop_condition: Stop on second deployable service or excluded V1 technology.
+    fallback: Postgres-backed synchronous implementation.
+  - id: validation-runner
+    stage: S4-verify
+    type: test
+    input: package and fixtures
+    output: test/evidence report
+    stop_condition: Stop after two retries for same failure.
+    fallback: Deterministic fixture test plus pending-external label.
+  - id: security-gate
+    stage: S5-harden
+    type: audit
+    input: source and runtime configuration
+    output: severity-ranked findings
+    stop_condition: Stop on critical/high unresolved finding.
+    fallback: Disable affected capability.
+  - id: release-packager
+    stage: S6-package
+    type: packaging
+    input: validated source
+    output: versioned package, manifests, checksums
+    stop_condition: Stop on checksum or provenance mismatch.
+    fallback: ready_for_review package.
+  - id: release-gate
+    stage: S7-release-review
+    type: approval-gate
+    input: all evidence
+    output: go/no-go report
+    stop_condition: No human approval means no external publish.
+    fallback: not_ready with remediation list.

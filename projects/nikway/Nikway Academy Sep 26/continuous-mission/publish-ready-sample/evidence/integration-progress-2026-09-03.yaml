@@ -1,0 +1,21 @@
+id: EVID-V1-INTEGRATION-PROGRESS-20260903-001
+type: integration-progress
+status: accepted_for_review
+verified_at: 2026-09-03
+checks:
+  oidc_dependency:
+    status: passed_boundary_test
+    scope: protected_tenant_endpoints_require_bearer_token_when_enabled
+  jwks:
+    status: implemented_boundary
+    scope: rotating_key_resolution_and_claim_validation
+  s3:
+    status: passed_mock_client_tests
+    scope: checksum_upload_scoped_key_and_rollback_cleanup
+  assignment_trace:
+    status: implemented
+    scope: assignment_event_and_audit_in_one_transaction
+  all_mutations_trace:
+    status: pending
+    scope: journey_evidence_assessment_progression
+production_decision: blocked_until_provider_and_storage_runtime_tests

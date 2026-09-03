@@ -1,0 +1,8 @@
+version: 1.0.0
+chain: [master, layout, defaults, template, starter, instance]
+rules:
+  - "Template must reference an immutable master version."
+  - "Instance must retain master and template provenance."
+  - "Layout consumes a master and cannot redefine its contract."
+  - "Examples are reference data and cannot be treated as production instances."
+  - "Resolution order is deterministic and must not mutate definitions."

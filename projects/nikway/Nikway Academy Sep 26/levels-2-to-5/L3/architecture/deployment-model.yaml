@@ -1,0 +1,31 @@
+id: NIKWAY-L3-ARCHITECTURE-DEPLOYMENT_MODEL
+level: 3
+artifact:
+  name: deployment-model
+  domain: architecture
+  parent_level_1: NIKWAY-L1-ARCHITECTURE-DEPLOYMENT_MODEL
+  status: draft
+  meaning: Detailed capability, process, or interaction view
+purpose: Decompose the parent artifact into a L3 view that can be reviewed and synthesized.
+sections:
+    - flows
+    - rules
+    - contracts
+    - states
+    - data
+scope:
+  in_scope: []
+  out_of_scope: []
+inputs: []
+outputs: []
+dependencies:
+  upstream: [NIKWAY-L1-ARCHITECTURE-DEPLOYMENT_MODEL]
+  downstream: []
+rules: []
+acceptance_criteria: []
+source_refs:
+  - ../level-1/architecture/deployment-model.yaml
+traceability:
+  parent_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  parent_artifact: NIKWAY-L1-ARCHITECTURE-DEPLOYMENT_MODEL
+  synthesis_target: ../NIKWAY-MASTER.yaml

@@ -1,0 +1,13 @@
+id: NIKWAY-CLAIMS-SEP26-001
+purpose: Track claims before or during fact validation.
+claims:
+  - id: CLAIM-001
+    statement: Every Level 1 artifact should produce Levels 2 through 5.
+    status: proposed
+    source_refs: [projects/nikway/Nikway Academy Sep 26/ten-layer-paths/INDEX.md]
+    required_action: human_architecture_approval
+  - id: CLAIM-002
+    statement: Level 6 through Level 10 represent operational, governance, ecosystem, industry, and future-state concerns.
+    status: inferred
+    source_refs: [projects/nikway/Nikway Academy Sep 26/ten-layer-paths/INDEX.md]
+    required_action: validate_layer_semantics

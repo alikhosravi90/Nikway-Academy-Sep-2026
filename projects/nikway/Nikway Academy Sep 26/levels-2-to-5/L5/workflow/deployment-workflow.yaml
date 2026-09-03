@@ -1,0 +1,32 @@
+id: NIKWAY-L5-WORKFLOW-DEPLOYMENT_WORKFLOW
+level: 5
+artifact:
+  name: deployment-workflow
+  domain: workflow
+  parent_level_1: NIKWAY-L1-WORKFLOW-DEPLOYMENT_WORKFLOW
+  status: draft
+  meaning: Verification and operational evidence view
+purpose: Decompose the parent artifact into a L5 view that can be reviewed and synthesized.
+sections:
+    - tests
+    - scenarios
+    - metrics
+    - runbook
+    - evidence
+    - approval
+scope:
+  in_scope: []
+  out_of_scope: []
+inputs: []
+outputs: []
+dependencies:
+  upstream: [NIKWAY-L1-WORKFLOW-DEPLOYMENT_WORKFLOW]
+  downstream: []
+rules: []
+acceptance_criteria: []
+source_refs:
+  - ../level-1/workflow/deployment-workflow.yaml
+traceability:
+  parent_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  parent_artifact: NIKWAY-L1-WORKFLOW-DEPLOYMENT_WORKFLOW
+  synthesis_target: ../NIKWAY-MASTER.yaml

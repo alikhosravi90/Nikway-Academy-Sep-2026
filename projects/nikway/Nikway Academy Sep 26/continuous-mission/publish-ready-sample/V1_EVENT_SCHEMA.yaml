@@ -1,0 +1,32 @@
+id: NIKWAY-V1-EVENT-SCHEMA-001
+version: 1.0.0
+status: design_ready
+event:
+  required:
+    - id
+    - actor
+    - verb
+    - object
+    - timestamp
+    - context
+    - organization_id
+    - correlation_id
+  actor:
+    required: [id, type]
+    types: [user, system]
+  verb:
+    allowed: [journey_assigned, evidence_submitted, assessment_completed, progression_decided]
+  object:
+    required: [id, type]
+  context:
+    required: [source_module, request_id]
+  retention: append_only
+  idempotency_key: id
+examples:
+  - actor: {id: user-1, type: user}
+    verb: evidence_submitted
+    object: {id: evidence-1, type: EvidenceRecord}
+    timestamp: 2026-09-02T00:00:00Z
+    context: {source_module: evidence, request_id: req-1}
+    organization_id: org-1
+    correlation_id: corr-1

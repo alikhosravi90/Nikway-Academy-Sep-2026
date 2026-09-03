@@ -1,0 +1,25 @@
+id: NIKWAY-STANDARDS-V1-MAPPING-001
+standards:
+  oidc:
+    applies_to: [identity, organization, authorization]
+    v1_artifacts: [V1_SECURITY_CONFIG.yaml, V1_API_CONTRACT.yaml]
+    gate: runtime_identity_test
+  openapi:
+    applies_to: [api]
+    v1_artifacts: [V1_API_CONTRACT.yaml]
+    gate: generated_contract_diff
+  xapi:
+    applies_to: [events, audit, reporting]
+    v1_artifacts: [V1_EVENT_SCHEMA.yaml]
+    gate: event_shape_test
+  postgres_rls:
+    applies_to: [tenant_isolation]
+    v1_artifacts: [db/v1_schema.sql, V1_RLS_POLICY.md]
+    gate: full_rls_test
+  s3:
+    applies_to: [evidence_upload]
+    v1_artifacts: [V1_UPLOAD_SECURITY_POLICY.md]
+    gate: upload_checksum_test
+decision:
+  v1_uses: [oidc, openapi, xapi_shaped_postgres_events, postgres_rls, s3_compatible_storage]
+  v1_defers: [lrs, graph_database, vector_database, rag, llm, ai_agents]

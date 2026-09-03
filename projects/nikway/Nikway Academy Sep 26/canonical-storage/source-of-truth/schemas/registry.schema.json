@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nikway.local/schemas/registry.schema.json",
+  "title": "NIKWAY Registry Record",
+  "type": "object",
+  "required": ["id", "status", "source_refs"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[A-Z0-9_-]+$"},
+    "status": {"type": "string", "enum": ["draft", "proposed", "confirmed", "accepted", "rejected", "superseded", "deprecated"]},
+    "source_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "fact_refs": {"type": "array", "items": {"type": "string"}},
+    "generated_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,9 @@
+id: NIKWAY-RUNTIME-SEP26
+purpose: Runtime view for validating that synthesized architecture can become executable.
+level_1:
+  sections: [interfaces, application-flow, persistence, operations]
+level_2:
+  interfaces: [frontend, api, events]
+  application-flow: [command, domain-operation, result]
+  persistence: [repository, database, audit]
+  operations: [deployment, monitoring, recovery]

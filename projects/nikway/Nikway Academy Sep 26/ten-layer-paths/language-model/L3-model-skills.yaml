@@ -1,0 +1,8 @@
+id: NIKWAY-LM-L3-SKILLS
+level: 3
+path: language-model
+name: Model Skills and Reasoning Patterns
+purpose: Define supported tasks, skills, reasoning patterns, and failure modes.
+outputs: [skill-catalog, task-types, reasoning-patterns, failure-modes]
+dependencies: [NIKWAY-LM-L2-ONTOLOGY]
+acceptance_criteria: [skills_have_examples, failure-modes_have_mitigations]

@@ -1,0 +1,50 @@
+id: EVID-NIKWAY-SECURITY-CONTRACT-20260903-025
+type: security-contract-cycle
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+created_at: "2026-09-03T19:05:00+03:30"
+timezone: Asia/Tehran
+scope:
+  - "Static security contract validation"
+  - "CI workflow security controls"
+  - "No external credentials or production mutation"
+executed:
+  linter:
+    script: scripts/lint_security_contract.py
+    result: PASS_LOCAL
+    checks_passed: 13
+    checks:
+      - oidc_protocol
+      - jwks_required
+      - password_storage_forbidden
+      - deny_by_default
+      - cors_wildcard_forbidden
+      - secrets_externalized
+      - runtime_superuser_forbidden
+      - compose_runtime_role_distinct
+      - compose_oidc_jwks_required
+      - ci_scan_configured
+      - ci_scan_fails_on_findings
+      - ci_report_upload
+  workflow:
+    file: publish-ready-sample/.github/workflows/security-scan.yml
+    contract_linter: CONFIGURED
+    trivy_threshold_failure: CONFIGURED
+    official_github_actions_execution: NOT_RUN
+  tests:
+    command: "python -m pytest tests/test_security_contract.py tests/test_generate_progress_snapshot.py tests/test_verify_release_state.py -q"
+    result: "5 passed"
+  regression:
+    result: "67 passed, 5 skipped"
+  frontend_build: PASS
+  yaml_validation: PASS
+integrity:
+  external_scan_fabricated: false
+  credentials_committed: false
+  production_ready: false
+remaining_external:
+  - official_github_actions_execution
+  - approved_oidc_token_validation
+  - approved_s3_credentials_and_e2e
+  - human_release_approval
+final_gate: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+next_executable_action: "Regenerate and publish the final derived readiness snapshot after this security evidence update."

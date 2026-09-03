@@ -1,0 +1,159 @@
+id: NIKWAY-ONTOLOGY-SEP26-001
+name: NIKWAY Canonical Ontology
+version: 1.0.0
+status: draft
+purpose: Define the canonical concepts and relationships shared by NIKWAY, Agentic Army, and the language-model path.
+source_of_truth: ../facts/fact-registry.yaml
+namespaces:
+  business: NIKWAY-BUS
+  product: NIKWAY-PROD
+  knowledge: NIKWAY-KNOW
+  architecture: NIKWAY-ARCH
+  agentic_army: ARMY
+  runtime: NIKWAY-RUN
+classes:
+  - id: CLASS-SYSTEM
+    name: System
+    definition: An organized set of capabilities, components, actors, and rules that produces outcomes.
+  - id: CLASS-ACTOR
+    name: Actor
+    definition: A human, agent, team, or external party participating in a capability or process.
+  - id: CLASS-CAPABILITY
+    name: Capability
+    definition: A stable ability that enables a business or operational outcome.
+  - id: CLASS-KNOWLEDGE
+    name: Knowledge
+    definition: Governed information that can support learning, decisions, and action.
+  - id: CLASS-ACTION
+    name: Action
+    definition: An intentional operation performed by a human or system.
+  - id: CLASS-EVIDENCE
+    name: Evidence
+    definition: A traceable observation or source supporting a claim or outcome.
+  - id: CLASS-ASSESSMENT
+    name: Assessment
+    definition: A structured evaluation of capability, maturity, or outcome.
+  - id: CLASS-ARTIFACT
+    name: Artifact
+    definition: A versioned document or model that records a view, decision, contract, or evidence.
+  - id: CLASS-FACT
+    name: Fact
+    definition: A source-backed and validated statement eligible for canonical use.
+  - id: CLASS-CLAIM
+    name: Claim
+    definition: A statement awaiting or undergoing evidence-based validation.
+  - id: CLASS-AGENT
+    name: Agent
+    definition: A software or AI actor assigned a role, capability, and bounded responsibility.
+  - id: CLASS-WORKFLOW
+    name: Workflow
+    definition: An ordered, governed sequence of activities that produces an outcome.
+  - id: CLASS-COMPONENT
+    name: Component
+    definition: A deployable or logical part of the technical system.
+  - id: CLASS-POLICY
+    name: Policy
+    definition: A rule that constrains decisions, behavior, access, or change.
+  - id: CLASS-OUTCOME
+    name: Outcome
+    definition: A measurable result produced for a user, organization, or system.
+entities:
+  - id: NIKWAY
+    class: CLASS-SYSTEM
+    label: NIKWAY
+    facts: [FACT-NIKWAY-001, FACT-NIKWAY-002]
+  - id: AGENTIC-ARMY
+    class: CLASS-SYSTEM
+    label: Agentic Army
+    facts: [FACT-ARMY-001]
+  - id: KNOWLEDGE-MANAGEMENT
+    class: CLASS-CAPABILITY
+    label: Knowledge Management
+    facts: [FACT-NIKWAY-005]
+  - id: COMPETENCY-DEVELOPMENT
+    class: CLASS-CAPABILITY
+    label: Competency Development
+    facts: [FACT-NIKWAY-005]
+  - id: IMPROVEMENT-MANAGEMENT
+    class: CLASS-CAPABILITY
+    label: Improvement Management
+    facts: [FACT-NIKWAY-005]
+  - id: MINDSET
+    class: CLASS-CAPABILITY
+    label: Mindset
+    facts: [FACT-NIKWAY-005]
+  - id: DOMAIN-CAPABILITIES
+    class: CLASS-CAPABILITY
+    label: Domain Capabilities
+    facts: [FACT-NIKWAY-005]
+  - id: MASTERY
+    class: CLASS-CAPABILITY
+    label: Mastery
+    facts: [FACT-NIKWAY-005]
+  - id: LEADERSHIP
+    class: CLASS-CAPABILITY
+    label: Leadership
+    facts: [FACT-NIKWAY-005]
+  - id: KNOWLEDGE-LOOP
+    class: CLASS-WORKFLOW
+    label: NIKWAY Knowledge Loop
+    facts: [FACT-NIKWAY-006]
+relations:
+  - id: REL-SYSTEM-HAS-CAPABILITY
+    subject_class: CLASS-SYSTEM
+    predicate: has_capability
+    object_class: CLASS-CAPABILITY
+    cardinality: one_to_many
+  - id: REL-KNOWLEDGE-ENABLES-LEARNING
+    subject_class: CLASS-KNOWLEDGE
+    predicate: enables
+    object_class: CLASS-OUTCOME
+  - id: REL-CAPABILITY-ENABLES-ACTION
+    subject_class: CLASS-CAPABILITY
+    predicate: enables
+    object_class: CLASS-ACTION
+  - id: REL-ACTION-PRODUCES-EVIDENCE
+    subject_class: CLASS-ACTION
+    predicate: produces
+    object_class: CLASS-EVIDENCE
+  - id: REL-EVIDENCE-SUPPORTS-ASSESSMENT
+    subject_class: CLASS-EVIDENCE
+    predicate: supports
+    object_class: CLASS-ASSESSMENT
+  - id: REL-EVIDENCE-SUPPORTS-FACT
+    subject_class: CLASS-EVIDENCE
+    predicate: supports
+    object_class: CLASS-FACT
+  - id: REL-FACT-DESCRIBES-ENTITY
+    subject_class: CLASS-FACT
+    predicate: describes
+    object_class: CLASS-SYSTEM
+  - id: REL-AGENT-PERFORMS-WORKFLOW
+    subject_class: CLASS-AGENT
+    predicate: performs
+    object_class: CLASS-WORKFLOW
+  - id: REL-ARTIFACT-REFERENCES-FACT
+    subject_class: CLASS-ARTIFACT
+    predicate: references
+    object_class: CLASS-FACT
+  - id: REL-POLICY-CONSTRAINS-ACTION
+    subject_class: CLASS-POLICY
+    predicate: constrains
+    object_class: CLASS-ACTION
+  - id: REL-COMPONENT-IMPLEMENTS-CAPABILITY
+    subject_class: CLASS-COMPONENT
+    predicate: implements
+    object_class: CLASS-CAPABILITY
+canonical_rules:
+  - Every canonical entity has a stable id.
+  - Every canonical fact has at least one source and evidence reference.
+  - Duplicate concepts are merged into one canonical entity.
+  - Contradictions are recorded and never silently overwritten.
+  - Pending concepts cannot be used as canonical facts.
+pending_concepts:
+  - language-model
+  - vertical-slice
+  - assessment
+  - diagnosis
+  - learning-journey
+  - evidence

@@ -1,0 +1,18 @@
+id: EVIDENCE-REVIEW-TEMPLATE
+purpose: Template for reviewing a new evidence item.
+evidence_id:
+reference:
+type:
+locator:
+claim_or_fact_ids: []
+reliability: medium
+verification_status: unreviewed
+review:
+  reviewer:
+  reviewed_at:
+  method:
+  result:
+  notes:
+decision:
+  supports_fact: false
+  canonical_eligible: false

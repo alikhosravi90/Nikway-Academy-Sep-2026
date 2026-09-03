@@ -1,0 +1,85 @@
+id: EVID-NIKWAY-MASTER-PERSISTENCE-GATE-20260903-011
+type: master-persistence-gate
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+created_at: "2026-09-03T11:51:20+03:30"
+timezone: Asia/Tehran
+reference:
+  repository: E:/AGENTIC-ARMY
+  project: projects/nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample
+  commit: "not available; working tree changes preserved"
+runtime:
+  database: PostgreSQL
+  version: "16.15"
+  database_name: nikway_master_gate_20260903
+  execution_mode: "real PostgreSQL container with temporary Python test runner"
+  sqlite_or_in_memory: false
+migrations:
+  chain:
+    - db/v1_schema.sql
+    - db/master_system_schema.sql
+  result: PASS
+  clean_database: true
+  direct_checks:
+    master_tables: 2
+    master_version_primary_key: PASS
+    master_version_master_foreign_key: PASS
+    master_versions_index: PASS
+repository_tests:
+  command: "python -m pytest tests/test_master_repository.py -q"
+  result: "2 passed"
+  runtime_database_url: "provided to runner; secret omitted from evidence"
+properties_proven:
+  master_definition_creation: PASS
+  master_definition_retrieval: PASS
+  version_creation: PASS
+  version_retrieval: PASS
+  immutable_version_semantics: PASS
+  duplicate_version_rejection: PASS
+  rollback_after_duplicate_version: PASS
+  process_restart_durability: PASS
+  migration_correctness: PASS
+  no_sqlite_or_in_memory_persistence: PASS
+restart_verification:
+  writer_process: "created MASTER-RESTART-9f65c006-1d52-419a-a132-8dbc23d973ae"
+  reader_process: "restart_retrieval=PASS"
+  persisted_version_count: 1
+rollback_verification:
+  duplicate_version_attempt: "rejected by primary key"
+  post_failure_current_version: "2.0.0"
+  post_failure_version_count: 2
+  partial_state: false
+runtime_role:
+  role: nikway_master_runtime
+  superuser: false
+  createdb: false
+  createrole: false
+  table_owner: nikway_app
+  master_definitions_dml_privileges: true
+  master_versions_dml_privileges: true
+  result: PASS
+full_regression:
+  command: "python -m pytest tests -q"
+  result: "56 passed, 5 skipped"
+  skipped_reason: "unavailable external/integration environments outside this gate"
+additional_validation:
+  compile: PASS_LOCAL
+  openapi_contract_diff: "contract_paths_ok=10"
+  yaml_parse: PASS_LOCAL
+  git_diff_check: PASS_LOCAL
+blockers: []
+external_gates_not_claimed:
+  - "NIKWAY staging database"
+  - "OIDC provider"
+  - "S3 provider"
+  - "CI-hosted security execution"
+gate:
+  implementation: PASS_LOCAL
+  migration: PASS
+  repository: PASS
+  postgresql_persistence: PASS
+  durability: PASS
+  transaction_rollback: PASS
+  runtime_permissions: PASS
+  final_gate: PASS_PERSISTENCE
+  production_ready: false
+next_mission: "Authorization Integration"

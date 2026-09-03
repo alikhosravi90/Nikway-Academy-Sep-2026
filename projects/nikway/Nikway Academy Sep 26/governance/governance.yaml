@@ -1,0 +1,9 @@
+id: NIKWAY-GOVERNANCE-SEP26
+purpose: Governance view for review, approval, versioning, and change control.
+level_1:
+  sections: [decision-rights, lifecycle, quality-gates, compliance]
+level_2:
+  decision-rights: [owner, reviewer, approver]
+  lifecycle: [draft, review, approved, superseded]
+  quality-gates: [schema, references, tests, architecture-review]
+  compliance: [auditability, traceability, versioning]

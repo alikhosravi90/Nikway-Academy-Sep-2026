@@ -1,0 +1,21 @@
+id: NIKWAY-ACADEMY-SEP26-BLACK-MANIFEST-001
+purpose: Architectural constitution and non-negotiable guardrails
+invariants:
+  - academy_is_product_core
+  - journey_first
+  - evidence_driven
+  - modular_monolith_before_microservices
+  - api_first
+  - auditability_and_traceability
+forbidden:
+  - undocumented_architecture_changes
+  - feature_without_business_value
+  - uncontrolled_database_changes
+  - duplicate_canonical_concepts
+required:
+  - every_artifact_has_level_1_and_level_2
+  - every_claim_has_source_or_decision
+  - master_synthesis_preserves_traceability
+change_control:
+  approval_required: true
+  architecture_review: true

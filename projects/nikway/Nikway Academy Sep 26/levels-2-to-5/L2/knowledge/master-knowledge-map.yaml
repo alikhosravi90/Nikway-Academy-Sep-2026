@@ -1,0 +1,32 @@
+id: NIKWAY-L2-KNOWLEDGE-MASTER_KNOWLEDGE_MAP
+level: 2
+artifact:
+  name: master-knowledge-map
+  domain: knowledge
+  parent_level_1: NIKWAY-L1-KNOWLEDGE-MASTER_KNOWLEDGE_MAP
+  status: draft
+  meaning: Major subdomain or component view
+purpose: Decompose the parent artifact into a L2 view that can be reviewed and synthesized.
+sections:
+    - boundaries
+    - responsibilities
+    - actors
+    - inputs
+    - outputs
+    - dependencies
+scope:
+  in_scope: []
+  out_of_scope: []
+inputs: []
+outputs: []
+dependencies:
+  upstream: [NIKWAY-L1-KNOWLEDGE-MASTER_KNOWLEDGE_MAP]
+  downstream: []
+rules: []
+acceptance_criteria: []
+source_refs:
+  - ../level-1/knowledge/master-knowledge-map.yaml
+traceability:
+  parent_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  parent_artifact: NIKWAY-L1-KNOWLEDGE-MASTER_KNOWLEDGE_MAP
+  synthesis_target: ../NIKWAY-MASTER.yaml

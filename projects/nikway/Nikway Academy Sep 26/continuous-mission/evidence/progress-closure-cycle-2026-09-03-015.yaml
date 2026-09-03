@@ -1,0 +1,49 @@
+id: EVID-NIKWAY-PROGRESS-CLOSURE-20260903-015
+type: progress-closure-cycle
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+created_at: "2026-09-03T14:17:00+03:30"
+timezone: Asia/Tehran
+objective:
+  targets:
+    implementation: 90
+    release_readiness: 90
+    security: 90
+    operations: 90
+    evidence: 90
+executed:
+  backend_regression:
+    command: "python -m pytest tests -q"
+    result: "67 passed, 5 skipped"
+  frontend_build:
+    command: "npm run build"
+    result: PASS
+  openapi_contract:
+    command: "python scripts/generate_openapi.py; python scripts/contract_diff.py ../V1_API_CONTRACT.yaml"
+    result: "contract_paths_ok=10"
+  dependency_audit:
+    command: "npm audit --omit=dev --audit-level=high"
+    result: "found 0 vulnerabilities"
+  containerized_trivy:
+    command: "docker run --rm -v <workspace>:/workspace aquasec/trivy:0.66.0 fs --scanners vuln,secret --severity CRITICAL,HIGH --ignore-unfixed --exit-code 0 --format json ..."
+    result: PASS_LOCAL
+    report: publish-ready-sample/trivy-local-report-2026-09-03-rerun.json
+    threshold_vulnerabilities: 0
+    threshold_secrets: 0
+  backup_restore:
+    backup_script: publish-ready-sample/db/backup-restore.ps1
+    restore_script: publish-ready-sample/db/restore-verify.ps1
+    result: PASS_LOCAL
+    restored_public_tables: 11
+    backup_size_bytes: 38807
+    backup_sha256: 36E355F200D904D0045CD46D5BC4DCB8B168BF1DDCB56285FD8747A39A5E0310
+    fix_applied: "Absolute backup paths are now handled without double-prefixing the current directory."
+limitations:
+  - "GitHub Actions security workflow has not executed in CI."
+  - "Approved staging OIDC, S3 and PostgreSQL validation remain external."
+  - "Production approval has not been granted."
+integrity:
+  fabricated_credentials: false
+  fabricated_external_results: false
+  production_ready: false
+final_gate: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+next_executable_action: "Run the local E2E/preflight and inspect the remaining operational configuration gaps."

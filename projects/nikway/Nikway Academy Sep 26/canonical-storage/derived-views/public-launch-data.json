@@ -1,0 +1,17 @@
+{
+  "id": "NIKWAY-PUBLIC-LAUNCH-DATA-SEP26-001",
+  "generated_at": "2026-09-02",
+  "audience": "public",
+  "brand": {"name": "NIKWAY", "tagline": "From Chaos to Clarity"},
+  "message": "در حال ساختن یک مسیر جدید هستیم.",
+  "display": {
+    "countdown": null,
+    "milestones": ["Foundation", "Architecture", "Core Platform", "Testing", "Pilot", "Launch"],
+    "progress": null,
+    "updates": []
+  },
+  "privacy": {
+    "excluded": ["ports", "docker_containers", "api_endpoints", "migration_ids", "ssl_configuration", "database_status"]
+  },
+  "provenance": {"source": "product/public-launch-page.yaml", "editable": false}
+}

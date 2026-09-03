@@ -1,0 +1,8 @@
+id: NIKWAY-LM-L7-GOVERNANCE
+level: 7
+path: language-model
+name: AI Governance and Model Risk
+purpose: Govern privacy, security, bias, safety, provenance, access, and change.
+outputs: [ai-policy, risk-register, access-model, provenance-model, audit-records]
+dependencies: [NIKWAY-LM-L6-EVALUATION]
+acceptance_criteria: [high-risk_use_is_controlled, decisions_are_auditable]

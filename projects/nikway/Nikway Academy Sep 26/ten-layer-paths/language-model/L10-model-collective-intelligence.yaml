@@ -1,0 +1,8 @@
+id: NIKWAY-LM-L10-COLLECTIVE-INTELLIGENCE
+level: 10
+path: language-model
+name: Collective Intelligence and Future Model
+purpose: Define long-term human-AI collaboration, emergent intelligence, and future scenarios.
+outputs: [collective-intelligence-model, future-scenarios, strategic-research-agenda]
+dependencies: [NIKWAY-LM-L9-LEARNING]
+acceptance_criteria: [human-agency_is_preserved, scenarios_have_guardrails]

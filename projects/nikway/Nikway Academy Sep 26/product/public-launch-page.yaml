@@ -1,0 +1,11 @@
+id: NIKWAY-PROD-PUBLIC-LAUNCH-001
+level: 1
+artifact:
+  name: Public Launch Page
+  status: proposed
+purpose: Communicate NIKWAY launch progress to the public in simple, non-technical language.
+audience: public
+display: [countdown, milestones, progress, updates, simple-story, about-nikway, project-status]
+must_not_display: [ports, docker_containers, api_endpoints, migration_ids, ssl_configuration, database_status]
+separation: Public Launch Page is separate from the internal Control Center.
+source_refs: [pasted-text.txt]

@@ -1,0 +1,24 @@
+id: NIKWAY-V1-ASSESSMENT-PROGRESSION-001
+version: 1.0.0
+status: design_ready
+assessment:
+  verdicts: [accepted, needs_revision, rejected]
+  required_inputs: [evidence_id, criterion_results, comments, assessor_id]
+  rule: AssessmentResult records whether submitted evidence meets stated criteria.
+  accepted_condition: Every required criterion is accepted.
+  needs_revision_condition: At least one criterion needs_revision and none is rejected.
+  rejected_condition: Any required criterion is rejected.
+progression:
+  rule: Progression is a separate decision after assessment.
+  accepted_assessment: create progression event to next incomplete step.
+  needs_revision_assessment: keep current step active and request resubmission.
+  rejected_assessment: keep current step active and record remediation.
+  final_step: create completion event instead of a next-step assignment.
+  idempotency: One progression decision per assessment result.
+audit_requirements:
+  - actor_id
+  - organization_id
+  - assessment_result_id
+  - previous_step
+  - next_step
+  - reason

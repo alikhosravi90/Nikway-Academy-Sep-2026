@@ -1,0 +1,8 @@
+id: NIKWAY-LM-L2-ONTOLOGY
+level: 2
+path: language-model
+name: Knowledge Ontology and Semantic Model
+purpose: Define concepts, entities, relations, vocabulary, and canonical meanings.
+outputs: [ontology, glossary, entity-relations, concept-identifiers]
+dependencies: [NIKWAY-LM-L1-IDENTITY]
+acceptance_criteria: [terms_are_canonical, relations_are_traceable]

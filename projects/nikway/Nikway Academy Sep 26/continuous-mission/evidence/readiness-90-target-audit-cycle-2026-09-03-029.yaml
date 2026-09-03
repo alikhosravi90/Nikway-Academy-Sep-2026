@@ -1,0 +1,53 @@
+type: readiness-90-target-audit-cycle
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+timestamp: 2026-09-03T20:20:00+03:30
+requested_targets:
+  implementation: 90
+  release_readiness: 90
+  security: 90
+  operations: 90
+  evidence: 90
+verified_current_values:
+  implementation: 100
+  release_readiness: 75
+  security: 40
+  operations: 75
+  evidence: 100
+audit_conclusion:
+  target_values_are_not_completion_claims: true
+  internal_blockers_remaining: false
+  external_gate_values_may_not_be_inferred: true
+executed_evidence:
+  - "Real isolated PostgreSQL 16 runtime with non-owner nikway_runtime."
+  - "Migration chain and persistence regression."
+  - "Full backend suite: 71 passed, 1 skipped."
+  - "Mission control suite: 11 passed."
+  - "Frontend production build."
+  - "OpenAPI generation and 10-path contract check."
+  - "Containerized Trivy filesystem and secret scan: zero CRITICAL/HIGH findings and zero secrets."
+  - "Operational smoke: API health, local OIDC discovery/JWKS and MinIO health."
+  - "Corrected CI Trivy scan/output/upload path contract."
+  - "Corrected runbook Compose filename and explicit -f usage."
+remaining_gates:
+  - name: Authorization
+    status: BLOCKED_EXTERNAL
+    required_input: "Approved staging OIDC provider-issued identity and membership mapping."
+  - name: OIDC
+    status: BLOCKED_EXTERNAL
+    required_input: "Approved issuer, audience, JWKS URL and test credentials."
+  - name: S3
+    status: BLOCKED_EXTERNAL
+    required_input: "Approved endpoint, bucket and scoped credentials."
+  - name: E2E
+    status: BLOCKED_EXTERNAL
+    required_input: "Integrated staging PostgreSQL, OIDC and S3 environment."
+  - name: CI Security
+    status: NOT_RUN
+    required_input: "Official GitHub Actions runner execution and retained Trivy artifact."
+environment_limits:
+  docker_compose_network: "New project network could not be allocated because Docker predefined address pools are fully subnetted; isolated PostgreSQL was safely run on bridge with a fresh volume."
+  existing_api_runtime: "Existing API on port 8001 is an older image without /health/dependencies and /health/ready; 404 classified as NOT_APPLICABLE."
+release:
+  status: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+  production_ready: false
+next_executable_action: "Run the corrected security workflow on an official CI runner and retain its Trivy artifact."

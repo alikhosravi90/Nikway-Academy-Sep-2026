@@ -1,0 +1,21 @@
+id: ADR-TEMPLATE
+title:
+domain:
+status: proposed
+date: 2026-09-02
+context:
+decision:
+rationale:
+options_considered: []
+consequences:
+  positive: []
+  negative: []
+fact_refs: []
+evidence_refs: []
+source_refs: []
+owner:
+reviewers: []
+approval:
+  approved_by:
+  approved_at:
+review_trigger:

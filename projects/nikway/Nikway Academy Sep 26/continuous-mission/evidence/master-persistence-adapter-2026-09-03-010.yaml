@@ -1,0 +1,46 @@
+id: EVID-NIKWAY-MASTER-PERSISTENCE-ADAPTER-20260903-010
+type: master-persistence-adapter
+created_at: "2026-09-03"
+timezone: Asia/Tehran
+status: BLOCKED_EXTERNAL
+objective: "Connect MasterDefinition and MasterVersion to PostgreSQL through the existing SQLAlchemy boundary."
+implemented:
+  - publish-ready-sample/db/master_system_schema.sql
+  - publish-ready-sample/app/app/master_repository.py
+  - publish-ready-sample/app/tests/test_master_repository.py
+  - publish-ready-sample/docker-compose.full-v1.yml
+  - publish-ready-sample/.github/workflows/test.yml
+decisions:
+  - "Use additive tables rather than modifying existing V1 domain tables."
+  - "Store structured contract fields as JSONB while keeping master identity and version keys relational."
+  - "Treat master_versions as append-only with a unique (master_id, version) key."
+  - "Use existing database_engine and explicit engine.begin transaction boundaries."
+  - "Do not add API, authorization, or duplicate audit infrastructure in Prompt 1."
+tests:
+  - command: "python -m pytest tests/test_master_system.py tests/test_master_repository.py -q"
+    result: "5 passed, 2 skipped"
+  - command: "python -m pytest tests -q"
+    result: "56 passed, 5 skipped"
+  - command: "python -m compileall -q app"
+    result: PASS_LOCAL
+  - command: "python scripts/generate_openapi.py; python scripts/contract_diff.py ../V1_API_CONTRACT.yaml"
+    result: "contract_paths_ok=10"
+  - command: "python -c \"import yaml; parse canonical master YAML files\""
+    result: "7 YAML files parsed successfully"
+ci:
+  migration_wiring: PASS_LOCAL
+  workflow_runtime_execution: NOT_RUN
+external_blocker:
+  dependency: "Reachable PostgreSQL runtime or CI runner"
+  reason: "Local DATABASE_URL is not configured/reachable; Docker isolated compose remains blocked by host network address-pool exhaustion."
+  required_verification:
+    - "Apply v1_schema.sql"
+    - "Apply master_system_schema.sql"
+    - "Run test_master_repository.py with DATABASE_URL"
+    - "Verify persistence after process restart"
+    - "Verify duplicate version rollback/conflict behavior"
+gate:
+  status: BLOCKED_PERSISTENCE
+  classification: EXTERNAL_DEPENDENCY
+  production_ready: false
+next_action: "Run the wired CI workflow or execute the deterministic PostgreSQL verification on a host with an available runtime."

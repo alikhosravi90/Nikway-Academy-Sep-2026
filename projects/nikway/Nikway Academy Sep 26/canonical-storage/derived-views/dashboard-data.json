@@ -1,0 +1,10 @@
+{
+  "id": "NIKWAY-DASHBOARD-DATA-SEP26-001",
+  "generated_at": "2026-09-02",
+  "audience": "internal-control-center",
+  "project": {"name": "NIKWAY", "phase": "foundation", "status": "living-evolving"},
+  "counts": {"confirmed_facts": 12, "decisions": 6, "evidence_items": 9, "level_1_artifacts": 104},
+  "focus": ["Control Center", "Identity and Access", "Infrastructure", "Evidence"],
+  "rules": {"show_blockers": true, "show_next_action": true, "hide_secrets": true},
+  "provenance": {"source": ["facts", "governance", "level-1"], "editable": false}
+}

@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L9-INDUSTRY-IMPACT
+level: 9
+path: system
+name: Industry Transformation Model
+purpose: Describe sector-level outcomes, benchmarks, and transformation impact.
+outputs: [industry-model, benchmark-framework, impact-indicators]
+dependencies: [NIKWAY-SYSTEM-L8-ECOSYSTEM]
+acceptance_criteria: [impact_is_measurable, benchmarks_have_sources]

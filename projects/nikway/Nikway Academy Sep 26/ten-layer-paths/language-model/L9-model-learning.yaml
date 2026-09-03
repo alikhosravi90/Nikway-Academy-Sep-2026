@@ -1,0 +1,8 @@
+id: NIKWAY-LM-L9-LEARNING
+level: 9
+path: language-model
+name: Organizational Learning and Knowledge Evolution
+purpose: Convert verified interactions and evidence into governed organizational knowledge.
+outputs: [learning-model, knowledge-updates, institutional-memory, maturity-signals]
+dependencies: [NIKWAY-LM-L8-ECOSYSTEM]
+acceptance_criteria: [updates_have_evidence, knowledge_versions_are_recoverable]

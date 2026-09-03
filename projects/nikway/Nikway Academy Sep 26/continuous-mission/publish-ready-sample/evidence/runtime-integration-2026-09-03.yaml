@@ -1,0 +1,47 @@
+id: EVID-V1-RUNTIME-INTEGRATION-20260903-001
+type: runtime-integration
+status: PARTIAL
+verified_at: 2026-09-03
+latest_cycle: 2026-09-03
+mission_status: ACTIVE_WITH_EXTERNAL_DEPENDENCIES
+checks:
+  dependency_installation: PASS
+  application_test_suite: PASS
+  python_compile: PASS
+  openapi_contract_diff: PASS
+  frontend_build: PASS
+  frontend_dependency_audit: PASS
+  docker_api_health: PASS
+  docker_minio_health: PASS
+  docker_staging_postgres_health: PASS
+  postgres_runtime_role: BLOCKED
+  oidc_provider_jwks: BLOCKED
+  s3_runtime: BLOCKED
+  end_to_end_credentials: BLOCKED
+  trivy_ci_scan: NOT_RUN
+blocker:
+  database_url: configured_host_unreachable
+  detail: The inherited DATABASE_URL points to a Docker-only hostname that is not resolvable from the host test process; a separate running PostgreSQL stack must not be treated as NIKWAY staging evidence.
+policy: Do not substitute fake external credentials; rerun in the full compose network or with approved staging secrets.
+results:
+  application_test_suite: "50 passed, 2 skipped, 13 warnings"
+  openapi_contract_diff: "contract_paths_ok=10"
+  frontend_dependency_audit: "0 high, 0 critical"
+  docker_health: "nikway-api, nikway-minio, and nikway_staging-postgres-1 healthy"
+external_dependencies:
+  - task: postgres_runtime_role
+    status: BLOCKED
+    required_input: "Reachable NIKWAY staging database and non-owner runtime role."
+  - task: oidc_provider_jwks
+    status: BLOCKED
+    required_input: "Approved issuer, audience, JWKS URL and test credentials."
+  - task: s3_runtime
+    status: BLOCKED
+    required_input: "Approved endpoint, bucket and scoped credentials."
+  - task: trivy_ci_scan
+    status: NOT_RUN
+    required_input: "CI runner execution or approved Trivy environment."
+  - task: end_to_end_credentials
+    status: BLOCKED
+    required_input: "Approved OIDC, S3 and staging database access."
+gate_decision: blocked_for_production

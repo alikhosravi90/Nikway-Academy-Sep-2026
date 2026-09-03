@@ -1,0 +1,34 @@
+id: NIKWAY-V1-ROLE-PERMISSIONS-001
+roles:
+  nikway_admin:
+    organization: [create, read, update]
+    membership: [invite, assign_roles, revoke]
+    journey: [create, read, update, publish, assign]
+    evidence: [read]
+    assessment: [read]
+    progression: [read]
+    reports: [read]
+  org_admin:
+    organization: [read, update]
+    membership: [invite, assign_roles]
+    journey: [create, read, update, publish, assign]
+    evidence: [read]
+    assessment: [read]
+    progression: [read]
+    reports: [read]
+  assessor:
+    organization: [read]
+    journey: [read]
+    evidence: [read]
+    assessment: [create, read, update]
+    progression: [request, read]
+    reports: [read]
+  learner:
+    organization: [read_self]
+    journey: [read_assigned]
+    evidence: [create_self, read_self]
+    assessment: [read_own_result]
+    progression: [read_self]
+    reports: [read_self]
+deny_by_default: true
+scope_rule: Every permission is constrained by authenticated organization_id.

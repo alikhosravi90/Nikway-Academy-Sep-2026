@@ -1,0 +1,51 @@
+id: NIKWAY-V1-TEST-MATRIX-001
+status: design_ready
+tests:
+  - id: T-001
+    scenario: Create organization and invite org admin
+    type: e2e
+    gate: critical
+  - id: T-002
+    scenario: Invite learner and assessor within organization
+    type: integration
+    gate: critical
+  - id: T-003
+    scenario: Assign journey and view steps
+    type: e2e
+    gate: critical
+  - id: T-004
+    scenario: Submit text evidence
+    type: e2e
+    gate: critical
+  - id: T-005
+    scenario: Upload validated file evidence to object storage
+    type: integration
+    gate: critical
+  - id: T-006
+    scenario: Assessor records accepted assessment
+    type: e2e
+    gate: critical
+  - id: T-007
+    scenario: Accepted assessment creates one progression event
+    type: integration
+    gate: critical
+  - id: T-008
+    scenario: Organization A cannot read or write Organization B rows
+    type: security
+    gate: critical
+  - id: T-009
+    scenario: Evidence submission emits xAPI-shaped event
+    type: integration
+    gate: high
+  - id: T-010
+    scenario: Backup restores into isolated PostgreSQL database
+    type: operational
+    gate: critical
+  - id: T-011
+    scenario: One container starts with documented environment
+    type: smoke
+    gate: critical
+  - id: T-012
+    scenario: Dependency vulnerability scan completes without blocking critical finding
+    type: security
+    gate: high

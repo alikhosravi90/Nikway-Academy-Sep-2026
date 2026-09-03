@@ -1,0 +1,32 @@
+id: NIKWAY-L4-PRODUCT-PRODUCT_DEFINITION
+level: 4
+artifact:
+  name: product-definition
+  domain: product
+  parent_level_1: NIKWAY-L1-PRODUCT-PRODUCT_DEFINITION
+  status: draft
+  meaning: Implementation-ready specification view
+purpose: Decompose the parent artifact into a L4 view that can be reviewed and synthesized.
+sections:
+    - commands
+    - queries
+    - schemas
+    - errors
+    - security
+    - observability
+scope:
+  in_scope: []
+  out_of_scope: []
+inputs: []
+outputs: []
+dependencies:
+  upstream: [NIKWAY-L1-PRODUCT-PRODUCT_DEFINITION]
+  downstream: []
+rules: []
+acceptance_criteria: []
+source_refs:
+  - ../level-1/product/product-definition.yaml
+traceability:
+  parent_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  parent_artifact: NIKWAY-L1-PRODUCT-PRODUCT_DEFINITION
+  synthesis_target: ../NIKWAY-MASTER.yaml

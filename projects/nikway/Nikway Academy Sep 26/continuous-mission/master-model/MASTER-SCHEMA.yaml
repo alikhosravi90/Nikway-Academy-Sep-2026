@@ -1,0 +1,24 @@
+schema: NIKWAY-MASTER-SYSTEM
+version: 1.0.0
+definitions:
+  MasterDefinition:
+    required: [id, name, object_type, current_version, versions]
+    properties: [schema, required_fields, allowed_states, defaults, layouts, guidance, overridable_paths, extension_paths]
+  LayoutDefinition:
+    required: [id, master_id, name, fields]
+  DefaultDefinition:
+    required: [id, master_id, values]
+  TemplateDefinition:
+    required: [id, master_id, master_version, name, data]
+  StarterDefinition:
+    required: [id, template_id, name]
+  ExampleDefinition:
+    required: [id, master_id, name, data]
+  GuidanceDefinition:
+    required: [id, target_type, target_id, content]
+  InstanceProvenance:
+    required: [instance_id, master_id, master_version]
+  OverrideDefinition:
+    required: [path, value]
+  ExtensionDefinition:
+    required: [path, value]

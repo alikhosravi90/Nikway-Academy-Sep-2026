@@ -1,0 +1,32 @@
+id: NIKWAY-L2-BUSINESS-BUSINESS_MODEL
+level: 2
+artifact:
+  name: business-model
+  domain: business
+  parent_level_1: NIKWAY-L1-BUSINESS-BUSINESS_MODEL
+  status: draft
+  meaning: Major subdomain or component view
+purpose: Decompose the parent artifact into a L2 view that can be reviewed and synthesized.
+sections:
+    - boundaries
+    - responsibilities
+    - actors
+    - inputs
+    - outputs
+    - dependencies
+scope:
+  in_scope: []
+  out_of_scope: []
+inputs: []
+outputs: []
+dependencies:
+  upstream: [NIKWAY-L1-BUSINESS-BUSINESS_MODEL]
+  downstream: []
+rules: []
+acceptance_criteria: []
+source_refs:
+  - ../level-1/business/business-model.yaml
+traceability:
+  parent_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  parent_artifact: NIKWAY-L1-BUSINESS-BUSINESS_MODEL
+  synthesis_target: ../NIKWAY-MASTER.yaml

@@ -1,0 +1,29 @@
+id: EVID-NIKWAY-PRODUCTION-READINESS-CYCLE-20260903-006
+type: readiness-matrix-and-environment-contract
+created_at: "2026-09-03"
+timezone: Asia/Tehran
+status: ACTIVE_WITH_EXTERNAL_DEPENDENCIES
+executed:
+  - action: "Inspected both CI workflow files, Dockerfile, requirements, environment example, compose, security policy and runtime evidence."
+    result: PASS
+  - action: "Confirmed CI Trivy configuration scans filesystem with CRITICAL,HIGH threshold and exit-code 1."
+    result: PASS
+  - action: "Created a single readiness matrix with status, evidence, blocker and next action for every gate."
+    result: PASS
+  - action: "Created an external environment contract without secret values."
+    result: PASS
+  - action: "Ran Trivy 0.66.0 filesystem vulnerability and secret scan in a container using CRITICAL,HIGH threshold."
+    result: PASS
+    evidence: publish-ready-sample/trivy-local-report-2026-09-03.json
+verification:
+  ci_workflow_configuration: PASS
+  readiness_matrix_integrity: PASS
+  secret_values_added: false
+external_gates:
+  oidc: BLOCKED
+  s3: BLOCKED
+  postgres_runtime_role: BLOCKED
+  ci_security_execution: NOT_RUN
+  equivalent_local_security_scan: PASS
+  e2e: BLOCKED
+next_executable_action: "Run the security workflow in an available CI runner and preserve its Trivy report."

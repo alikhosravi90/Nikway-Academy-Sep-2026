@@ -1,0 +1,12 @@
+id: NIKWAY-GOV-ONBOARDING-DELEGATION-001
+level: 1
+artifact:
+  name: Team Onboarding and Delegation Model
+  status: proposed
+purpose: Make project work transferable, assignable, reviewable, and executable by new team members.
+onboarding_flow: [invite, account, welcome, project-context, role, responsibilities, reading, first-task, first-delivery, review, active-member]
+task_contract:
+  required: [owner, responsible, reviewer, approver, contributor, due_date, priority, dependencies, definition_of_done, evidence]
+member_card:
+  required: [name, role, mission, responsibilities, authority, current_work, onboarding_status, first_success]
+source_refs: [pasted-text.txt]

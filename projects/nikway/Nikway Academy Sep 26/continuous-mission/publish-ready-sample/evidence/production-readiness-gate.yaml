@@ -1,0 +1,18 @@
+id: EVID-V1-PRODUCTION-GATE-20260902-001
+type: release-gate
+status: blocked
+evaluated_at: 2026-09-02
+checks:
+  single_container_contract: passed
+  vertical_slice_prototype: passed
+  postgres_schema: passed
+  rls_full_test: passed
+  postgres_application_persistence: partial_repository_seams
+  oidc_runtime: protected_endpoint_dependency_and_jwks_boundary
+  s3_upload_runtime: client_boundary_checksum_and_rollback
+  generated_openapi_from_code: passed
+  backup_restore_execution: passed
+  dependency_scan: pending
+decision: not_publishable
+reason: Provider-backed OIDC, object-storage environment execution, complete mutation orchestration, and dependency scan remain unverified.
+fallback: Keep package at ready_for_review and continue bounded implementation stages.

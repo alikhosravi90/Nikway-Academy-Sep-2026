@@ -1,0 +1,15 @@
+id: EVID-V1-VERTICAL-SLICE-SMOKE-20260902-001
+type: automated-test-result
+status: accepted_for_review
+executed_at: 2026-09-02
+command: python -m pytest app/tests/test_vertical_slice.py -q
+result:
+  tests: 2
+  passed: 2
+  failed: 0
+  flow: [organization, journey, assignment, evidence, assessment, progression, report]
+  idempotency: passed
+limitations:
+  - Storage is in-memory for this prototype.
+  - OIDC, PostgreSQL persistence, and object storage are not exercised.
+release_effect: Evidence supports design and prototype readiness only.

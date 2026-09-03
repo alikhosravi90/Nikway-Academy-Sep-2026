@@ -1,0 +1,15 @@
+id: EVID-V1-API-CONTRACT-20260902-001
+type: design-review
+status: accepted_for_review
+reviewed_at: 2026-09-02
+artifact: V1_API_CONTRACT.yaml
+result:
+  endpoints_cover: [organization, invitation, journey, assignment, evidence, assessment, progression, reporting]
+  authentication: OIDC
+  idempotency: required_for_mutations
+  versioning: /api/v1
+  passed: true
+limitations:
+  - OpenAPI must be generated from implementation before release.
+  - Issuer URL is a placeholder until the pilot identity provider is selected.
+source_refs: [V1_API_CONTRACT.yaml, D:/NIKWAY Academy 2026/NIKWAY_V1_BUILD_SPEC.md]

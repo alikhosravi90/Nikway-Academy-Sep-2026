@@ -1,0 +1,49 @@
+id: EVID-NIKWAY-MISSION-RUN-20260903-003
+type: autonomous-commander-cycle
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+executed_at: "2026-09-03T08:56:58+03:30"
+timezone: Asia/Tehran
+status: CONTINUE
+current_task: security-and-runtime-verification
+completed:
+  - task: docker_runtime_health
+    status: LOCAL_VERIFIED
+    evidence: "nikway-api healthy; nikway-minio healthy; staging PostgreSQL container healthy"
+  - task: api_health
+    status: LOCAL_VERIFIED
+    evidence: "GET /health returned 200"
+  - task: minio_health
+    status: LOCAL_VERIFIED
+    evidence: "GET /minio/health/live returned 200"
+  - task: openapi_contract
+    status: LOCAL_VERIFIED
+    evidence: "generated OpenAPI and contract diff: contract_paths_ok=10"
+  - task: backend_validation
+    status: LOCAL_VERIFIED
+    evidence: "50 passed, 2 skipped, 13 warnings; compileall passed"
+  - task: frontend_validation
+    status: LOCAL_VERIFIED
+    evidence: "npm run build passed"
+  - task: frontend_dependency_audit
+    status: LOCAL_VERIFIED
+    evidence: "npm audit --omit=dev --audit-level=high: 0 high, 0 critical"
+  - task: compose_file_validation
+    status: LOCAL_VERIFIED
+    evidence: "docker compose config --quiet passed with placeholders"
+parked:
+  - task: postgres_runtime_role
+    status: WAITING_HUMAN
+    reason: "Existing running PostgreSQL belongs to another stack; NIKWAY runtime role/approved database boundary is not proven."
+  - task: oidc_jwks
+    status: WAITING_HUMAN
+    reason: "Approved provider issuer/audience/JWKS credentials unavailable."
+  - task: s3_real_credentials
+    status: WAITING_HUMAN
+    reason: "MinIO is healthy locally, but approved NIKWAY bucket/credentials and end-to-end upload evidence are not configured."
+  - task: trivy_ci_scan
+    status: WAITING_HUMAN
+    reason: "Trivy executable and CI run result unavailable; npm audit is not a substitute."
+  - task: production_publish
+    status: WAITING_HUMAN
+    reason: "Explicit human approval required."
+next_ready_task: "Consolidate evidence into the Release Control Room without changing source percentages."

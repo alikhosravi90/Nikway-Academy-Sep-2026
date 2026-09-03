@@ -1,0 +1,32 @@
+id: NIKWAY-L4-KNOWLEDGE-LEARNING_MODEL
+level: 4
+artifact:
+  name: learning-model
+  domain: knowledge
+  parent_level_1: NIKWAY-L1-KNOWLEDGE-LEARNING_MODEL
+  status: draft
+  meaning: Implementation-ready specification view
+purpose: Decompose the parent artifact into a L4 view that can be reviewed and synthesized.
+sections:
+    - commands
+    - queries
+    - schemas
+    - errors
+    - security
+    - observability
+scope:
+  in_scope: []
+  out_of_scope: []
+inputs: []
+outputs: []
+dependencies:
+  upstream: [NIKWAY-L1-KNOWLEDGE-LEARNING_MODEL]
+  downstream: []
+rules: []
+acceptance_criteria: []
+source_refs:
+  - ../level-1/knowledge/learning-model.yaml
+traceability:
+  parent_package: NIKWAY-ACADEMY-SEP26-MANIFEST-001
+  parent_artifact: NIKWAY-L1-KNOWLEDGE-LEARNING_MODEL
+  synthesis_target: ../NIKWAY-MASTER.yaml

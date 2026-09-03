@@ -1,0 +1,65 @@
+id: NIKWAY-MISSION-STAGES-001
+stages:
+  - id: S1-discover
+    skill: repository-audit
+    purpose: Establish repository truth, scope, dependencies, risks, and missing inputs.
+    tool: repo-audit
+    inputs: [repository, V1_BUILD_SPEC]
+    outputs: [inventory, constraints, risk-baseline, open-questions]
+    pass_gate: All in-scope sources and blockers are identified.
+    challenge_points: [missing_file, conflicting_spec, secret_detected, dirty_worktree]
+    fallback: Freeze uncertain item as assumption and continue with a traceable question.
+  - id: S2-design
+    skill: system-design
+    purpose: Translate the V1 brief into bounded modules, data contracts, flows, and acceptance criteria.
+    tool: contract-designer
+    inputs: [S1-report, V1_BUILD_SPEC]
+    outputs: [domain-model, module-boundaries, API-contract, test-matrix]
+    pass_gate: Every Done criterion maps to a module, API, data record, and test.
+    challenge_points: [ambiguous_requirement, boundary_violation, non-goal_pressure]
+    fallback: Use the smallest compliant design and record deferred capability.
+  - id: S3-build
+    skill: modular-monolith-build
+    purpose: Implement the smallest end-to-end learning loop in one deployable unit.
+    tool: scaffold-and-build
+    inputs: [S2-design]
+    outputs: [backend, frontend, migrations, container]
+    pass_gate: Pilot journey works from assignment to progression.
+    challenge_points: [dependency_failure, migration_failure, module-coupling]
+    fallback: Replace optional dependency with standard library or Postgres-backed implementation.
+  - id: S4-verify
+    skill: test-and-validation
+    purpose: Prove functional behavior, tenant isolation, API contracts, and restore readiness.
+    tool: validation-runner
+    inputs: [S3-build, test-matrix]
+    outputs: [test-results, RLS-proof, API-proof, restore-proof]
+    pass_gate: All critical acceptance tests pass.
+    challenge_points: [test_failure, flaky_test, unavailable_service]
+    fallback: Run deterministic local fixture tests and mark external verification pending.
+  - id: S5-harden
+    skill: security-review
+    purpose: Remove critical security risks and verify uploads, identity, secrets, roles, and logs.
+    tool: security-gate
+    inputs: [S3-build, S4-report]
+    outputs: [security-report, remediation-list, residual-risk]
+    pass_gate: No unresolved critical or high security finding.
+    challenge_points: [secret_exposure, insecure_cors, missing_auth, unsafe_upload]
+    fallback: Disable affected feature and keep it out of publish package.
+  - id: S6-package
+    skill: release-engineering
+    purpose: Produce reproducible source, database, container, documentation, and evidence packages.
+    tool: release-packager
+    inputs: [S3-build, S4-report, S5-report]
+    outputs: [versioned-package, release-notes, manifests, checksums]
+    pass_gate: Package is reproducible and all artifacts have provenance.
+    challenge_points: [missing_artifact, checksum_mismatch, undocumented_step]
+    fallback: Produce `ready_for_review` package and list missing release evidence.
+  - id: S7-release-review
+    skill: publish-readiness
+    purpose: Review the package against V1 scope and authorize or stop external publication.
+    tool: release-gate
+    inputs: [all-stage-reports, package]
+    outputs: [readiness-report, go-no-go, publish-checklist]
+    pass_gate: All V1 Done criteria are evidenced and human approval is recorded.
+    challenge_points: [scope_drift, unresolved_risk, missing_human_approval]
+    fallback: Mark `not_ready` with exact remediation tasks; never publish silently.

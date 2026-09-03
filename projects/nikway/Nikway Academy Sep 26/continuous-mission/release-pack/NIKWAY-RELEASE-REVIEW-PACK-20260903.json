@@ -1,0 +1,240 @@
+{
+  "id": "NIKWAY-RELEASE-REVIEW-PACK-20260903",
+  "generated_at": "2026-09-03T12:26:30.236550+00:00",
+  "mission_id": "NIKWAY-CONTINUOUS-MISSION-001",
+  "release_status": "WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT",
+  "production_ready": false,
+  "verified_metrics": [
+    {
+      "name": "IMPLEMENTATION",
+      "target": 90,
+      "verified": 100,
+      "status_counts": {
+        "PASS_LOCAL": 6
+      },
+      "evidence": [
+        "evidence/progress-integrity-cycle-2026-09-03-021.yaml",
+        "publish-ready-sample/app/tests/test_traceability.py",
+        "publish-ready-sample/app/tests/test_traceability.py",
+        "publish-ready-sample/app/tests/test_audit_event_persistence.py",
+        "publish-ready-sample/generated-openapi.json",
+        "evidence/master-persistence-gate-2026-09-03-011.yaml"
+      ]
+    },
+    {
+      "name": "RELEASE READINESS",
+      "target": 90,
+      "verified": 75,
+      "status_counts": {
+        "PASS_LOCAL": 3,
+        "BLOCKED_EXTERNAL": 1
+      },
+      "evidence": [
+        "evidence/progress-closure-cycle-2026-09-03-016.yaml",
+        "evidence/internal-blocker-elimination-cycle-2026-09-03-008.yaml",
+        "evidence/persistence-runtime-role-cycle-2026-09-03-024.yaml",
+        "evidence/external-evidence-mission-plan-cycle-2026-09-03-030.yaml"
+      ]
+    },
+    {
+      "name": "SECURITY",
+      "target": 90,
+      "verified": 40,
+      "status_counts": {
+        "PASS_LOCAL": 2,
+        "BLOCKED_EXTERNAL": 3
+      },
+      "evidence": [
+        "publish-ready-sample/evidence/rls-full-verification-2026-09-02.yaml",
+        "evidence/oidc-jwks-integration-2026-09-03-013.yaml",
+        "evidence/p04-ci-trivy-execution-cycle-2026-09-03-031.yaml",
+        "evidence/authorization-integration-gate-2026-09-03-012.yaml",
+        "evidence/readiness-90-target-audit-cycle-2026-09-03-029.yaml"
+      ]
+    },
+    {
+      "name": "OPERATIONS",
+      "target": 90,
+      "verified": 75,
+      "status_counts": {
+        "PASS_LOCAL": 3,
+        "BLOCKED_EXTERNAL": 1
+      },
+      "evidence": [
+        "evidence/progress-closure-cycle-2026-09-03-016.yaml",
+        "evidence/local-ci-runtime-cycle-2026-09-03-028.yaml",
+        "evidence/internal-blocker-elimination-cycle-2026-09-03-008.yaml",
+        "evidence/persistence-runtime-role-cycle-2026-09-03-024.yaml"
+      ]
+    },
+    {
+      "name": "EVIDENCE",
+      "target": 90,
+      "verified": 100,
+      "status_counts": {
+        "PASS_LOCAL": 4
+      },
+      "evidence": [
+        "publish-ready-sample/generated-openapi.json",
+        "publish-ready-sample/app/tests/test_audit_event_persistence.py",
+        "publish-ready-sample/app/tests/test_traceability.py",
+        "evidence/external-evidence-mission-plan-cycle-2026-09-03-030.yaml"
+      ]
+    }
+  ],
+  "open_gates": [
+    {
+      "name": "Authorization",
+      "status": "BLOCKED_EXTERNAL",
+      "blocker": "EXTERNAL_DEPENDENCY: local policy, protected Master APIs, deny-by-default, IDOR and organization-scope checks pass; provider-backed identity remains unverified. Persistent Master audit is a separate next mission.",
+      "next_action": "Run approved OIDC/JWKS staging verification, then execute Real Audit Persistence for Master System."
+    },
+    {
+      "name": "OIDC",
+      "status": "BLOCKED_EXTERNAL",
+      "blocker": "EXTERNAL_DEPENDENCY: local Keycloak discovery/JWKS smoke passed, but approved staging issuer/audience and provider-issued test credentials/token are unavailable.",
+      "next_action": "Provide the approved OIDC contract and test credentials, then run valid/invalid/expired/wrong-organization/wrong-role verification."
+    },
+    {
+      "name": "S3",
+      "status": "BLOCKED_EXTERNAL",
+      "blocker": "Approved endpoint, bucket and scoped credentials unavailable.",
+      "next_action": "Execute real upload/checksum/rollback tests."
+    },
+    {
+      "name": "E2E",
+      "status": "BLOCKED_EXTERNAL",
+      "blocker": "EXTERNAL_DEPENDENCY: real staging PostgreSQL, OIDC/JWKS and S3 inputs are unavailable; local E2E preflight is complete.",
+      "next_action": "Execute complete user journey in staging."
+    },
+    {
+      "name": "CI Security",
+      "status": "BLOCKED_EXTERNAL",
+      "blocker": "EXTERNAL_DEPENDENCY: this checkout has no git remote, GitHub Actions access, or authenticated official CI runner; local equivalent is PASS_LOCAL only.",
+      "next_action": "Attach this project to the approved GitHub repository and run the workflow on an authenticated official runner."
+    }
+  ],
+  "files": {
+    "readiness_matrix": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/readiness-matrix.yaml",
+      "size_bytes": 5041,
+      "sha256": "3834f2b0babd0c4e6d93063ac1e3aca0697ee9ad8003de88d206fce611041937"
+    },
+    "external_environment_contract": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/external-environment-contract.yaml",
+      "size_bytes": 3049,
+      "sha256": "2ae7eb2be0ba3bad9dd5fea53beed1d3383144d92ad7520715f0d87fa207af85"
+    },
+    "verification_procedures": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/verification-procedures.md",
+      "size_bytes": 5099,
+      "sha256": "95c8e19e1c2ede11d59c1e5e2d0051130cd97c5c21602a6d53221f7628a2cbca"
+    },
+    "release_manifest": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/release-manifest.yaml",
+      "size_bytes": 2478,
+      "sha256": "fc18a110c6f68f698d37d5a6201850014c89b6486394ee74bb5d093810fb37b3"
+    },
+    "generated_readiness_view": {
+      "path": "nikway/frontend/src/release-readiness.generated.json",
+      "size_bytes": 2791,
+      "sha256": "050df50e5d34f0dfd66a5235e1b4a1ab8ce4f44cebb166222b0c914c44376453"
+    },
+    "evidence:Architecture": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/progress-integrity-cycle-2026-09-03-021.yaml",
+      "size_bytes": 1441,
+      "sha256": "c889a0c349b9ec581c96b391003c616d316808d4e9b0b200f4d2075e1f1b729c"
+    },
+    "evidence:Security": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/readiness-90-target-audit-cycle-2026-09-03-029.yaml",
+      "size_bytes": 2347,
+      "sha256": "7e62223859da1d4b818e8a4a96876c6bd36705f501f6796fdee04d8eaa6a7205"
+    },
+    "evidence:Database": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/persistence-runtime-role-cycle-2026-09-03-024.yaml",
+      "size_bytes": 2121,
+      "sha256": "71cfcfd49d534f644367c350e1984e5a014f5bd81e8c1177bdecef6614ad06c3"
+    },
+    "evidence:RLS": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/evidence/rls-full-verification-2026-09-02.yaml",
+      "size_bytes": 995,
+      "sha256": "be078e4ca8314f7dec863fd8c8be080544eab5807068b1339b906993ded01436"
+    },
+    "evidence:Authorization": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/authorization-integration-gate-2026-09-03-012.yaml",
+      "size_bytes": 3633,
+      "sha256": "bfdf7a7853825578d16dbfa706e783db001ac3f1ea4b7b5bc50ff5a49e19c7fc"
+    },
+    "evidence:OIDC": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/oidc-jwks-integration-2026-09-03-013.yaml",
+      "size_bytes": 2613,
+      "sha256": "b372147a261029d9f5ed7ee197d6ed34ed4dc465c178fba99b2b0d8e54bf5b84"
+    },
+    "evidence:S3": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/internal-blocker-elimination-cycle-2026-09-03-008.yaml",
+      "size_bytes": 3331,
+      "sha256": "0f213c73163a8827311b61881c52ca87cc920a6af8ac955867361f0ba374debe"
+    },
+    "evidence:Transactions": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/app/tests/test_traceability.py",
+      "size_bytes": 680,
+      "sha256": "37e65321638996d697585ce44c6a6071f3e03fc5a55326568e48d496ce648b26"
+    },
+    "evidence:Idempotency": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/app/tests/test_audit_event_persistence.py",
+      "size_bytes": 332,
+      "sha256": "001f08b951693ecdb15ddb14bc298ff7c6c770133ac43a78783ba7afa9ffedc3"
+    },
+    "evidence:Audit": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/app/tests/test_audit_event_persistence.py",
+      "size_bytes": 332,
+      "sha256": "001f08b951693ecdb15ddb14bc298ff7c6c770133ac43a78783ba7afa9ffedc3"
+    },
+    "evidence:Events": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/app/tests/test_traceability.py",
+      "size_bytes": 680,
+      "sha256": "37e65321638996d697585ce44c6a6071f3e03fc5a55326568e48d496ce648b26"
+    },
+    "evidence:API": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/publish-ready-sample/generated-openapi.json",
+      "size_bytes": 38901,
+      "sha256": "bc69db29372d8a74b7ebd449072259eb5886ac20855d8326e4d3235a84e7f5bb"
+    },
+    "evidence:E2E": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/internal-blocker-elimination-cycle-2026-09-03-008.yaml",
+      "size_bytes": 3331,
+      "sha256": "0f213c73163a8827311b61881c52ca87cc920a6af8ac955867361f0ba374debe"
+    },
+    "evidence:CI Security": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/p04-ci-trivy-execution-cycle-2026-09-03-031.yaml",
+      "size_bytes": 1113,
+      "sha256": "6e752f25a5cad81c75662724b67c8c8b93f9b55603bc8e2d9014c2aa97695d63"
+    },
+    "evidence:Rollback": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/progress-closure-cycle-2026-09-03-016.yaml",
+      "size_bytes": 1971,
+      "sha256": "e8b16b7f70e31046f5bb2b41b2450ab0fb932396ded02f003808bafeabdfb851"
+    },
+    "evidence:Evidence": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/external-evidence-mission-plan-cycle-2026-09-03-030.yaml",
+      "size_bytes": 945,
+      "sha256": "ec350096e09f2d8cc8fa324b33b39e01d7ef3b284fd5a0bd781589373582dd7f"
+    },
+    "evidence:Master System Persistence": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/master-persistence-gate-2026-09-03-011.yaml",
+      "size_bytes": 2700,
+      "sha256": "73f0f69475042ac4b15b25d6d64faf01926de62f3620fd83f2d9b709bb414580"
+    },
+    "evidence:Operations": {
+      "path": "nikway/Nikway Academy Sep 26/continuous-mission/evidence/local-ci-runtime-cycle-2026-09-03-028.yaml",
+      "size_bytes": 3946,
+      "sha256": "cb5d4638a821696fcf0704e07d791d85c6c691d2475e0b5907a73a1065624f16"
+    }
+  },
+  "unresolved_references": [],
+  "integrity": {
+    "historical_evidence_overwritten": false,
+    "credentials_included": false,
+    "external_results_fabricated": false
+  }
+}

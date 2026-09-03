@@ -1,0 +1,50 @@
+id: EVID-NIKWAY-OPERATIONAL-INTEGRATION-20260903-020
+type: operational-integration-cycle
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+created_at: "2026-09-03T16:05:00+03:30"
+timezone: Asia/Tehran
+scope:
+  - "Read-only local operational smoke"
+  - "No deployment, mutation, credential extraction, or production approval"
+executed:
+  command: "python scripts/operational_smoke.py"
+  api_health:
+    status: PASS_LOCAL
+    http_status: 200
+  oidc_discovery:
+    status: PASS_LOCAL
+    http_status: 200
+    provider_classification: local_provider_smoke
+  oidc_jwks:
+    status: PASS_LOCAL
+    http_status: 200
+    key_count: 2
+  minio_health:
+    status: PASS_LOCAL
+    http_status: 200
+  docker_service_inventory:
+    status: PASS_LOCAL
+    healthy_services_observed: true
+  api_dependencies_endpoint:
+    status: NOT_APPLICABLE
+    http_status: 404
+    reason: "Running legacy API image does not expose the newer endpoint."
+  api_readiness_endpoint:
+    status: NOT_APPLICABLE
+    http_status: 404
+    reason: "Running legacy API image does not expose the newer endpoint."
+tests:
+  smoke_script: "3 passed"
+  verifier_regression: "2 passed"
+  application_health_readiness_preflight: "5 passed, 1 skipped"
+environment_risks:
+  - service: platform-keycloak
+    observed_status: unhealthy
+    classification: EXTERNAL_ENVIRONMENT_RISK
+    action: "No mutation performed; approved provider selection remains required."
+integrity:
+  fabricated_external_results: false
+  credentials_logged: false
+  production_ready: false
+final_gate: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+next_executable_action: "Run full regression and regenerate the release dashboard artifact from current evidence."

@@ -1,0 +1,54 @@
+id: EVID-NIKWAY-PROGRESS-INTEGRITY-20260903-022
+type: progress-integrity-cycle
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+created_at: "2026-09-03T17:05:00+03:30"
+timezone: Asia/Tehran
+objective:
+  requested_targets:
+    implementation: 90
+    release_readiness: 90
+    security: 90
+    operations: 90
+    evidence: 90
+executed:
+  source_to_view_pipeline:
+    source: readiness-matrix.yaml
+    calculator: scripts/generate_progress_snapshot.py
+    generated_view: ../frontend/src/release-readiness.generated.json
+    ui_consumer: ../../frontend/src/main.js
+    result: PASS_LOCAL
+  calculated_verified_values:
+    implementation: 100
+    release_readiness: 50
+    security: 40
+    operations: 50
+    evidence: 100
+  controls:
+    release_state_verifier: PASS
+    evidence_references_checked: 18
+    explicit_open_gates: [Database, Authorization, OIDC, S3, E2E, CI Security]
+    production_ready: false
+  tests:
+    snapshot_and_verifier: "4 passed"
+    operational_smoke: "3 passed"
+    application_regression: "67 passed, 5 skipped"
+    frontend_build: PASS
+    yaml_parse: PASS
+  ci_contract:
+    readiness_view_generation: CONFIGURED
+    release_state_verification: CONFIGURED
+    official_ci_execution: NOT_RUN
+integrity:
+  manual_stale_percentages_removed_from_ui_source: true
+  target_is_not_completion_claim: true
+  historical_evidence_preserved: true
+  external_results_fabricated: false
+  production_ready: false
+remaining_external:
+  - github_actions_execution
+  - approved_oidc_token_validation
+  - approved_s3_credentials_and_e2e
+  - non_owner_staging_database_runtime_role
+  - human_release_approval
+final_gate: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+next_executable_action: "Continue closing local release-readiness gaps while preserving generated progress values."

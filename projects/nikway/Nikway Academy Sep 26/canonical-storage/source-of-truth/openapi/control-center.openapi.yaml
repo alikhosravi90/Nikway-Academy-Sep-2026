@@ -1,0 +1,47 @@
+openapi: 3.1.0
+info:
+  title: NIKWAY Control Center API
+  version: 1.0.0
+  description: Registry and delivery API for the NIKWAY project execution system.
+servers:
+  - url: https://control.nikway.local/api
+paths:
+  /facts:
+    get:
+      summary: List facts
+      responses:
+        '200':
+          description: Fact list
+  /evidence:
+    get:
+      summary: List evidence
+      responses:
+        '200':
+          description: Evidence list
+  /decisions:
+    get:
+      summary: List decisions
+      responses:
+        '200':
+          description: Decision list
+  /tasks:
+    get:
+      summary: List delivery tasks
+      responses:
+        '200':
+          description: Task list
+  /releases:
+    get:
+      summary: List releases and readiness
+      responses:
+        '200':
+          description: Release list
+components:
+  schemas:
+    RegistryRecord:
+      type: object
+      required: [id, status]
+      properties:
+        id: {type: string}
+        status: {type: string}
+        source_refs: {type: array, items: {type: string}}

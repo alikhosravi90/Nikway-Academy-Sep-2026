@@ -1,0 +1,254 @@
+id: NIKWAY-CHALLENGE-REGISTRY-20260903
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+updated_at: 2026-09-03
+mission_status: ACTIVE_WITH_EXTERNAL_DEPENDENCIES
+policy:
+  max_attempts_per_stage: 2
+  max_total_stage_retries: 7
+  infinite_loop: prohibited
+  external_publish: human_approval_required
+entries:
+  - id: CH-001
+    stage: S1-discover
+    state: WAITING_EXTERNAL_DEPENDENCY
+    severity: high
+    title: Secret-like files require manual review
+    observation: "Repository audit found config/API-Token.json and governance/secret-access-model.yaml as secret candidates."
+    action_taken:
+      - "Recorded the candidates without opening or copying credential contents."
+      - "Kept the release decision blocked pending owner review and rotation/removal if needed."
+    evidence:
+      - continuous-mission/audit-output.yaml
+    next_action: "Human owner reviews whether either file contains live credentials; rotate and remove from Git if exposed."
+    attempts: 1
+    retry_allowed: false
+
+  - id: CH-002
+    stage: S1-discover
+    state: resolved
+    severity: medium
+    title: Mission challenge registry was missing
+    observation: "The continuous-publish-mission skill requires a challenge registry, but no registry artifact existed in the mission folder."
+    action_taken:
+      - "Created this registry with bounded retry and escalation policy."
+      - "Captured the active audit blocker and its next human action."
+    evidence:
+      - continuous-mission/challenge-registry.yaml
+    next_action: "Append every subsequent challenge, fallback, decision, and verification result."
+    attempts: 1
+    retry_allowed: true
+
+  - id: CH-003
+    stage: S3-build
+    state: WAITING_EXTERNAL_DEPENDENCY
+    severity: high
+    title: Production runtime dependencies are unavailable
+    observation: "The release snapshot reports unreachable Docker-only DATABASE_URL and missing approved OIDC/JWKS and S3/MinIO runtime credentials."
+    action_taken:
+      - "Preserved deterministic local boundary tests and existing implementation."
+      - "Did not substitute fake production credentials."
+    evidence:
+      - continuous-mission/release-readiness-gap-execution-2026-09-03.yaml
+      - continuous-mission/publish-ready-sample/evidence/runtime-integration-2026-09-03.yaml
+    next_action: "Run in the full compose network or provide approved staging endpoints and non-owner runtime credentials."
+    attempts: 1
+    retry_allowed: false
+
+  - id: CH-004
+    stage: S4-verify
+    state: pending_external
+    severity: high
+    title: CI vulnerability scan has no recorded run
+    observation: "The CI workflow contains the scan step, but this environment has no CI result or Trivy evidence artifact."
+    action_taken:
+      - "Kept the CI gate in progress."
+      - "Did not claim the security gate passed from configuration alone."
+    evidence:
+      - continuous-mission/release-readiness-gap-execution-2026-09-03.yaml
+      - continuous-mission/publish-ready-sample/.github/workflows/test.yml
+    next_action: "Execute CI and preserve dependency, container, and secret-scan reports."
+    attempts: 0
+    retry_allowed: true
+
+  - id: CH-005
+    stage: S7-release-review
+    state: HUMAN_DECISION_REQUIRED
+    severity: critical
+    title: External publication requires human approval
+    observation: "Release policy prohibits external publish or production mutation without explicit commander approval."
+    action_taken:
+      - "Maintained decision BLOCKED."
+      - "Prepared technical artifacts and evidence without publishing or deploying externally."
+    evidence:
+      - continuous-mission/mission.yaml
+      - continuous-mission/release-readiness-gap-execution-2026-09-03.yaml
+    next_action: "After critical evidence is complete, human commander reviews the release candidate and records go/no-go."
+    attempts: 0
+    retry_allowed: false
+
+  - id: CH-006
+    stage: S4-verify
+    state: pending_external
+    severity: medium
+    title: Local Trivy executable is unavailable
+    observation: "The CI workflow includes Trivy, but the local runtime has no trivy command and no CI run result is available."
+    action_taken:
+      - "Ran pip check, backend tests, compileall, and frontend build locally."
+      - "Recorded the vulnerability scan as UNVERIFIED rather than passing it."
+    evidence:
+      - continuous-mission/evidence/mission-run-2026-09-03-002.yaml
+    next_action: "Run the existing CI workflow or install/execute an approved scanner in the CI environment and preserve its report."
+    attempts: 1
+    retry_allowed: true
+
+  - id: CH-007
+    stage: S4-verify
+    state: resolved
+    severity: low
+    title: Runtime health and local security checks were not consolidated
+    observation: "Docker services, API/MinIO health, OpenAPI contract, tests, compile, npm audit, and Compose config had separate outputs."
+    action_taken:
+      - "Executed the checks and captured their results in one mission-run evidence artifact."
+      - "Kept external-only checks explicitly parked."
+    evidence:
+      - continuous-mission/evidence/mission-run-2026-09-03-003.yaml
+    next_action: "Expose the latest evidence and parked task states in the Control Room."
+    attempts: 1
+    retry_allowed: true
+
+  - id: CH-008
+    stage: S3-build
+    state: resolved
+    severity: high
+    title: Compose runtime role was configured as database owner
+    observation: "The isolated compose definition used the application runtime role as the PostgreSQL bootstrap user."
+    action_taken:
+      - "Separated nikway_bootstrap from nikway_runtime."
+      - "Added idempotent runtime-role creation with least-privilege grants."
+      - "Added a local verification procedure and preserved the Docker network limitation separately."
+    evidence:
+      - continuous-mission/publish-ready-sample/docker-compose.full-v1.yml
+      - continuous-mission/publish-ready-sample/db/create-runtime-role.sh
+      - continuous-mission/evidence/internal-blocker-elimination-cycle-2026-09-03-008.yaml
+    next_action: "Run the isolated compose verification on a host with an available Docker network pool."
+    attempts: 1
+    retry_allowed: true
+
+  - id: CH-009
+    stage: S3-build
+    state: resolved
+    severity: medium
+    title: Compose did not require the JWKS endpoint
+    observation: "The application compose contract required issuer and audience but omitted OIDC_JWKS_URL."
+    action_taken:
+      - "Added OIDC_JWKS_URL as a required compose input."
+      - "Updated the external contract and verification procedure."
+    evidence:
+      - continuous-mission/publish-ready-sample/docker-compose.full-v1.yml
+      - continuous-mission/external-environment-contract.yaml
+    next_action: "Use the approved provider JWKS endpoint for staging verification."
+    attempts: 1
+    retry_allowed: true
+
+  - id: CH-010
+    stage: S4-verify
+    state: resolved
+    severity: medium
+    title: E2E local preflight path and CI report output were incomplete
+    observation: "The E2E preflight referenced the wrong mission directory, and the test workflow did not preserve its Trivy output."
+    action_taken:
+      - "Corrected the preflight path and asserted the required verification cases."
+      - "Configured JSON output and artifact upload in the test workflow."
+    evidence:
+      - continuous-mission/publish-ready-sample/app/tests/test_e2e_preflight.py
+      - continuous-mission/publish-ready-sample/.github/workflows/test.yml
+      - continuous-mission/evidence/internal-blocker-elimination-cycle-2026-09-03-008.yaml
+    next_action: "Execute the workflow on GitHub Actions; local preflight is complete."
+    attempts: 1
+    retry_allowed: true
+
+  - id: CH-011
+    stage: S3-build
+    state: resolved
+    severity: medium
+    title: Master System PostgreSQL migration was not wired into CI
+    observation: "The new Master persistence adapter had an additive migration, but the CI workflow only applied the original V1 schema."
+    action_taken:
+      - "Added master_system_schema.sql to the ordered CI migration step."
+      - "Documented the additive migration boundary."
+      - "Added conflict rollback state assertions to the repository integration test."
+    evidence:
+      - continuous-mission/publish-ready-sample/db/master_system_schema.sql
+      - continuous-mission/publish-ready-sample/.github/workflows/test.yml
+      - continuous-mission/evidence/master-persistence-adapter-2026-09-03-010.yaml
+    next_action: "Execute the wired workflow or staging database verification."
+    attempts: 1
+    retry_allowed: true
+
+  - id: CH-012
+    stage: S4-verify
+    state: resolved
+    severity: high
+    title: Master persistence gate required real PostgreSQL evidence
+    observation: "The adapter had only local unit evidence while the available project PostgreSQL runtime used an owner role and lacked a clean Master migration database."
+    action_taken:
+      - "Created a separate temporary database inside the real PostgreSQL 16.15 container."
+      - "Applied v1_schema.sql followed by master_system_schema.sql."
+      - "Created a non-owner runtime role with explicit DML grants."
+      - "Ran repository tests through a temporary Python runner in the database network namespace."
+      - "Verified restart durability and direct role/constraint properties."
+    evidence:
+      - continuous-mission/evidence/master-persistence-gate-2026-09-03-011.yaml
+    next_action: "Start the explicitly requested Authorization Integration mission."
+    attempts: 1
+    retry_allowed: false
+
+  - id: CH-013
+    stage: S4-verify
+    state: resolved
+    severity: high
+    title: Master operations lacked a deny-by-default authorization boundary
+    observation: "Existing authentication resolved identity and role claims but did not define Master permissions or a reusable organization/resource authorization boundary."
+    action_taken:
+      - "Added explicit Master permission policy with deny-by-default semantics."
+      - "Added service boundary and protected Master API routes."
+      - "Added organization scope to Master definitions and additive migration/index."
+      - "Added 401/403, cross-organization, IDOR and privilege-separation tests."
+      - "Added HTTPBearer security metadata to protected Master routes."
+    evidence:
+      - continuous-mission/master-model/AUTHORIZATION-MODEL.yaml
+      - continuous-mission/evidence/authorization-integration-gate-2026-09-03-012.yaml
+    next_action: "Verify against approved OIDC/JWKS provider and persist Master audit decisions."
+    attempts: 1
+    retry_allowed: true
+
+  - id: CH-014
+    stage: S4-verify
+    state: WAITING_EXTERNAL_DEPENDENCY
+    severity: high
+    title: Approved OIDC token validation is unavailable
+    observation: "Local Keycloak discovery and JWKS retrieval succeeded, but no approved staging provider contract or provider-issued test credentials/token is available."
+    action_taken:
+      - "Hardened the JWKS authentication boundary so provider/client failures fail closed with HTTP 401."
+      - "Added deterministic valid-key, invalid-signature, provider-failure and missing-endpoint tests."
+      - "Ran local provider discovery/JWKS smoke without extracting secrets."
+    evidence:
+      - continuous-mission/evidence/oidc-jwks-integration-2026-09-03-013.yaml
+    next_action: "Run the documented provider-issued token matrix after OIDC_ISSUER_URL, OIDC_AUDIENCE, OIDC_JWKS_URL and OIDC_TEST_CREDENTIALS are supplied."
+    attempts: 1
+    retry_allowed: true
+
+  - id: CH-015
+    stage: S4-verify
+    state: WAITING_EXTERNAL_DEPENDENCY
+    severity: high
+    title: Official CI runner and repository access are unavailable
+    observation: "P04 requires a real GitHub Actions run, but the current checkout has no remote, gh CLI, authenticated repository access, or official runner."
+    action_taken:
+      - "Executed local CI-equivalent tests, compile, OpenAPI contract and containerized Trivy checks."
+      - "Recorded local results separately and did not claim PASS_CI."
+    evidence:
+      - continuous-mission/evidence/p04-ci-trivy-execution-cycle-2026-09-03-031.yaml
+    next_action: "Attach the project to the approved GitHub repository and execute the corrected workflow."
+    attempts: 1
+    retry_allowed: false

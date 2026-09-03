@@ -1,0 +1,73 @@
+id: NIKWAY-V1-SAMPLE-RELEASE-001
+version: 0.1.0-rc1
+status: ready_for_review
+release_date: 2026-09-02
+scope: one-pilot-organization
+deployment:
+  unit: single-container
+  database: PostgreSQL
+  auth: OIDC
+  object_storage: S3-compatible
+required_modules: [identity, organization, journey, evidence, assessment, progression, content, reporting, audit]
+design_artifacts:
+  - V1_DOMAIN_MODEL.yaml
+  - V1_ROLE_PERMISSION_MATRIX.yaml
+  - V1_EVENT_SCHEMA.yaml
+  - V1_ASSESSMENT_PROGRESSION_RULES.yaml
+  - V1_RLS_POLICY.md
+  - V1_MODULE_BOUNDARIES.md
+  - V1_TEST_MATRIX.yaml
+  - docs/RESTORE_RUNBOOK.md
+  - db/v1_schema.sql
+  - db/rls-test-plan.md
+  - db/rls-verification.sql
+  - evidence/rls-full-verification-2026-09-02.yaml
+  - docker-compose.v1.yml
+  - docs/VERIFICATION_RUNBOOK.md
+  - db/production-role.sql
+  - V1_SECURITY_CONFIG.yaml
+  - V1_UPLOAD_SECURITY_POLICY.md
+  - docs/DEPLOYMENT_RUNBOOK.md
+  - .github/workflows/security-scan.yml
+  - V1_API_CONTRACT.yaml
+  - db/migrations/README.md
+  - evidence/api-contract-review-2026-09-02.yaml
+  - app/Dockerfile
+  - app/requirements.txt
+  - app/app/main.py
+  - app/app/persistence.py
+  - app/tests/test_health.py
+  - app/modules/README.md
+  - app/tests/test_vertical_slice.py
+  - docker-compose.full-v1.yml
+  - V1_VERTICAL_SLICE.yaml
+  - V1_VERTICAL_SLICE_ACCEPTANCE.md
+  - evidence/vertical-slice-review-2026-09-02.yaml
+  - ../research/standards-research-2026-09-02.yaml
+  - ../research/standards-to-v1-mapping.yaml
+  - evidence/standards-research-2026-09-02.yaml
+  - evidence/vertical-slice-smoke-2026-09-02.yaml
+  - evidence/production-readiness-gate.yaml
+  - evidence/backup-restore-2026-09-03.yaml
+  - app/app/auth.py
+  - app/app/storage.py
+  - app/tests/test_protected_endpoints.py
+  - app/tests/test_s3_client.py
+acceptance:
+  organization_and_invitation: pending_runtime_test
+  journey_assignment: pending_runtime_test
+  evidence_submission: pending_runtime_test
+  assessment_result: pending_runtime_test
+  progression_event: pending_runtime_test
+  progress_report: pending_runtime_test
+  rls_isolation: partially_verified
+  restore_test: blocked_until_backup_environment
+verification_evidence:
+  - evidence/rls-verification-2026-09-02.yaml
+  one_container_deploy: design_ready
+non_goals_confirmed: [microservices, redis, neo4j, pgvector, rag, llm, ai-agents, kubernetes, scorm, lti]
+source_refs:
+  - D:/NIKWAY Academy 2026/NIKWAY_V1_BUILD_SPEC.md
+provenance:
+  generated_by: NIKWAY-CONTINUOUS-MISSION-001
+  editable: true

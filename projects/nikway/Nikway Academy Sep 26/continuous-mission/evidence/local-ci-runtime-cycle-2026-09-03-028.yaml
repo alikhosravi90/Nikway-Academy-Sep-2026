@@ -1,0 +1,92 @@
+type: local-ci-runtime-cycle
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+timestamp: 2026-09-03T20:05:00+03:30
+purpose: "Execute all locally available CI-equivalent checks with a real isolated PostgreSQL runtime and preserve honest external boundaries."
+runtime:
+  database:
+    container: nikway-gate-postgres-20260903
+    image: postgres:16-alpine
+    port: 55432
+    database: nikway_v1
+    runtime_role: nikway_runtime
+    role_classification: non-owner, non-superuser
+    migrations:
+      - db/v1_schema.sql
+      - db/master_system_schema.sql
+      - db/master_authorization_schema.sql
+    result: PASS_LOCAL
+  docker_compose_config:
+    command: "cd publish-ready-sample; docker compose -f docker-compose.full-v1.yml config --quiet"
+    result: PASS_LOCAL
+  docker_compose_start:
+    result: BLOCKED_EXTERNAL
+    blocker: "Docker daemon could not allocate a new predefined network because all predefined address pools are fully subnetted; isolated PostgreSQL was started safely on the existing bridge network instead."
+checks:
+  persistence:
+    command: "DATABASE_URL=postgresql+psycopg://nikway_runtime:<local-secret>@127.0.0.1:55432/nikway_v1 python -m pytest tests/test_postgres_repository_integration.py tests/test_persistence.py tests/test_audit_event_persistence.py tests/test_progression_trace.py tests/test_master_repository.py -q"
+    result: PASS_LOCAL
+    passed: 7
+    failed: 0
+  full_backend:
+    command: "DATABASE_URL=postgresql+psycopg://nikway_runtime:<local-secret>@127.0.0.1:55432/nikway_v1 python -m pytest tests -q"
+    result: PASS_LOCAL
+    passed: 71
+    failed: 0
+    skipped: 1
+  mission_controls:
+    command: "python -m pytest continuous-mission/tests -q"
+    result: PASS_LOCAL
+    passed: 11
+    failed: 0
+  openapi:
+    commands:
+      - "python scripts/generate_openapi.py"
+      - "python scripts/contract_diff.py ../V1_API_CONTRACT.yaml"
+    result: PASS_LOCAL
+    contract_paths: 10
+  frontend:
+    command: "npm run build"
+    result: PASS_LOCAL
+  security:
+    command: "docker run --rm -v <sample>:/workspace -v nikway-trivy-cache:/root/.cache/trivy aquasec/trivy:0.66.0 fs --scanners vuln,secret --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 --format json --output /workspace/trivy-local-equivalent-2026-09-03.json /workspace"
+    result: PASS_LOCAL
+    critical_high_vulnerabilities: 0
+    secrets: 0
+  operational_smoke:
+    command: "python scripts/operational_smoke.py --api http://127.0.0.1:8001 --oidc http://127.0.0.1:8081/realms/master --minio http://127.0.0.1:9000"
+    result: PASS_LOCAL
+    api_health: PASS_LOCAL
+    api_dependencies: NOT_APPLICABLE
+    api_readiness: NOT_APPLICABLE
+    oidc_discovery: PASS_LOCAL
+    oidc_jwks: PASS_LOCAL
+    minio_health: PASS_LOCAL
+  release_integrity:
+    commands:
+      - "python scripts/lint_security_contract.py"
+      - "python scripts/verify_release_state.py"
+      - "python scripts/generate_progress_snapshot.py"
+      - "python scripts/generate_release_pack.py"
+    result: PASS_LOCAL
+    unresolved_references: 0
+    production_ready: false
+classification:
+  internal_blockers_removed:
+    - "CI Trivy output and upload paths were inconsistent; both now target the monorepo sample path."
+    - "Runbooks referenced a non-existent docker-compose.v1.yml; they now reference docker-compose.full-v1.yml."
+  external_dependencies:
+    - "Official GitHub Actions execution and retained artifact"
+    - "Approved staging PostgreSQL runtime role"
+    - "Approved OIDC provider-issued credentials"
+    - "Approved S3 endpoint and scoped credentials"
+    - "Integrated staging E2E"
+readiness:
+  implementation: 100
+  release_readiness: 75
+  security: 40
+  operations: 75
+  evidence: 100
+  release_status: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+  production_ready: false
+final_gate: WAITING_FOR_EXTERNAL_ENVIRONMENT_INPUT
+next_executable_action: "Run the corrected security workflow on an official CI runner and retain its Trivy artifact."

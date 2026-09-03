@@ -1,0 +1,8 @@
+id: NIKWAY-SYSTEM-L2-DOMAIN
+level: 2
+path: system
+name: Domain and Capability Model
+purpose: Define the major domains, entities, and capabilities of the system.
+outputs: [domain-map, capability-map, canonical-entities]
+dependencies: [NIKWAY-SYSTEM-L1-PURPOSE]
+acceptance_criteria: [domains_have_boundaries, capabilities_are_nonduplicated]

@@ -1,0 +1,125 @@
+id: NIKWAY-EXTERNAL-EVIDENCE-MISSIONS-20260903
+mission_id: NIKWAY-CONTINUOUS-MISSION-001
+purpose: >
+  Convert the remaining release work into bounded evidence-acquisition
+  missions. Local evidence must never be promoted to staging evidence.
+status_model:
+  local: PASS_LOCAL
+  staging: PASS_STAGING
+  external_wait: BLOCKED_EXTERNAL
+  not_executed: NOT_RUN
+  human_gate: APPROVAL_REQUIRED
+bounded_execution:
+  max_attempts_per_mission: 2
+  infinite_loop: prohibited
+  fallback: park_only_the_blocked_task_and_continue
+missions:
+  - id: P02
+    name: Audit Persistence
+    priority: high
+    depends_on: [local-postgresql-persistence]
+    objective: "Prove Master mutation, audit record, transaction atomicity, rollback and integrity."
+    required_evidence:
+      - requirement
+      - command
+      - timestamp
+      - commit_or_reference
+      - environment
+      - result
+    current_state: PASS_LOCAL
+    next_action: "Extend to approved staging only after the external database runtime is supplied."
+
+  - id: P03
+    name: Audit Security and Authorization Integration
+    priority: high
+    depends_on: [P02, oidc-staging]
+    objective: "Prove identity, permission, organization scope, Master mutation and audit as one chain."
+    required_cases: [valid_identity, missing_permission, wrong_role, wrong_organization, idor, audit_decision]
+    current_state: BLOCKED_EXTERNAL
+    next_action: "Run with provider-issued staging identity and membership data."
+
+  - id: P04
+    name: CI/CD and Trivy Evidence
+    priority: critical
+    depends_on: []
+    objective: "Execute the corrected GitHub Actions workflow and preserve the official Trivy artifact."
+    required_evidence:
+      - run_id
+      - commit_sha
+      - workflow
+      - test_result
+      - migration_result
+      - trivy_json_artifact
+      - artifact_name
+    current_state: BLOCKED_EXTERNAL
+    blocker: "No git remote, GitHub repository access, gh CLI authentication, or official Actions runner is available in the current environment."
+    local_equivalent: PASS_LOCAL
+    next_action: "Run publish-ready-sample/.github/workflows/security-scan.yml on an official CI runner."
+
+  - id: P05
+    name: Real OIDC Provider Evidence
+    priority: critical
+    depends_on: []
+    objective: "Verify discovery, JWKS, signature, issuer, audience, claims and authorization with an approved provider."
+    required_cases: [valid, expired, invalid_signature, wrong_audience, wrong_issuer, wrong_organization, wrong_role]
+    current_state: BLOCKED_EXTERNAL
+    next_action: "Supply approved issuer, audience, JWKS URL and provider-issued test credentials."
+
+  - id: P06
+    name: PostgreSQL and S3 Staging
+    priority: critical
+    depends_on: []
+    objective: "Verify database persistence and object storage as independent staging gates."
+    subgates:
+      postgres:
+        current_state: BLOCKED_EXTERNAL
+        required_cases: [migration, non_owner_role, persistence, constraints, rollback, restart_durability]
+      s3:
+        current_state: BLOCKED_EXTERNAL
+        required_cases: [upload, read, checksum, organization_key, authorization, failure, cleanup, rollback]
+    next_action: "Execute each subgate with approved staging endpoints and scoped credentials."
+
+  - id: P07
+    name: Full Integrated Staging E2E
+    priority: critical
+    depends_on: [P03, P05, P06]
+    objective: "Prove the complete user journey from authentication through persistence, audit, storage and rollback."
+    required_sequence:
+      - login
+      - obtain_token
+      - authenticated_request
+      - authorized_master_operation
+      - postgres_persistence
+      - audit_persistence
+      - s3_operation
+      - response_verification
+      - audit_verification
+      - failure_and_rollback
+    current_state: BLOCKED_EXTERNAL
+    next_action: "Run only after all dependent staging gates have PASS_STAGING evidence."
+
+  - id: P08
+    name: Production Readiness Evidence Reconciliation
+    priority: high
+    depends_on: [P02, P03, P04, P05, P06, P07]
+    objective: "Reconcile every requirement with source, timestamp, environment, result and provenance."
+    required_domains: [github_actions, trivy, oidc, postgresql, s3, e2e, authorization, audit, migration, security, observability]
+    current_state: NOT_STARTED
+    next_action: "Generate the reconciliation report after external evidence arrives."
+
+  - id: P09
+    name: Final Production Gate
+    priority: critical
+    depends_on: [P08]
+    objective: "Make a Go/No-Go decision from evidence only; do not add features or deploy silently."
+    allowed_outcomes: [PASS_STAGING, BLOCKED_EXTERNAL, APPROVAL_REQUIRED]
+    current_state: NOT_STARTED
+    next_action: "Review reconciled evidence and request explicit human publication approval."
+
+current_critical_external_gates:
+  - P04
+  - P05
+  - P06
+  - P07
+release_rule: "production_ready remains false until all production-critical gates have valid staging evidence and human approval."
+next_executable_action: "Run the corrected CI security workflow on an official GitHub Actions runner and preserve its Trivy artifact."
