@@ -4,12 +4,21 @@ from pathlib import Path
 import pytest
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = next(
+    (
+        parent
+        for parent in Path(__file__).resolve().parents
+        if (parent / "external-environment-contract.yaml").exists()
+        and (parent / "verification-procedures.md").exists()
+    ),
+    None,
+)
 
 
 def test_e2e_procedure_and_environment_contract_are_present():
-    contract = ROOT.parent / "external-environment-contract.yaml"
-    procedures = ROOT.parent / "verification-procedures.md"
+    assert ROOT is not None
+    contract = ROOT / "external-environment-contract.yaml"
+    procedures = ROOT / "verification-procedures.md"
     assert contract.exists()
     assert procedures.exists()
     text = procedures.read_text(encoding="utf-8")
