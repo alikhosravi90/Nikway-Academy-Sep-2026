@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  NIKWAY_BASELINE_SHA: 5cc02077e480856ed6563cb8d90b994ffa264976
+  NIKWAY_TARGET_SHA: ${{ github.sha }}
 
 jobs:
   dependency-scan:
@@ -19,14 +19,14 @@ jobs:
       - name: Checkout verified baseline
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.NIKWAY_BASELINE_SHA }}
+          ref: ${{ env.NIKWAY_TARGET_SHA }}
 
       - name: Verify baseline provenance
         shell: bash
         run: |
           actual_sha="$(git rev-parse HEAD)"
-          test "$actual_sha" = "$NIKWAY_BASELINE_SHA"
-          printf 'baseline_sha=%s\nworkflow_run_id=%s\n' \
+          test "$actual_sha" = "$NIKWAY_TARGET_SHA"
+          printf 'target_sha=%s\nworkflow_run_id=%s\n' \
             "$actual_sha" "$GITHUB_RUN_ID" > "$RUNNER_TEMP/nikway-p04-security-provenance.txt"
 
       - name: Set up Python
