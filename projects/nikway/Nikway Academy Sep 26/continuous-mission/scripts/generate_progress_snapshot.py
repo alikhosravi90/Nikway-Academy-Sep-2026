@@ -92,6 +92,7 @@ def main() -> int:
         "production_ready": False,
         "metrics": metrics,
     }
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
